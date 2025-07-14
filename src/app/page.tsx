@@ -42,9 +42,10 @@ const Page = () => {
             <div>
                 <Select option={SelectOption} onChange={handleChangeOption} />
             </div>
-        <div style={{ padding: '30px', gap: '15px' }}>
-            <Button onClick={handleClickBtn}>하이</Button>
-            <Table readOnly={true} columns={TEST_TABLE_COLUMNS} rows={TEST_TABLE_ROWS} isCheckbox={true} />
+            <div style={{ padding: '30px', gap: '15px' }}>
+                <Button onClick={handleClickBtn}>하이</Button>
+                <Table readOnly={true} columns={TEST_TABLE_COLUMNS} rows={TEST_TABLE_ROWS} isCheckbox={true} />
+            </div>
         </div>
     );
 };
