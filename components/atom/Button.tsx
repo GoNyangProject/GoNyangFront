@@ -1,0 +1,67 @@
+import React, { CSSProperties, MouseEventHandler, ReactNode } from 'react';
+import { ButtonWrapper } from '../../styles/components/atom/Button';
+
+export type ButtonProps = {
+    children: ReactNode;
+    style?: CSSProperties;
+    width?: string;
+    height?: string;
+    color?: string;
+    activeColor?: string;
+    backgroundColor?: string;
+    activeBackgroundColor?: string;
+    padding?: string;
+    margin?: string;
+    gap?: string;
+    fontSize?: string;
+    display?: string;
+    isActive?: boolean;
+    onClick?: MouseEventHandler<HTMLButtonElement>;
+    border?: string;
+    borderRadius?: string;
+};
+
+const Button = ({
+    children,
+    style,
+    width,
+    height,
+    color,
+    activeColor,
+    backgroundColor = '#a68967',
+    activeBackgroundColor,
+    padding = '5px 10px',
+    margin,
+    gap,
+    fontSize,
+    display,
+    isActive,
+    onClick,
+    border = '1px solid #a68967',
+    borderRadius = '10px',
+}: ButtonProps) => {
+    return (
+        <ButtonWrapper
+            style={style}
+            $width={width}
+            $height={height}
+            $color={color}
+            $activeColor={activeColor}
+            $backgroundColor={backgroundColor}
+            $activeBackgroundColor={activeBackgroundColor}
+            $display={display}
+            $margin={margin}
+            $gap={gap}
+            $fontSize={fontSize}
+            $padding={padding}
+            $isActive={isActive}
+            onClick={onClick}
+            $border={border}
+            $borderRadius={borderRadius}
+        >
+            {children}
+        </ButtonWrapper>
+    );
+};
+
+export default Button;
