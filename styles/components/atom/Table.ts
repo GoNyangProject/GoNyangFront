@@ -10,7 +10,7 @@ export const Th = styled.th`
     height: 50px;
     font-weight: 400;
     box-sizing: border-box;
-    background: #debe9a;
+    background: #a68967;
     border-width: 1px 0;
 
     & + th {
