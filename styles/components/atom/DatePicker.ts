@@ -4,13 +4,11 @@ import Calendar from 'react-calendar';
 
 export const CustomCalendar = styled(Calendar)`
     width: 50%;
+    border-radius: 20px;
 
-    .react-calendar {
-        border-radius: 20px;
-    }
     .react-calendar__navigation {
-        background: pink;
-        border-bottom: 4px solid brown;
+        background: #fce3db;
+        border-bottom: 4px solid #aa3d1d;
         height: 90px;
         border-radius: 20px 20px 0 0;
 
@@ -28,7 +26,7 @@ export const CustomCalendar = styled(Calendar)`
 
     .react-calendar__navigation button:enabled:hover,
     .react-calendar__navigation button:enabled:focus {
-        background-color: pink;
+        background-color: #ffeccc;
         border-radius: 20px 20px 0 0;
     }
 
