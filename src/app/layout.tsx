@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import '../../styles/globals.css';
+import Header from '../../layouts/Header';
+import React from 'react';
 
 export const metadata: Metadata = {
     title: 'toss뿌로젝트',
@@ -13,7 +15,10 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body>{children}</body>
+            <body>
+                <Header />
+                {children}
+            </body>
         </html>
     );
 }
