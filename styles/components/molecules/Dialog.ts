@@ -30,7 +30,7 @@ export const DialogHeader = styled.div`
     align-items: center;
     background-color: #504538;
     border-radius: 20px 20px 0 0;
-    font-size: 45px;
+    font-size: 40px;
     font-weight: 500;
 `;
 export const DialogBody = styled.div`
