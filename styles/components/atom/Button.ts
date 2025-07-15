@@ -32,8 +32,8 @@ export const ButtonWrapper = styled.button<ButtonProps>`
     cursor: pointer;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
     transition: all 0.3s;
+    overflow: hidden;
 
     &:hover {
         transform: translateY(-2px);

@@ -30,11 +30,8 @@ const Dialog = ({
     onClickCancel,
     showBtn,
 }: DialogProps) => {
-    const { selectedDialogs, closeDialog } = useDialogStore();
+    const { selectedDialogs } = useDialogStore();
     const isOpenDialog = selectedDialogs.some((dialog) => dialog.dialogType === type && dialog.isOpen);
-    useEffect(() => {
-        console.log(isOpenDialog);
-    }, [isOpenDialog]);
 
     return (
         <DialogWrapper $isOpen={isOpenDialog} style={style}>
@@ -47,36 +44,37 @@ const Dialog = ({
                             style={{
                                 lineHeight: '16px',
                                 fontWeight: '500',
+                                borderRadius: '5px',
+                                padding: '17px 10px',
                             }}
-                            width="80px"
+                            width="110px"
                             height="26px"
                             border="none"
                             padding="0"
                             color="#FFFFFF"
-                            backgroundColor="#3E66FB"
                             borderRadius="0"
-                            fontSize="13px"
+                            fontSize="20px"
                             onClick={onClickConfirm}
                         >
-                            {confirmText}
+                            {confirmText} ♤
                         </Button>
                     )}
                     <Button
                         style={{
                             lineHeight: '16px',
                             fontWeight: '500',
+                            borderRadius: '5px',
+                            padding: '17px 10px',
                         }}
                         width="80px"
                         height="26px"
                         border="none"
-                        padding="0"
                         color="#FFFFFF"
-                        backgroundColor="#3E66FB"
                         borderRadius="0"
-                        fontSize="13px"
+                        fontSize="20px"
                         onClick={onClickCancel}
                     >
-                        {cancelText}
+                        {cancelText} †
                     </Button>
                 </DialogFooter>
             </DialogInner>

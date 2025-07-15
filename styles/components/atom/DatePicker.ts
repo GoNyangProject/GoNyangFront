@@ -19,6 +19,12 @@ export const CustomCalendar = styled(Calendar)`
         }
     }
 
+    .react-calendar__navigation button {
+        color: brown;
+        font-size: 25px;
+        font-weight: bold;
+    }
+
     .react-calendar__navigation button:disabled {
         background-color: pink;
         border-radius: 20px 20px 0 0;

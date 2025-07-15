@@ -33,7 +33,6 @@ const Page = () => {
 
     const handleClickBtn = () => {
         alert('버튼 클릭');
-
     };
 
     const handleChangeOption = (option: SelectOption) => {
@@ -45,17 +44,17 @@ const Page = () => {
     }, [selectedDialogs]);
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', padding: '30px', gap: '15px' }}>
-            <div>
+        <div style={{ display: 'flex', gap: '20px', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <Button onClick={handleClickBtn}>하이</Button>
             </div>
-            <div>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <Select option={SelectOption} onChange={handleChangeOption} />
             </div>
-            <div>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <Table readOnly={true} columns={TEST_TABLE_COLUMNS} rows={TEST_TABLE_ROWS} isCheckbox={true} />
             </div>
-            <div>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <DatePicker />
             </div>
             <CalendarDialog />

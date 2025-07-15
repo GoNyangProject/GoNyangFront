@@ -6,7 +6,7 @@ import { DialogType } from '../../enum/Dialog';
 
 const DatePicker = () => {
     const [date, setDate] = useState<Date>(new Date());
-    const { openDialog } = useDialogStore();
+    const { setSelectedDate, openDialog } = useDialogStore();
     const onClickDay = (date: Date) => {
         const year = date.getFullYear();
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -14,17 +14,14 @@ const DatePicker = () => {
         const clickedDate = `${year}-${month}-${day}` as unknown as Date;
         console.log('선택한 날짜 : ' + clickedDate);
         setDate(clickedDate);
+        setSelectedDate(clickedDate);
         openDialog(DialogType.CALENDAR);
     };
 
     useEffect(() => {
         console.log(date);
     }, [date]);
-    return (
-        <div>
-            <CustomCalendar locale={'en'} value={date} next2Label={null} prev2Label={null} onClickDay={onClickDay} />
-        </div>
-    );
+    return <CustomCalendar locale={'en'} value={date} next2Label={null} prev2Label={null} onClickDay={onClickDay} />;
 };
 
 export default DatePicker;
