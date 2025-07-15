@@ -8,6 +8,7 @@ import { TEST_TABLE_COLUMNS } from '../../constants/table-init';
 import DatePicker from '../../components/organisms/DatePicker';
 import { useDialogStore } from '../../store/dialogStore';
 import CalendarDialog from '../../components/organisms/dialog/CalendarDialog';
+import ImageViewer from '../../components/molecules/ImageViewer';
 
 const SelectOption = [
     {

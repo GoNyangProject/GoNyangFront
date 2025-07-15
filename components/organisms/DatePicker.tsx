@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import 'react-calendar/dist/Calendar.css';
-import { CustomCalendar } from '../../styles/components/atom/DatePicker';
+import { CustomCalendar } from '../../styles/components/organism/DatePicker';
 import { useDialogStore } from '../../store/dialogStore';
 import { DialogType } from '../../enum/Dialog';
 

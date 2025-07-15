@@ -48,6 +48,10 @@ export const TextareaInput = styled.textarea`
     &:focus {
         border: 1px solid #fff;
     }
+
+    &::placeholder {
+        color: #afafaf;
+    }
 `;
 
 export const TextareaLabel = styled.label<TextareaProps>`
