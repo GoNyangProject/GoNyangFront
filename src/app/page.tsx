@@ -9,6 +9,7 @@ import DatePicker from '../../components/organisms/DatePicker';
 import { useDialogStore } from '../../store/dialogStore';
 import CalendarDialog from '../../components/organisms/dialog/CalendarDialog';
 import ImageViewer from '../../components/molecules/ImageViewer';
+import Card from '../../components/atom/Card';
 
 const SelectOption = [
     {
@@ -58,6 +59,21 @@ const Page = () => {
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <DatePicker />
             </div>
+            <Card
+                isOpen={true}
+                style={{
+                    width: '50%',
+                    padding: '20px 30px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    overflowY: 'auto',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginLeft: '380px',
+                }}
+            >
+                하응 기모찌 데스네 카드입니다
+            </Card>
             <CalendarDialog />
         </div>
     );
