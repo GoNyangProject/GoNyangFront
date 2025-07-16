@@ -19,6 +19,7 @@ export type ButtonProps = {
     onClick?: MouseEventHandler<HTMLButtonElement>;
     border?: string;
     borderRadius?: string;
+    shadow?: string;
 };
 
 const Button = ({
@@ -39,6 +40,7 @@ const Button = ({
     onClick,
     border = '1px solid #a68967',
     borderRadius = '10px',
+    shadow = '2px 2px 1px rgba(0, 0, 0, 0.05)',
 }: ButtonProps) => {
     return (
         <ButtonWrapper
@@ -58,6 +60,7 @@ const Button = ({
             onClick={onClick}
             $border={border}
             $borderRadius={borderRadius}
+            $shadow={shadow}
         >
             {children}
         </ButtonWrapper>

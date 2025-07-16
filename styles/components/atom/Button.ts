@@ -15,6 +15,7 @@ type ButtonProps = {
     $display?: string;
     $border?: string;
     $borderRadius?: string;
+    $shadow?: string;
 };
 
 export const ButtonWrapper = styled.button<ButtonProps>`
@@ -29,6 +30,7 @@ export const ButtonWrapper = styled.button<ButtonProps>`
     display: ${(props) => (props.$display ? props.$display : 'flex')};
     border: ${(props) => props.$border};
     border-radius: ${(props) => props.$borderRadius};
+    box-shadow: ${(props) => props.$shadow};
     cursor: pointer;
     align-items: center;
     justify-content: center;
