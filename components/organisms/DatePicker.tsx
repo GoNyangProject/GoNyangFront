@@ -12,15 +12,11 @@ const DatePicker = () => {
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
         const day = date.getDate().toString().padStart(2, '0');
         const clickedDate = `${year}-${month}-${day}` as unknown as Date;
-        console.log('선택한 날짜 : ' + clickedDate);
         setDate(clickedDate);
         setSelectedDate(clickedDate);
         openDialog(DialogType.CALENDAR);
     };
 
-    useEffect(() => {
-        console.log(date);
-    }, [date]);
     return <CustomCalendar locale={'en'} value={date} next2Label={null} prev2Label={null} onClickDay={onClickDay} />;
 };
 

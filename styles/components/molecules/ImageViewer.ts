@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import Image from 'next/image';
 
 type ImageViewerProps = {
-    $width?: number;
-    $height?: number;
+    $width?: string;
+    $height?: string;
     $borderRadius?: string;
 };
 
@@ -16,4 +16,6 @@ export const ImageViewerWrapper = styled.div`
 `;
 export const ImageViewer = styled(Image)<ImageViewerProps>`
     border-radius: ${(props) => (props.$borderRadius ? props.$borderRadius : '20px')};
+    width: ${(props) => (props.$width ? props.$width : '100%')};
+    height: ${(props) => (props.$height ? props.$height : '100%')};
 `;

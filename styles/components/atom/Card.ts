@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-export const CardWrapper = styled.div<{ isOpen: boolean }>`
-    display: ${(props) => (props.isOpen ? 'block' : 'none')};
+export const CardWrapper = styled.div<{ $isOpen?: boolean }>`
+    display: ${(props) => (props.$isOpen ? 'block' : 'none')};
     width: 100%;
     height: 100%;
     flex: 1;

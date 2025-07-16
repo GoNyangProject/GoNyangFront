@@ -1,20 +1,17 @@
 import React from 'react';
-import { ImageViewer, ImageViewerWrapper } from '../../styles/components/molecules/ImageViewer';
+import { ImageViewer } from '../../styles/components/molecules/ImageViewer';
+import { StaticImageData } from 'next/image';
 
 export type ImageViwerProps = {
-    src: string;
-    width?: number;
-    height?: number;
+    src: string | StaticImageData;
+    width?: string;
+    height?: string;
     borderRadius?: string;
     alt: string;
 };
 
 const ImageViewerComponent = ({ src, width, height, borderRadius, alt }: ImageViwerProps) => {
-    return (
-        <ImageViewerWrapper>
-            <ImageViewer src={src} alt={alt} width={width} height={height} $borderRadius={borderRadius} />
-        </ImageViewerWrapper>
-    );
+    return <ImageViewer src={src} alt={alt} width={100} height={200} $width={width} $height={height} $borderRadius={borderRadius} />;
 };
 
 export default ImageViewerComponent;

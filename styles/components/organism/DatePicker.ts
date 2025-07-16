@@ -100,5 +100,4 @@ export const CalendarContent = styled.div`
     justify-content: center;
     padding: 10px 20px;
     width: 100%;
-    background-color: pink;
 `;

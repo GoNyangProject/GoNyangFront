@@ -41,10 +41,6 @@ const Page = () => {
         console.log(option);
     };
 
-    useEffect(() => {
-        console.log(selectedDialogs);
-    }, [selectedDialogs]);
-
     return (
         <div style={{ display: 'flex', gap: '20px', flexDirection: 'column' }}>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
