@@ -1,3 +1,6 @@
+import { Method } from 'axios';
+import { RequestType, ResponseType } from '../enum/Common';
+
 export type SelectOption = {
     value: string;
     label: string;
@@ -8,4 +11,18 @@ export type COLUMNS = {
     seq: number;
     value: string;
     label: string;
+};
+
+export type Request = {
+    url: string;
+    method: Method;
+    param?: object;
+    type?: RequestType;
+};
+
+export type Response = {
+    type: ResponseType;
+    result?: object;
+    errorCode: string;
+    message?: string;
 };

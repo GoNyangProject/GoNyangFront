@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import Dialog from '../../molecules/Dialog';
 import { DialogType } from '../../../enum/Dialog';
 import { useDialogStore } from '../../../store/dialogStore';
@@ -9,11 +9,30 @@ import ImageViewer from '../../molecules/ImageViewer';
 import { CalendarContent } from '../../../styles/components/organism/DatePicker';
 import Textarea from '../../atom/Textarea';
 import test_img from '../../../public/images/test.png';
+import axios from 'axios';
+import useSWR from 'swr';
+
+const fetcher = (payload: Request) => axios.post('/api/backend', payload).then((res) => res.data);
 
 const CalendarDialog = () => {
     const { selectedDate, closeDialog, setSelectedDate } = useDialogStore();
     const [cancelContent, setCancelContent] = useState<string>('');
     const [currentPage, setCurrentPage] = useState<number>(0);
+
+    const { data: data } = useSWR(
+        {
+            url: '/test',
+            method: 'GET',
+        },
+        fetcher,
+        {
+            fallbackData: '',
+        },
+    );
+
+    useEffect(() => {
+        console.log(data);
+    }, [data]);
 
     const handleCancelBook = () => {};
     const handleClickCancel = () => {
