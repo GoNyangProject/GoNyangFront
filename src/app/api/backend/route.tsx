@@ -5,9 +5,9 @@ import { ResponseType } from '../../../../enum/Common';
 const DOMAIN = process.env.BACK_URL;
 
 const _fetch = async (param: Request) => {
-    console.log(param.url);
-    console.log(param.method);
-    console.log(param.param);
+    console.log('url : ', param.url);
+    console.log('method : ', param.method);
+    console.log('param : ', param.param);
     const result: Response = {
         type: ResponseType.SUCCESS,
         errorCode: '0000',

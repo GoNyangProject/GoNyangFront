@@ -9,10 +9,11 @@ import ImageViewer from '../../molecules/ImageViewer';
 import { CalendarContent } from '../../../styles/components/organism/DatePicker';
 import Textarea from '../../atom/Textarea';
 import test_img from '../../../public/images/test.png';
-import axios from 'axios';
 import useSWR from 'swr';
+import axiosInstance from '../../../libs/axios';
+import { Post } from '../../../service/crud';
 
-const fetcher = (payload: Request) => axios.post('/api/backend', payload).then((res) => res.data);
+const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data);
 
 const CalendarDialog = () => {
     const { selectedDate, closeDialog, setSelectedDate } = useDialogStore();
@@ -26,9 +27,23 @@ const CalendarDialog = () => {
         },
         fetcher,
         {
+            revalidateOnFocus: true,
+            revalidateOnReconnect: true,
             fallbackData: '',
         },
     );
+
+    useEffect(() => {
+        const payload = {};
+        Post(
+            '/test',
+            payload,
+            (response) => {
+                console.log(response);
+            },
+            false,
+        );
+    }, []);
 
     useEffect(() => {
         console.log(data);
@@ -127,7 +142,7 @@ const CalendarDialog = () => {
                         }}
                     >
                         <ImageViewer src={test_img} alt={'test'} width={'40%'} height={'50%'} borderRadius={'10px'} />
-                        <CalendarContent>{test_data[currentPage].value}</CalendarContent>
+                        <CalendarContent>{data[currentPage]}</CalendarContent>
                     </div>
                     <div>
                         <Textarea
