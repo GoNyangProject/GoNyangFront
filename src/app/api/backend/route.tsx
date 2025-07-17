@@ -5,6 +5,9 @@ import { ResponseType } from '../../../../enum/Common';
 const DOMAIN = process.env.BACK_URL;
 
 const _fetch = async (param: Request) => {
+    console.log(param.url);
+    console.log(param.method);
+    console.log(param.param);
     const result: Response = {
         type: ResponseType.SUCCESS,
         errorCode: '0000',
@@ -16,7 +19,12 @@ const _fetch = async (param: Request) => {
         },
         body: JSON.stringify(param.param),
     });
-    const responseJson = await response.json();
+    const responseJson: Response = await response.json();
+    if (responseJson) {
+        result.errorCode = responseJson.errorCode;
+        result.message = responseJson.message;
+        result.result = responseJson.result;
+    }
 
     return result;
 };
@@ -27,7 +35,7 @@ export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
         param = body as Request;
-        result = _fetch(param);
+        result = await _fetch(param);
     } catch (error) {
         let errorMessage = '';
         if (error instanceof Error) {
