@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-    baseURL: process.env.BACK_URL,
+    baseURL: process.env.NEXT_PUBLIC_BACK_URL,
 });
 
 axiosInstance.interceptors.request.use((config) => {

@@ -7,7 +7,6 @@ export const Post = (url: string, payload: object, callback?: (response: Respons
         type: ResponseType.SUCCESS,
         errorCode: '0000',
     };
-
     axiosInstance
         .post('/api/backend', {
             url: url,
