@@ -44,3 +44,9 @@ export const HeaderLogo = styled.div`
     font-size: 14px;
     text-align: center;
 `;
+
+export const UserWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+`;

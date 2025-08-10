@@ -23,6 +23,12 @@ export const Post = (url: string, payload: object, callback?: (response: Respons
                 return;
             }
             if (typeof callback === 'function') callback(response);
+            if (res.data.authorization != null) {
+                localStorage.setItem('Authorization', res.data.authorization);
+            }
+            if (res.data.refreshToken != null) {
+                localStorage.setItem('Refresh-Token', res.data.refreshToken);
+            }
         })
         .catch((error) => {
             console.log(error);

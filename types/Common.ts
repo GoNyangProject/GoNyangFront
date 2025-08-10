@@ -25,4 +25,6 @@ export type Response = {
     result?: object;
     errorCode: string;
     message?: string;
+    authorization?: string;
+    refreshToken?: string;
 };
