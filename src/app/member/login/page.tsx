@@ -6,6 +6,7 @@ import Input from '../../../../components/atom/Input';
 import Button from '../../../../components/atom/Button';
 import { Post } from '../../../../service/crud';
 import { useRouter } from 'next/navigation';
+import {ButtonWrapper} from "../../../../styles/components/atom/Header";
 
 const Page = () => {
     const router = useRouter();
@@ -33,6 +34,11 @@ const Page = () => {
             false,
         );
     };
+
+    const handleClickJoin = () => {
+        router.push('/member/join');
+    };
+
     return (
         <LoginLayoutWrapper>
             <LoginLayoutMain>
@@ -68,19 +74,32 @@ const Page = () => {
                             style={{ borderRadius: '10px' }}
                             onChange={(event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value.trim())}
                         />
-                        <Button
-                            width="100%"
-                            height="52px"
-                            fontSize="18px"
-                            margin="20px 0 0"
-                            backgroundColor="bisque"
-                            border="none"
-                            borderRadius="10px"
-                            color="black"
-                            onClick={handleClickLogin}
-                        >
-                            로그인
-                        </Button>
+                        <ButtonWrapper>
+                            <Button
+                                width="100%"
+                                height="52px"
+                                fontSize="18px"
+                                backgroundColor="bisque"
+                                border="none"
+                                borderRadius="10px"
+                                color="black"
+                                onClick={handleClickLogin}
+                            >
+                                로그인
+                            </Button>
+                            <Button
+                                width="100%"
+                                height="52px"
+                                fontSize="18px"
+                                backgroundColor="bisque"
+                                border="none"
+                                borderRadius="10px"
+                                color="black"
+                                onClick={handleClickJoin}
+                            >
+                                회원가입
+                            </Button>
+                        </ButtonWrapper>
                     </LoginFormWrapper>
                 </Card>
             </LoginLayoutMain>

@@ -39,7 +39,7 @@ export const validateField = (key: FormFieldsType, value: string): string => {
 export const checkIdDuplicate = async (id: string): Promise<string> => {
     if (id.length < 5) return '아이디는 최소 5자 이상이어야 합니다.';
     try {
-        const response = await fetch(`http://localhost:8080/checkid?id=${id}`, { method: 'GET' });
+        const response = await fetch(`http://localhost:8080/member/checkid?id=${id}`, { method: 'GET' });
         const data = await response.json();
         if (!data.result.available) return '이미 사용중인 아이디입니다.';
     } catch {
