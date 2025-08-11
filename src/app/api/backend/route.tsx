@@ -4,21 +4,25 @@ import { ResponseType } from '../../../../enum/Common';
 
 const DOMAIN = process.env.BACK_URL;
 
-const _fetch = async (param: Request) => {
-    console.log('url : ', param.url);
-    console.log('method : ', param.method);
-    console.log('param : ', param.param);
+const _fetch = async (param: Request, incomingHeaders: Headers) => {
+    const authHeader = incomingHeaders.get('Authorization');
+    const refreshHeader = incomingHeaders.get('Refresh-Token');
+
     const result: Response = {
         type: ResponseType.SUCCESS,
         errorCode: '0000',
     };
+
     const response = await fetch(`${DOMAIN}${param.url}`, {
         method: param.method,
         headers: {
             'content-type': 'application/json',
+            ...(authHeader ? { Authorization: authHeader } : {}),
+            ...(refreshHeader ? { 'Refresh-Token': refreshHeader } : {}),
         },
         body: JSON.stringify(param.param),
     });
+
     const authorization = response.headers.get('Authorization');
     const refreshToken = response.headers.get('Refresh-Token');
     if (param.url === '/member/login' && authorization != null && refreshToken != null) {
@@ -37,24 +41,18 @@ const _fetch = async (param: Request) => {
 };
 
 export async function POST(req: NextRequest) {
-    let result;
-    let param;
     try {
         const body = await req.json();
-        param = body as Request;
-        result = await _fetch(param);
+        const result = await _fetch(body as Request, req.headers);
+        return NextResponse.json(result);
     } catch (error) {
-        let errorMessage = '';
-        if (error instanceof Error) {
-            errorMessage = error.message;
-            return NextResponse.json(
-                {
-                    type: ResponseType.FAIL,
-                    message: errorMessage,
-                },
-                { status: 400 },
-            );
-        }
+        return NextResponse.json(
+            {
+                type: ResponseType.FAIL,
+                message: error instanceof Error ? error.message : 'Unknown error',
+            },
+            { status: 400 }
+        );
     }
-    return NextResponse.json(result);
 }
+

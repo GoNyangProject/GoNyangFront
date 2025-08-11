@@ -1,16 +1,18 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { HeaderLogo, HeaderWrapper, UserWrapper } from '../styles/components/atom/Header';
 import NavMenu from '../components/molecules/NavMenu';
 import LoginButton from '../components/molecules/LoginButton';
 import LogoutButton from '../components/molecules/LogoutButton';
 
 const Header = () => {
-    const token = localStorage.getItem('Authorization');
+    const [token, setToken] = useState<string | null>(null);
 
     useEffect(() => {
-        console.log(token);
-    }, [token]);
+        const t = localStorage.getItem('Authorization');
+        setToken(t);
+    }, []);
+
     return (
         <HeaderWrapper>
             <NavMenu />
