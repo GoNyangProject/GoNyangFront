@@ -65,7 +65,6 @@ const Page = () => {
                     overflowY: 'auto',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    marginLeft: '380px',
                 }}
             >
                 하응 기모찌 데스네 카드입니다

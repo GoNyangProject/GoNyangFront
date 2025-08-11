@@ -19,11 +19,18 @@ const _fetch = async (param: Request) => {
         },
         body: JSON.stringify(param.param),
     });
-    const responseJson: Response = await response.json();
-    if (responseJson) {
-        result.errorCode = responseJson.errorCode;
-        result.message = responseJson.message;
-        result.result = responseJson.result;
+    const authorization = response.headers.get('Authorization');
+    const refreshToken = response.headers.get('Refresh-Token');
+    if (param.url === '/member/login' && authorization != null && refreshToken != null) {
+        result.authorization = authorization;
+        result.refreshToken = refreshToken;
+    } else {
+        const responseJson: Response = await response.json();
+        if (responseJson) {
+            result.errorCode = responseJson.errorCode;
+            result.message = responseJson.message;
+            result.result = responseJson.result;
+        }
     }
 
     return result;
