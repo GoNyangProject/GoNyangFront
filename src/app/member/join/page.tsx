@@ -54,7 +54,7 @@ const Page = () => {
         if (isError) return;
 
         Post(
-            '/join',
+            '/member/join',
             {
                 userId: form[FormFieldsType.ID],
                 password: form[FormFieldsType.PASSWORD],
@@ -78,7 +78,7 @@ const Page = () => {
 
     return (
         <>
-            <h1 style={{ paddingTop: '40px', textAlign: 'center' }}>로고부분</h1>
+            <h1 style={{ color: 'black', paddingTop: '40px', textAlign: 'center' }}>로고부분</h1>
             <MemberJoinBox>
                 <JoinInput
                     placeholder="아이디"

@@ -50,3 +50,10 @@ export const UserWrapper = styled.div`
     flex-direction: row;
     gap: 10px;
 `;
+
+export const ButtonWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+`;

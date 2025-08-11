@@ -9,7 +9,7 @@ axiosInstance.interceptors.request.use((config) => {
     const refreshToken = localStorage.getItem('Refresh-Token');
     if (token) {
         config.headers.Authorization = token;
-    } else if (token == null && config.data.url !== '/member/login') {
+    } else if (token == null && !config.data.url.contain('/member')) {
         alert('토큰이 만료되었습니다.');
         window.location.href = '/member/login';
         return config;

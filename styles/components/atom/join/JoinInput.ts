@@ -12,7 +12,8 @@ export const InputItem = styled.input<InputItemProps>`
     border: 1px solid ${(props) => (props.$isError ? 'red' : '#ccc')};
     border-radius: 4px;
     outline: none;
-
+    background-color: white;
+    color: black;
     &:focus {
         border-color: ${(props) => (props.$isError ? 'red' : '#666')};
     }

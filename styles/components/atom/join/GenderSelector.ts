@@ -9,6 +9,7 @@ export const GenderButton = styled.div<{ selected: boolean }>`
     cursor: pointer;
     text-align: center;
     user-select: none;
+    color: black;
 
     ${({ selected }) =>
         selected &&
