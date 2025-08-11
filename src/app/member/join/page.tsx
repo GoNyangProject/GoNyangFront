@@ -9,9 +9,12 @@ import { FormFieldsType } from '../../../../enum/FormFields';
 import { JoinValidErrorMessage } from '../../../../styles/components/atom/join/JoinValidErrorMessage';
 import { checkIdDuplicate, validateField } from '@/utils/validations/formValidators';
 import { Post } from '../../../../service/crud';
+import { Gender } from '../../../../enum/Common';
+import { useRouter } from 'next/navigation';
 
 const Page = () => {
-    const [gender, setGender] = useState('남자');
+    const router = useRouter();
+    const [gender, setGender] = useState<Gender>(Gender.MALE);
     const [form, setForm] = useState<FormState>(initialFormState);
     const [errors, setErrors] = useState<FormErrors>({});
     const [isIdAvailable, setIsIdAvailable] = useState<boolean | null>(null);
@@ -70,7 +73,8 @@ const Page = () => {
                 setForm(initialFormState);
                 setErrors({});
                 setIsIdAvailable(null);
-                setGender('남자');
+                setGender(Gender.MALE);
+                router.push('/member/login');
             },
             false,
         );
@@ -131,10 +135,10 @@ const Page = () => {
                 />
                 {errors[FormFieldsType.BIRTH] && <JoinValidErrorMessage>{errors[FormFieldsType.BIRTH]}</JoinValidErrorMessage>}
                 <GenderButtonWrapper>
-                    <GenderButton selected={gender === '남자'} onClick={() => setGender('남자')}>
+                    <GenderButton selected={gender === Gender.MALE} onClick={() => setGender(Gender.MALE)}>
                         남자
                     </GenderButton>
-                    <GenderButton selected={gender === '여자'} onClick={() => setGender('여자')}>
+                    <GenderButton selected={gender === Gender.FEMALE} onClick={() => setGender(Gender.FEMALE)}>
                         여자
                     </GenderButton>
                 </GenderButtonWrapper>
