@@ -1,5 +1,5 @@
 import React from 'react';
-import { InputItem } from '../../styles/components/atom/join/JoinInput';
+import { InputItem } from '../../styles/pages/join/JoinInput';
 
 type InputProps = {
     type?: string;

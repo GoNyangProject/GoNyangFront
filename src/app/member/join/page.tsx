@@ -2,13 +2,14 @@
 import React, { useState } from 'react';
 import JoinInput from '../../../../components/atom/JoinInput';
 import Button from '../../../../components/atom/Button';
-import { MemberJoinBox } from '../../../../styles/components/atom/join/section';
-import { GenderButton, GenderButtonWrapper } from '../../../../styles/components/atom/join/GenderSelector';
+import { MemberJoinBox } from '../../../../styles/pages/join/section';
+import { GenderButton, GenderButtonWrapper } from '../../../../styles/pages/join/GenderSelector';
 import { FormErrors, FormState, initialFormState } from '../../../../data/data-init';
 import { FormFieldsType } from '../../../../enum/FormFields';
-import { JoinValidErrorMessage } from '../../../../styles/components/atom/join/JoinValidErrorMessage';
+import { JoinValidErrorMessage } from '../../../../styles/pages/join/JoinValidErrorMessage';
 import { checkIdDuplicate, validateField } from '@/utils/validations/formValidators';
 import { Post } from '../../../../service/crud';
+import { router } from 'next/client';
 
 const Page = () => {
     const [gender, setGender] = useState('남자');
@@ -54,7 +55,7 @@ const Page = () => {
         if (isError) return;
 
         Post(
-            '/join',
+            '/member/join',
             {
                 userId: form[FormFieldsType.ID],
                 password: form[FormFieldsType.PASSWORD],
@@ -71,6 +72,7 @@ const Page = () => {
                 setErrors({});
                 setIsIdAvailable(null);
                 setGender('남자');
+                router.push('/member/login');
             },
             false,
         );

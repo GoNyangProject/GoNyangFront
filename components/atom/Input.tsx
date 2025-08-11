@@ -1,4 +1,4 @@
-import { CSSProperties, ChangeEventHandler, FocusEventHandler, ForwardedRef, KeyboardEventHandler, forwardRef } from 'react';
+import { ChangeEventHandler, CSSProperties, FocusEventHandler, ForwardedRef, forwardRef, JSX, KeyboardEventHandler } from 'react';
 import { ErrorMessage, InputItem, InputLabel, InputWrap } from '../../styles/components/atom/Input';
 
 export type InputProps = {
