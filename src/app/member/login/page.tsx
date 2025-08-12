@@ -14,8 +14,6 @@ const Page = () => {
     const [id, setId] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const handleClickLogin = () => {
-        console.log('id : ', id);
-        console.log('password : ', password);
         const payload = {
             userId: id,
             password: password,

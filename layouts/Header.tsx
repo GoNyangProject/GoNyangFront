@@ -11,7 +11,7 @@ const Header = () => {
     useEffect(() => {
         const t = localStorage.getItem('Authorization');
         setToken(t);
-    }, []);
+    }, [token]);
 
     return (
         <HeaderWrapper>

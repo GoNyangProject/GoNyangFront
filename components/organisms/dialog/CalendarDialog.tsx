@@ -39,15 +39,10 @@ const CalendarDialog = () => {
             '/test',
             payload,
             (response) => {
-                console.log(response);
             },
             false,
         );
     }, []);
-
-    useEffect(() => {
-        console.log(data);
-    }, [data]);
 
     const handleCancelBook = () => {};
     const handleClickCancel = () => {
