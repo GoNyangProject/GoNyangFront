@@ -23,6 +23,14 @@ const _fetch = async (param: Request, incomingHeaders: Headers) => {
         body: JSON.stringify(param.param),
     });
 
+    if (response.status === 403) {
+        throw {
+            message: 'Forbidden 403',
+            status: 403,
+            errorCode: '403',
+        };
+    }
+
     const authorization = response.headers.get('Authorization');
     const refreshToken = response.headers.get('Refresh-Token');
     if (param.url === '/member/login' && authorization != null && refreshToken != null) {
@@ -49,10 +57,11 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(
             {
                 type: ResponseType.FAIL,
-                message: error instanceof Error ? error.message : 'Unknown error',
+                message: error?.message || 'Unknown Error',
             },
-            { status: 400 }
+            {
+                status: error?.status || 400,
+            },
         );
     }
 }
-

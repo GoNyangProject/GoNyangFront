@@ -20,8 +20,19 @@ axiosInstance.interceptors.request.use((config) => {
     return config;
 });
 
-axiosInstance.interceptors.response.use(async (response) => {
-    return response;
-});
+axiosInstance.interceptors.response.use(
+    async (response) => {
+        return response;
+    },
+    async (error) => {
+        const errorCode = error.response.status;
+        if (errorCode === 403) {
+            alert('토큰이 만료되었습니다.');
+            localStorage.clear();
+            window.location.href = '/member/login';
+            return;
+        }
+    },
+);
 
 export default axiosInstance;
