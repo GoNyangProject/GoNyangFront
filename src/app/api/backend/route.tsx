@@ -22,7 +22,6 @@ const _fetch = async (param: Request, incomingHeaders: Headers) => {
         },
         body: JSON.stringify(param.param),
     });
-    console.log(response.status);
 
     if (!response.ok) {
         if (response.status === 403) {
