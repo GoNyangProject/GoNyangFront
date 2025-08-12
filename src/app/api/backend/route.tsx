@@ -22,12 +22,21 @@ const _fetch = async (param: Request, incomingHeaders: Headers) => {
         },
         body: JSON.stringify(param.param),
     });
+    console.log(response.status);
 
-    if (response.status === 403) {
+    if (!response.ok) {
+        if (response.status === 403) {
+            throw {
+                message: 'Forbidden 403',
+                status: 403,
+                errorCode: '403',
+            };
+        }
+        const errorJson = await response.json();
         throw {
-            message: 'Forbidden 403',
-            status: 403,
-            errorCode: '403',
+            message: errorJson.message || response.statusText,
+            status: response.status,
+            errorCode: errorJson.errorCode || String(response.status),
         };
     }
 
