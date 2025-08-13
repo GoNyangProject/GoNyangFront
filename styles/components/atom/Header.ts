@@ -20,8 +20,9 @@ export const HeaderNavWrapper = styled.nav`
     gap: 12px;
 `;
 
-export const HeaderLoginWrapper = styled.button`
+export const HeaderLoginWrapper = styled.div`
     display: flex;
+    justify-content: center;
     align-items: center;
     color: white;
     background: transparent;
@@ -43,6 +44,7 @@ export const HeaderWrapper = styled.header`
 export const HeaderLogo = styled.div`
     font-size: 14px;
     text-align: center;
+    cursor: pointer;
 `;
 
 export const UserWrapper = styled.div`
@@ -57,3 +59,5 @@ export const ButtonWrapper = styled.div`
     width: 100%;
     gap: 10px;
 `;
+
+export const MypageWrapper = styled.div``;

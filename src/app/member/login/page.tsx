@@ -6,13 +6,16 @@ import Input from '../../../../components/atom/Input';
 import Button from '../../../../components/atom/Button';
 import { Post } from '../../../../service/crud';
 import { useRouter } from 'next/navigation';
-import {ButtonWrapper} from "../../../../styles/components/atom/Header";
+import { ButtonWrapper } from '../../../../styles/components/atom/Header';
+import { User, userStore } from '../../../../store/userStore';
 
 const Page = () => {
     const router = useRouter();
 
     const [id, setId] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const { setUserData } = userStore();
+
     const handleClickLogin = () => {
         const payload = {
             userId: id,
@@ -23,6 +26,8 @@ const Page = () => {
             payload,
             (response) => {
                 if (response.errorCode == '0000') {
+                    const userData: User = response.result as User;
+                    setUserData(userData);
                     router.push('/');
                 } else {
                     alert('아이디 또는 비밀번호가 일치하지 않습니다.');

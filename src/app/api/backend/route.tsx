@@ -41,11 +41,12 @@ const _fetch = async (param: Request, incomingHeaders: Headers) => {
 
     const authorization = response.headers.get('Authorization');
     const refreshToken = response.headers.get('Refresh-Token');
+    const responseJson: Response = await response.json();
     if (param.url === '/member/login' && authorization != null && refreshToken != null) {
         result.authorization = authorization;
         result.refreshToken = refreshToken;
+        result.result = responseJson.result;
     } else {
-        const responseJson: Response = await response.json();
         if (responseJson) {
             result.errorCode = responseJson.errorCode;
             result.message = responseJson.message;

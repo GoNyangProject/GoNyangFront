@@ -1,12 +1,15 @@
 import React from 'react';
 import { HeaderLoginWrapper } from '../../styles/components/atom/Header';
 import { useRouter } from 'next/navigation';
+import Button from '../atom/Button';
 
 const LoginButton = () => {
     const router = useRouter();
     return (
-        <HeaderLoginWrapper onClick={() => router.push('/member/login')}>
-            <span>로그인</span>
+        <HeaderLoginWrapper>
+            <Button fontSize="15px" onClick={() => router.push('/member/login')}>
+                로그인
+            </Button>
         </HeaderLoginWrapper>
     );
 };

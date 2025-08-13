@@ -2,10 +2,13 @@
 import React, { useEffect, useState } from 'react';
 import { HeaderLogo, HeaderWrapper, UserWrapper } from '../styles/components/atom/Header';
 import NavMenu from '../components/molecules/NavMenu';
-import LoginButton from '../components/molecules/LoginButton';
 import LogoutButton from '../components/molecules/LogoutButton';
+import LoginButton from '../components/molecules/LoginButton';
+import { useRouter } from 'next/navigation';
+import MypageButton from '../components/molecules/MypageButton';
 
 const Header = () => {
+    const router = useRouter();
     const [token, setToken] = useState<string | null>(null);
 
     useEffect(() => {
@@ -16,8 +19,17 @@ const Header = () => {
     return (
         <HeaderWrapper>
             <NavMenu />
-            <HeaderLogo>로고부분이에요</HeaderLogo>
-            <UserWrapper>{token ? <LogoutButton /> : <LoginButton />}</UserWrapper>
+            <HeaderLogo onClick={() => router.push('/')}>로고부분이에요</HeaderLogo>
+            <UserWrapper>
+                {token ? (
+                    <>
+                        <LogoutButton />
+                        <MypageButton />
+                    </>
+                ) : (
+                    <LoginButton />
+                )}
+            </UserWrapper>
             {/*<UserWrapper>*/}
             {/*    <LoginButton />*/}
             {/*    <LogoutButton />*/}

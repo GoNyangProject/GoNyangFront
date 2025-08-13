@@ -8,8 +8,8 @@ import { TEST_TABLE_COLUMNS } from '../../constants/table-init';
 import DatePicker from '../../components/organisms/DatePicker';
 import { useDialogStore } from '../../store/dialogStore';
 import CalendarDialog from '../../components/organisms/dialog/CalendarDialog';
-import ImageViewer from '../../components/molecules/ImageViewer';
 import Card from '../../components/atom/Card';
+import { userStore } from '../../store/userStore';
 
 const SelectOption = [
     {
@@ -32,10 +32,14 @@ const TEST_TABLE_ROWS = [
 ];
 const Page = () => {
     const { selectedDialogs } = useDialogStore();
-
+    const { userData } = userStore();
     const handleClickBtn = () => {
         alert('버튼 클릭');
     };
+
+    useEffect(() => {
+        console.log(userData);
+    }, [userData]);
 
     const handleChangeOption = (option: SelectOption) => {
         console.log(option);
