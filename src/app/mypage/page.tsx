@@ -7,7 +7,8 @@ const Page = () => {
     useEffect(() => {
         console.log(userData);
     }, [userData]);
-    return <div>{userData.userId}</div>;
+
+    return <div></div>;
 };
 
 export default Page;

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import JoinInput from '../../../../components/atom/JoinInput';
 import Button from '../../../../components/atom/Button';
-import { MemberJoinBox } from '../../../../styles/pages/join/section';
+import { MemberJoinBox } from '../../../../styles/pages/join/Section';
 import { GenderButton, GenderButtonWrapper } from '../../../../styles/pages/join/GenderSelector';
 import { FormErrors, FormState, initialFormState } from '../../../../data/data-init';
 import { FormFieldsType } from '../../../../enum/FormFields';
