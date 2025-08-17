@@ -9,8 +9,8 @@ export enum MypageType {
 
 export enum MypageURL {
     MEMBER_INFO = '/mypage/member',
-    BOOKING_INFO = '/mypage/booking',
-    BOKKING_HISTORY = '/mypage/booking/history',
+    BOOKING_INFO = '/mypage/book',
+    BOKKING_HISTORY = '/mypage/book/history',
     SHOPPING_CART = '/mypage/cart',
     PURCHASE_HISOTRY = '/mypage/purchase',
     MY_INQUIRY = '/mypage/inquiry',

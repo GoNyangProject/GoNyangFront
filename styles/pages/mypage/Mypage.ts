@@ -13,7 +13,7 @@ export const MypageWrapper = styled.div`
 export const MenuBarWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    width: 300px;
+    width: 250px;
     height: 100%;
     gap: 15px;
     border-radius: 10px;
@@ -51,4 +51,36 @@ export const MenuBarBody = styled.div`
     text-align: center;
     gap: 15px;
     padding: 10px;
+`;
+
+export const BookWrapper = styled.div`
+    border: 1px solid bisque;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+`;
+
+export const MypageTitle = styled.div`
+    font-size: 35px;
+    width: 100%;
+`;
+
+export const BookMenuLogo = styled.div`
+    background: url('/images/test.png') no-repeat center center;
+    background-size: contain;
+    width: 20%;
+`;
+
+export const BookContent = styled.div`
+    display: flex;
+    width: 65%;
+    flex-direction: column;
+`;
+
+export const BookControlls = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: right;
 `;

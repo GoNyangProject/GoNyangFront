@@ -4,7 +4,7 @@ import { MenuBarBody, MenuBarHeader, MenuBarWrapper, MypageLogo, MypageUser, Myp
 import { userStore } from '../store/userStore';
 import Button from '../components/atom/Button';
 import { usePathname, useRouter } from 'next/navigation';
-import { MypageType } from '../enum/Mypage';
+import { MypageType, MypageURL } from '../enum/Mypage';
 
 export type MypageProps = {
     children: ReactNode;
@@ -18,22 +18,22 @@ const Mypage = ({ children }: MypageProps) => {
 
     const handleTabClick = (tab: MypageType) => {
         setActiveTab(tab);
-        alert('현재 개발중인 메뉴입니다.');
-        return '';
-        // switch (tab) {
-        //     case MypageType.MEMBER_INFO:
-        //         return router.push(MypageURL.MEMBER_INFO);
-        //     case MypageType.BOOKING_INFO:
-        //         return router.push(MypageURL.BOOKING_INFO);
-        //     case MypageType.BOKKING_HISTORY:
-        //         return router.push(MypageURL.BOKKING_HISTORY);
-        //     case MypageType.SHOPPING_CART:
-        //         return router.push(MypageURL.SHOPPING_CART);
-        //     case MypageType.PURCHASE_HISOTRY:
-        //         return router.push(MypageURL.PURCHASE_HISOTRY);
-        //     case MypageType.MY_INQUIRY:
-        //         return router.push(MypageURL.MY_INQUIRY);
-        // }
+        // alert('현재 개발중인 메뉴입니다.');
+        // return '';
+        switch (tab) {
+            case MypageType.MEMBER_INFO:
+                return router.push(MypageURL.MEMBER_INFO);
+            case MypageType.BOOKING_INFO:
+                return router.push(MypageURL.BOOKING_INFO);
+            case MypageType.BOKKING_HISTORY:
+                return router.push(MypageURL.BOKKING_HISTORY);
+            case MypageType.SHOPPING_CART:
+                return router.push(MypageURL.SHOPPING_CART);
+            case MypageType.PURCHASE_HISOTRY:
+                return router.push(MypageURL.PURCHASE_HISOTRY);
+            case MypageType.MY_INQUIRY:
+                return router.push(MypageURL.MY_INQUIRY);
+        }
     };
 
     useEffect(() => {
