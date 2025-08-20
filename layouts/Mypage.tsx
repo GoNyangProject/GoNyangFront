@@ -25,8 +25,6 @@ const Mypage = ({ children }: MypageProps) => {
                 return router.push(MypageURL.MEMBER_INFO);
             case MypageType.BOOKING_INFO:
                 return router.push(MypageURL.BOOKING_INFO);
-            case MypageType.BOKKING_HISTORY:
-                return router.push(MypageURL.BOKKING_HISTORY);
             case MypageType.SHOPPING_CART:
                 return router.push(MypageURL.SHOPPING_CART);
             case MypageType.PURCHASE_HISOTRY:
@@ -42,8 +40,6 @@ const Mypage = ({ children }: MypageProps) => {
                 return setActiveTab(MypageType.MEMBER_INFO);
             case MypageType.BOOKING_INFO:
                 return setActiveTab(MypageType.BOOKING_INFO);
-            case MypageType.BOKKING_HISTORY:
-                return setActiveTab(MypageType.BOKKING_HISTORY);
             case MypageType.SHOPPING_CART:
                 return setActiveTab(MypageType.SHOPPING_CART);
             case MypageType.PURCHASE_HISOTRY:
@@ -80,15 +76,6 @@ const Mypage = ({ children }: MypageProps) => {
                         onClick={() => handleTabClick(MypageType.BOOKING_INFO)}
                     >
                         예약 정보
-                    </Button>
-                    <Button
-                        backgroundColor={activeTab === MypageType.BOKKING_HISTORY ? '#a68967' : 'bisque'}
-                        border="none"
-                        color="black"
-                        fontSize="16px"
-                        onClick={() => handleTabClick(MypageType.BOKKING_HISTORY)}
-                    >
-                        예약 내역
                     </Button>
                     <Button
                         backgroundColor={activeTab === MypageType.SHOPPING_CART ? '#a68967' : 'bisque'}

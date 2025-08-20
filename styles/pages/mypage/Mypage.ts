@@ -5,7 +5,7 @@ export const MypageWrapper = styled.div`
     height: 100%;
     padding: 80px;
     justify-content: center;
-    align-items: center;
+    //align-items: center;
     overflow: hidden;
     flex-direction: row;
 `;
@@ -54,9 +54,32 @@ export const MenuBarBody = styled.div`
 `;
 
 export const BookWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    border: 1px solid bisque;
+    padding: 15px;
+    gap: 15px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.05);
+    margin: 10px 0;
+`;
+
+export const BookItemWrapper = styled.div`
     border: 1px solid bisque;
     border-radius: 5px;
-    padding: 10px;
+    padding: 15px;
+`;
+
+export const BookHeader = styled.div`
+    font-weight: 590;
+    font-size: 23px;
+`;
+
+export const BookMainWrapper = styled.div`
+    border: 1px solid bisque;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 10px;
     display: flex;
     flex-direction: row;
     gap: 15px;
