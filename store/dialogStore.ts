@@ -1,5 +1,6 @@
 import { DialogType } from '../enum/Dialog';
 import { create } from 'zustand';
+import { Book } from '../types/Common';
 
 export type Dialog = {
     dialogType: DialogType;
@@ -12,11 +13,14 @@ interface DialogState {
     closeDialog: (dialogType: DialogType) => void;
     selectedDate: Date | null;
     setSelectedDate: (selectedDate: Date) => void;
+    selectedBook: Book | null;
+    setSelectedBook: (selectedBook: Book) => void;
 }
 
 export const useDialogStore = create<DialogState>((set) => ({
     selectedDialogs: [],
     selectedDate: null,
+    selectedBook: null,
     openDialog: (dialogType) =>
         set((state) => ({
             selectedDialogs: [...state.selectedDialogs, { dialogType, isOpen: true }],
@@ -28,5 +32,9 @@ export const useDialogStore = create<DialogState>((set) => ({
     setSelectedDate: (date) =>
         set(() => ({
             selectedDate: date,
+        })),
+    setSelectedBook: (book) =>
+        set(() => ({
+            selectedBook: book,
         })),
 }));

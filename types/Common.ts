@@ -30,6 +30,7 @@ export type Response = {
 };
 
 export type Book = {
+    uuid: string;
     username: string;
     menuName: string;
     content: string;

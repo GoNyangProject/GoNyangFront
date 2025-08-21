@@ -65,9 +65,6 @@ export const BookWrapper = styled.div`
 `;
 
 export const BookItemWrapper = styled.div`
-    border: 1px solid bisque;
-    border-radius: 5px;
-    padding: 15px;
 `;
 
 export const BookHeader = styled.div`
@@ -100,6 +97,7 @@ export const BookContent = styled.div`
     display: flex;
     width: 65%;
     flex-direction: column;
+    align-items: flex-start;
 `;
 
 export const BookControlls = styled.div`

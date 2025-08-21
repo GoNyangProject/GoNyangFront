@@ -18,12 +18,16 @@ import { Book } from '../../../../types/Common';
 import Input from '../../../../components/atom/Input';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { useDialogStore } from '../../../../store/dialogStore';
+import { DialogType } from '../../../../enum/Dialog';
+import BookDetailDialog from '../../../../components/organisms/dialog/BookDetailDialog';
 
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
 
 const Page = () => {
     const { userData } = userStore();
     const [search, setSearch] = useState<string>('');
+    const { openDialog, setSelectedBook } = useDialogStore();
 
     const { data: book_data } = useSWR(
         {
@@ -60,6 +64,7 @@ const Page = () => {
             }
 
             acc[key].push({
+                uuid: book.uuid,
                 username: book.username,
                 menuName: book.menuName,
                 content: book.content,
@@ -74,16 +79,17 @@ const Page = () => {
         return Object.keys(groupedBooks).sort().reverse(); // 최근 월부터 정렬
     }, [groupedBooks]);
 
-    const handleClickDetails = () => {
-        alert('개발중입니다');
-        return;
+    const handleClickDetails = (book: Book) => {
+        setSelectedBook(book);
+        openDialog(DialogType.BOOK_DETAIL);
+        // alert('개발중입니다');
+        // return;
     };
 
     return (
         <div
             style={{
                 width: '40%',
-                height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
@@ -124,7 +130,7 @@ const Page = () => {
                 sortedMonths.map((monthKey) => (
                     <BookWrapper key={monthKey}>
                         <BookHeader>
-                            {monthKey.substring(0, 4)}년 {parseInt(monthKey.substring(5, 7))}월 예약
+                            {monthKey.substring(0, 4)}년 {monthKey.substring(5, 7)}월 예약
                         </BookHeader>
                         {groupedBooks[monthKey].map((book: Book, index: number) => (
                             <BookItemWrapper key={index}>
@@ -133,8 +139,8 @@ const Page = () => {
                                     <BookContent>
                                         <div>예약자명 : {book.username}</div>
                                         <div>예약일시 : {book.bookDate}</div>
-                                        <div>시술명 : {book.menuName}</div>
-                                        <div>내용 : {book.content}</div>
+                                        {/*<div>시술명 : {book.menuName}</div>*/}
+                                        {/*<div>내용 : {book.content}</div>*/}
                                     </BookContent>
                                     <BookControlls>
                                         <Button
@@ -143,7 +149,7 @@ const Page = () => {
                                                 textOverflow: 'ellipsis',
                                                 overflow: 'hidden',
                                             }}
-                                            onClick={handleClickDetails}
+                                            onClick={() => handleClickDetails(book)}
                                         >
                                             상세보기
                                         </Button>
@@ -154,6 +160,7 @@ const Page = () => {
                     </BookWrapper>
                 ))
             )}
+            <BookDetailDialog />
         </div>
     );
 };

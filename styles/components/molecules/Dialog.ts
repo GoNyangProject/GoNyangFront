@@ -2,10 +2,8 @@ import styled from 'styled-components';
 
 export const DialogWrapper = styled.div<{ $isOpen?: boolean }>`
     display: ${(props) => (props.$isOpen ? 'flex' : 'none')};
-    width: inherit;
-    height: inherit;
     border: 3px solid #504538;
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -14,6 +12,8 @@ export const DialogWrapper = styled.div<{ $isOpen?: boolean }>`
     align-items: center;
     border-radius: 20px;
     background-color: #504538;
+    width: inherit;
+    height: inherit;
 `;
 export const DialogInner = styled.div<{ $width?: string; $height: string }>`
     width: ${(props) => props.$width};
@@ -28,7 +28,7 @@ export const DialogHeader = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #504538;
+    background-color: bisque;
     border-radius: 20px 20px 0 0;
     font-size: 40px;
     font-weight: 500;
@@ -50,7 +50,7 @@ export const DialogFooter = styled.div`
     justify-content: right;
     align-items: center;
     padding: 20px;
-    background-color: #b7a99a;
+    background-color: bisque;
     border-radius: 0 0 20px 20px;
     gap: 20px;
 `;
