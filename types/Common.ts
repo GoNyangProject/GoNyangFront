@@ -36,3 +36,14 @@ export type Book = {
     content: string;
     bookDate: string;
 };
+
+export type PetApiResponse = {
+    petId: number;
+    petName?: string;
+    catBreed?: string;
+    petAge?: number;
+    petGender?: string;
+    catNotes?: string;
+    petImagePath?: string;
+};
+
