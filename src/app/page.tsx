@@ -37,10 +37,6 @@ const Page = () => {
         alert('버튼 클릭');
     };
 
-    useEffect(() => {
-        console.log(userData);
-    }, [userData]);
-
     const handleChangeOption = (option: SelectOption) => {
         console.log(option);
     };

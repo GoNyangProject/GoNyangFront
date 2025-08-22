@@ -103,7 +103,7 @@ const Page = () => {
         setCurrentPetIndex(0);
         setPetValidationErrors({});
         setIsPetEditMode(false);
-    }, [JSON.stringify(user_account)]);
+    }, [user_account]);
 
     // 프로필 핸들러들
     const handleSettingClick = (field: string) => setEditingField(field);
@@ -299,7 +299,16 @@ const Page = () => {
     };
 
     return (
-        <>
+        <div
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                padding: '15px',
+                gap: '20px',
+                width: '40%',
+                alignItems: 'center',
+            }}
+        >
             <AccountBox>
                 <AccountHeader>
                     <AccountTitle>내 프로필</AccountTitle>
@@ -399,7 +408,7 @@ const Page = () => {
                     </>
                 )}
             </AccountBox>
-        </>
+        </div>
     );
 };
 

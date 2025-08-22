@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const AccountBox = styled.section`
     width: 100%;
     max-width: 800px;
-    margin: 40px auto;
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;

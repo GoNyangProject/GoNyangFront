@@ -36,15 +36,15 @@ const Mypage = ({ children }: MypageProps) => {
 
     useEffect(() => {
         switch (pathname) {
-            case MypageType.MEMBER_INFO:
+            case MypageURL.MEMBER_INFO:
                 return setActiveTab(MypageType.MEMBER_INFO);
-            case MypageType.BOOKING_INFO:
+            case MypageURL.BOOKING_INFO:
                 return setActiveTab(MypageType.BOOKING_INFO);
-            case MypageType.SHOPPING_CART:
+            case MypageURL.SHOPPING_CART:
                 return setActiveTab(MypageType.SHOPPING_CART);
-            case MypageType.PURCHASE_HISOTRY:
+            case MypageURL.PURCHASE_HISOTRY:
                 return setActiveTab(MypageType.PURCHASE_HISOTRY);
-            case MypageType.MY_INQUIRY:
+            case MypageURL.MY_INQUIRY:
                 return setActiveTab(MypageType.MY_INQUIRY);
             default:
                 break;

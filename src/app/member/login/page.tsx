@@ -27,15 +27,10 @@ const Page = () => {
             '/member/login',
             payload,
             (response) => {
-                alert('탔냐?');
-                console.log(response);
                 if (response.errorCode == '0000') {
                     const userData: User = response.result as User;
                     setUserData(userData);
                     router.push('/');
-                } else {
-                    alert('아이디 또는 비밀번호가 일치하지 않습니다.');
-                    router.push('/member/login');
                 }
             },
             false,

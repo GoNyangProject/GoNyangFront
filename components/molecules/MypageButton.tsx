@@ -2,11 +2,12 @@ import React from 'react';
 import { MypageWrapper } from '../../styles/components/atom/Header';
 import Button from '../atom/Button';
 import { useRouter } from 'next/navigation';
+import { MypageURL } from '../../enum/Mypage';
 
 const MypageButton = () => {
     const router = useRouter();
     const handleClickMypage = () => {
-        router.push('/mypage');
+        router.push(MypageURL.MEMBER_INFO);
     };
     return (
         <MypageWrapper>

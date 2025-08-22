@@ -32,6 +32,10 @@ axiosInstance.interceptors.response.use(
             window.location.href = '/member/login';
             return;
         }
+        if (errorCode === 401) {
+            alert('아이디 혹은 비밀번호가 잘못되었습니다.');
+            return;
+        }
     },
 );
 

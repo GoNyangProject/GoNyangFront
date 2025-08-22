@@ -32,6 +32,7 @@ const _fetch = async (param: Request, incomingHeaders: Headers) => {
             };
         }
         const errorJson = await response.json();
+        console.log(errorJson);
         throw {
             message: errorJson.message || response.statusText,
             status: response.status,
@@ -67,6 +68,7 @@ export async function POST(req: NextRequest) {
             {
                 type: ResponseType.FAIL,
                 message: error?.message || 'Unknown Error',
+                errorCode: error?.errorCode,
             },
             {
                 status: error?.status || 400,

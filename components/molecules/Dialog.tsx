@@ -1,4 +1,4 @@
-import React, { CSSProperties, ReactNode, useEffect } from 'react';
+import React, { CSSProperties, ReactNode } from 'react';
 import { DialogType } from '../../enum/Dialog';
 import { useDialogStore } from '../../store/dialogStore';
 import Button from '../atom/Button';
@@ -49,9 +49,9 @@ const Dialog = ({
                             }}
                             width="110px"
                             height="26px"
-                            border="none"
                             padding="0"
-                            color="#FFFFFF"
+                            border="1px solid bisque"
+                            color="black"
                             borderRadius="0"
                             fontSize="20px"
                             onClick={onClickConfirm}
@@ -68,9 +68,9 @@ const Dialog = ({
                         }}
                         width="80px"
                         height="26px"
-                        border="none"
-                        color="#FFFFFF"
+                        color="black"
                         borderRadius="0"
+                        border="1px solid bisque"
                         fontSize="20px"
                         onClick={onClickCancel}
                     >

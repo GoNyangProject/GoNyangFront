@@ -29,7 +29,7 @@ export const Value = styled.span`
 `;
 
 export const ActionButton = styled.button`
-    background-color: #f5f5f5;
+    background-color: bisque;
     border: 1px solid #ddd;
     border-radius: 6px;
     padding: 4px 12px;

@@ -7,7 +7,7 @@ export enum MypageType {
 }
 
 export enum MypageURL {
-    MEMBER_INFO = '/mypage/member',
+    MEMBER_INFO = '/mypage/account',
     BOOKING_INFO = '/mypage/book',
     SHOPPING_CART = '/mypage/cart',
     PURCHASE_HISOTRY = '/mypage/purchase',

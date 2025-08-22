@@ -160,7 +160,6 @@ const Page = () => {
                 width="100%"
                 margin="0 auto"
                 padding="20px"
-                color="#fff"
                 fontSize="18px"
                 style={{
                     maxWidth: '400px',
