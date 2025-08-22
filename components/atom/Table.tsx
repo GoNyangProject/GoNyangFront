@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { TableWrapper, Tbody, Td, Th, Tr } from '../../styles/components/atom/Table';
 import Textarea from './Textarea';
 import Checkbox from './Checkbox';
-import { useCheckedListStore } from '../../stores/checkedListStore';
+import { useCheckedListStore } from '../../store/checkedListStore';
 
 type TableColumn = { key: string; value: string };
 type TableProps = {

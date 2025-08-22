@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect } from 'react';
+import React from 'react';
 import Button from '../../components/atom/Button';
 import Select from '../../components/atom/Select';
 import type { SelectOption } from '../../types/Common';
