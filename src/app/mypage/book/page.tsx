@@ -31,7 +31,7 @@ const Page = () => {
 
     const { data: book_data } = useSWR(
         {
-            url: `/book?memberId=${userData.memberId}`,
+            url: `/mypage/book?memberId=${userData.memberId}`,
             method: 'GET',
         },
         fetcher,
