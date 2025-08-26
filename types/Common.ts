@@ -37,6 +37,15 @@ export type Book = {
     bookDate: string;
 };
 
+export type Menu = {
+    id: number;
+    menuName: string;
+    bookCount: number;
+    content: string;
+    price: number;
+    score: number;
+};
+
 export type PetApiResponse = {
     petId: number;
     petName?: string;
@@ -46,4 +55,3 @@ export type PetApiResponse = {
     catNotes?: string;
     petImagePath?: string;
 };
-
