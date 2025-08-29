@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { Menu, Menu as MenuComponent } from '../../../types/Common';
 import { MenuType } from '../../../enum/Menu';
 import Button from '../../../components/atom/Button';
+import DatePicker from '../../../components/organisms/DatePicker';
+import CalendarDialog from '../../../components/organisms/dialog/CalendarDialog';
 
 interface MenuProps {
     setCurrentTab: React.Dispatch<React.SetStateAction<MenuType>>;
@@ -24,7 +26,7 @@ const Date = ({ selectedMenu, setCurrentTab }: MenuProps) => {
 
     return (
         <div>
-            <div>날짜선택창</div>
+            <div>선택한 시술</div>
             <div>시술명 : {selectedMenu?.menuName}</div>
             <div>시술내용 : {selectedMenu?.content}</div>
             <div>예약횟수 : {selectedMenu?.bookCount}</div>
@@ -34,6 +36,10 @@ const Date = ({ selectedMenu, setCurrentTab }: MenuProps) => {
                 <Button onClick={handleClickPrevious}>이전</Button>
                 <Button onClick={handleClickNext}>다음</Button>
             </div>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <DatePicker />
+            </div>
+            <CalendarDialog />
         </div>
     );
 };
