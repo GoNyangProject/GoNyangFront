@@ -32,7 +32,7 @@ const Page = () => {
             <Card
                 style={{
                     margin: '10px',
-                    width: '50%',
+                    width: '30%',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',

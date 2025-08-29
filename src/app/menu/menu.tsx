@@ -1,5 +1,5 @@
-import React from 'react';
-import { MenuContent, MenuMainWrapper, MenuTitle, MenuWrapper } from '../../../styles/pages/menu/Menu';
+import React, { useEffect } from 'react';
+import { ButtonWrapper, MenuContent, MenuImg, MenuMainWrapper, MenuName, MenuTitle, MenuWrapper } from '../../../styles/pages/menu/Menu';
 import Button from '../../../components/atom/Button';
 import { Menu as MenuComponent } from '../../../types/Common';
 import { MenuType } from '../../../enum/Menu';
@@ -19,13 +19,25 @@ const Menu = ({ data, setCurrentTab, setSelectedMenu }: MenuProps) => {
         }
     };
 
+    useEffect(() => {
+        console.log(data);
+    }, [data]);
+
     return (
         <MenuWrapper>
+            <MenuTitle>† 오늘의 뽀송 메뉴 ♤</MenuTitle>
             {data?.map((menu: MenuComponent, index: number) => (
                 <MenuMainWrapper key={index}>
-                    <MenuTitle>{menu.menuName}</MenuTitle>
-                    <MenuContent>{menu.content}</MenuContent>
-                    <Button onClick={() => handleClickBook(menu.id)}>예약하기</Button>
+                    <MenuImg image={menu.id} />
+                    <div style={{ width: '80%' }}>
+                        <MenuName>{menu.menuName}</MenuName>
+                        <MenuContent>{menu.content}</MenuContent>
+                    </div>
+                    <ButtonWrapper>
+                        <Button style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }} onClick={() => handleClickBook(menu.id)}>
+                            예약하기
+                        </Button>
+                    </ButtonWrapper>
                 </MenuMainWrapper>
             ))}
         </MenuWrapper>
