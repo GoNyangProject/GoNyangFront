@@ -5,7 +5,7 @@ import useSWR from 'swr';
 import axiosInstance from '../../../libs/axios';
 import { MenuType } from '../../../enum/Menu';
 import Menu from '@/app/menu/menu';
-import Date from '@/app/menu/date';
+import BookMenu from '@/app/menu/date';
 import PaymentConfirm from '@/app/menu/payment_confirm';
 import PaymentComplete from '@/app/menu/payment_complete';
 import { Menu as MenuComponent } from '../../../types/Common';
@@ -32,7 +32,7 @@ const Page = () => {
             <Card
                 style={{
                     margin: '10px',
-                    width: '30%',
+                    width: 'inherit',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -43,7 +43,7 @@ const Page = () => {
                         case MenuType.MENU:
                             return <Menu data={menu_data} setCurrentTab={setCurrentTab} setSelectedMenu={setSelectedMenu} />;
                         case MenuType.DATE:
-                            return <Date selectedMenu={selectedMenu} setCurrentTab={setCurrentTab} setSelectedMenu={setSelectedMenu} />;
+                            return <BookMenu selectedMenu={selectedMenu} setCurrentTab={setCurrentTab} setSelectedMenu={setSelectedMenu} />;
                         case MenuType.PAY_CONFIRM:
                             return <PaymentConfirm selectedMenu={selectedMenu} setCurrentTab={setCurrentTab} setSelectedMenu={setSelectedMenu} />;
                         case MenuType.PAY_COMPLETE:

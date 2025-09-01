@@ -35,6 +35,7 @@ export type Book = {
     menuName: string;
     content: string;
     bookDate: string;
+    price: number;
 };
 
 export type Menu = {

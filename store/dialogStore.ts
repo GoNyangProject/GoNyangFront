@@ -19,7 +19,7 @@ interface DialogState {
 
 export const useDialogStore = create<DialogState>((set) => ({
     selectedDialogs: [],
-    selectedDate: null,
+    selectedDate: new Date(),
     selectedBook: null,
     openDialog: (dialogType) =>
         set((state) => ({
