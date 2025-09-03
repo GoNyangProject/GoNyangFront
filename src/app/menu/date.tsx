@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect, useState } from 'react';
 import { Menu, Menu as MenuComponent } from '../../../types/Common';
 import { MenuType } from '../../../enum/Menu';
@@ -8,6 +9,7 @@ import { DateWrapper, DetailsRow, Price, Rating, ServiceCard, ServiceDescription
 import { useDialogStore } from '../../../store/dialogStore';
 import useSWR from 'swr';
 import axiosInstance from '../../../libs/axios';
+import { formatMonth } from '@/utils/validations/formValidators';
 
 interface MenuProps {
     setCurrentTab: React.Dispatch<React.SetStateAction<MenuType>>;
@@ -17,22 +19,16 @@ interface MenuProps {
 
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
 
+const today = formatMonth(new Date());
 const BookMenu = ({ selectedMenu, setCurrentTab }: MenuProps) => {
     const { selectedDate } = useDialogStore();
-    const [currentDate, setCurrentDate] = useState<string>();
+    const [currentDate, setCurrentDate] = useState<Date>(today as Date);
     useEffect(() => {
         if (selectedDate) {
-            console.log(selectedDate);
-            const year = selectedDate.getFullYear();
-            const month = selectedDate.getMonth() + 1;
-            const format_month = month < 10 ? `0${month}` : `${month}`;
-            setCurrentDate(`${year}-${format_month}`);
+            const date = formatMonth(selectedDate);
+            setCurrentDate(date as Date);
         }
     }, [selectedDate]);
-
-    useEffect(() => {
-        console.log(currentDate);
-    }, [currentDate]);
 
     const { data: book_data } = useSWR(
         {
@@ -94,7 +90,7 @@ const BookMenu = ({ selectedMenu, setCurrentTab }: MenuProps) => {
                 </DetailsRow>
             </ServiceCard>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <DatePicker />
+                <DatePicker bookData={book_data} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
                 <Button onClick={handleClickPrevious}>이전</Button>

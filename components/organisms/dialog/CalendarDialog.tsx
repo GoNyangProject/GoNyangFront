@@ -12,6 +12,7 @@ import test_img from '../../../public/images/test.png';
 import useSWR from 'swr';
 import axiosInstance from '../../../libs/axios';
 import { Post } from '../../../service/crud';
+import { formatDate } from '@/utils/validations/formValidators';
 
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data);
 
@@ -35,13 +36,7 @@ const CalendarDialog = () => {
 
     useEffect(() => {
         const payload = {};
-        Post(
-            '/test',
-            payload,
-            (response) => {
-            },
-            false,
-        );
+        Post('/test', payload, (response) => {}, false);
     }, []);
 
     const handleCancelBook = () => {};
@@ -102,7 +97,7 @@ const CalendarDialog = () => {
     return (
         <Dialog
             type={DialogType.CALENDAR}
-            title={`${selectedDate} 일정`}
+            title={`${formatDate(selectedDate)} 일정`}
             width="50vw"
             height="70vh"
             style={{ backgroundColor: 'white' }}
