@@ -31,3 +31,22 @@ export const BOOKCOLUMNS: Array<any> = [
         value: '예약날짜',
     },
 ];
+
+export const INQUIRY_COLUMNS: Array<{ key: string; value: string }> = [
+    {
+        key: 'title',
+        value: '제목',
+    },
+    {
+        key: 'inquiryNumber',
+        value: '문의 접수 번호',
+    },
+    {
+        key: 'createdAt',
+        value: '문의 작성일',
+    },
+    {
+        key: 'inquiryStatus',
+        value: '상태',
+    },
+];

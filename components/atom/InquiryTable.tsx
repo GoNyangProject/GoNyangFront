@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { TableWrapper, Tbody, Td, Th, Tr } from '../../styles/components/atom/Table';
+import { TableWrapper, Tbody, Td, Th, Tr } from '../../styles/components/atom/InquiryTable';
 import Textarea from './Textarea';
 import Checkbox from './Checkbox';
 import { useCheckedListStore } from '../../store/checkedListStore';
@@ -115,19 +115,22 @@ const Table = ({
                                 content = (
                                     <Textarea
                                         ref={textareaRef}
-                                        resize={true}
+                                        resize={false}
                                         readOnly={readOnly}
                                         style={{
-                                            textAlign: 'z',
+                                            width: '100%',
                                             border: '0',
-                                            color: '#808080',
-                                            fontWeight: '300',
-                                            boxSizing: 'border-box',
+                                            padding: 0,
+                                            margin: 0,
+                                            fontSize: '14px',
+                                            lineHeight: '3',
+                                            color: '#000',
+                                            fontWeight: '400',
                                             backgroundColor: 'transparent',
+                                            boxSizing: 'border-box',
                                             overflow: 'hidden',
                                         }}
                                         value={rowsValue[rowIndex] ? rowsValue[rowIndex][key] : ''}
-                                        onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => handleRowsValueChange(event, rowIndex, key)}
                                     />
                                 );
                             }

@@ -1,7 +1,7 @@
 'use client';
 import { JSX, MouseEvent, useMemo } from 'react';
-import { Page, PageNumber, PaginationWrapper } from '../../../toss-front/styles/components/molecules/Pagination';
 import Button from '../atom/Button';
+import { Page, PageNumber, PaginationWrapper } from '../../styles/components/molecules/Pagination';
 
 type PaginationProps = {
     currentPage: number; // 현재 페이지 번호

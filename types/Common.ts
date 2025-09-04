@@ -1,5 +1,6 @@
 import { Method } from 'axios';
 import { RequestType, ResponseType } from '../enum/Common';
+import { InquiryStatus } from '../enum/InquiryStatus';
 
 export type SelectOption = {
     value: string;
@@ -47,3 +48,26 @@ export type PetApiResponse = {
     petImagePath?: string;
 };
 
+export type InquiryResponse = {
+    title: string;
+    inquiryNumber: string;
+    createdAt: string;
+    status: 'SUCCESS' | 'PENDING';
+};
+export type InquiryDetailResponse = {
+    answerUserId: string;
+    answer: string;
+    answeredAt: string;
+    content: string;
+    title: string;
+    inquiryNumber: string;
+    createdAt: string;
+    status: 'SUCCESS' | 'PENDING';
+};
+
+export type InquiryTableRow = {
+    title: string;
+    inquiryNumber: string;
+    createdAt: string;
+    inquiryStatus: InquiryStatus;
+};
