@@ -69,7 +69,6 @@ const Page = () => {
             >
                 하응 기모찌 데스네 카드입니다
             </Card>
-            <CalendarDialog />
         </div>
     );
 };

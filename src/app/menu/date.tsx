@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Menu, Menu as MenuComponent } from '../../../types/Common';
+import { BookInfo, Menu } from '../../../types/Common';
 import { MenuType } from '../../../enum/Menu';
 import Button from '../../../components/atom/Button';
 import DatePicker from '../../../components/organisms/DatePicker';
@@ -14,13 +14,13 @@ import { formatMonth } from '@/utils/validations/formValidators';
 interface MenuProps {
     setCurrentTab: React.Dispatch<React.SetStateAction<MenuType>>;
     selectedMenu: Menu | undefined;
-    setSelectedMenu: React.Dispatch<React.SetStateAction<MenuComponent | undefined>>;
+    setBookInfo: React.Dispatch<React.SetStateAction<BookInfo | undefined>>;
 }
 
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
 
 const today = formatMonth(new Date());
-const BookMenu = ({ selectedMenu, setCurrentTab }: MenuProps) => {
+const BookMenu = ({ selectedMenu, setCurrentTab, setBookInfo }: MenuProps) => {
     const { selectedDate } = useDialogStore();
     const [currentDate, setCurrentDate] = useState<Date>(today as Date);
     useEffect(() => {
@@ -32,7 +32,7 @@ const BookMenu = ({ selectedMenu, setCurrentTab }: MenuProps) => {
 
     const { data: book_data } = useSWR(
         {
-            url: `/menu/date?date=${currentDate}`,
+            url: `/menu/month?date=${currentDate}`,
             method: 'GET',
         },
         fetcher,
@@ -96,7 +96,7 @@ const BookMenu = ({ selectedMenu, setCurrentTab }: MenuProps) => {
                 <Button onClick={handleClickPrevious}>이전</Button>
                 <Button onClick={handleClickNext}>다음</Button>
             </div>
-            <CalendarDialog />
+            <CalendarDialog bookData={book_data} setCurrentTab={setCurrentTab} selectedMenu={selectedMenu} setBookInfo={setBookInfo} />
         </DateWrapper>
     );
 };

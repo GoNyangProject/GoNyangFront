@@ -19,10 +19,6 @@ const Menu = ({ data, setCurrentTab, setSelectedMenu }: MenuProps) => {
         }
     };
 
-    useEffect(() => {
-        console.log(data);
-    }, [data]);
-
     return (
         <MenuWrapper>
             <MenuTitle>† 오늘의 뽀송 메뉴 ♤</MenuTitle>

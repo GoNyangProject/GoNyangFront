@@ -32,10 +32,6 @@ const DatePicker = ({ bookData }: dateProps) => {
         });
     }, [bookData]);
 
-    useEffect(() => {
-        console.log(bookedList);
-    }, [bookedList]);
-
     const handleClickMonth = ({ activeStartDate, view }) => {
         if (view === 'month') {
             setSelectedDate(activeStartDate);
@@ -50,12 +46,12 @@ const DatePicker = ({ bookData }: dateProps) => {
             prev2Label={null}
             onClickDay={onClickDay}
             onActiveStartDateChange={handleClickMonth}
-            tileDisabled={({ date, view }) => {
-                if (view === 'month') {
-                    return bookedList.some((bookedDate) => bookedDate.toDateString() === date.toDateString());
-                }
-                return false; // 다른 뷰에서는 비활성화하지 않음
-            }}
+            // tileDisabled={({ date, view }) => {
+            //     if (view === 'month') {
+            //         return bookedList.some((bookedDate) => bookedDate.toDateString() === date.toDateString());
+            //     }
+            //     return false; // 다른 뷰에서는 비활성화하지 않음
+            // }}
         />
     );
 };

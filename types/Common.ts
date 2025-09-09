@@ -1,5 +1,6 @@
 import { Method } from 'axios';
 import { RequestType, ResponseType } from '../enum/Common';
+import { User } from '../store/userStore';
 
 export type SelectOption = {
     value: string;
@@ -55,4 +56,10 @@ export type PetApiResponse = {
     petGender?: string;
     catNotes?: string;
     petImagePath?: string;
+};
+
+export type BookInfo = {
+    menu: Menu;
+    userData: User;
+    bookTime: string;
 };

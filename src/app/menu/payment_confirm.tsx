@@ -1,15 +1,14 @@
 import React from 'react';
-import { Menu, Menu as MenuComponent } from '../../../types/Common';
+import { BookInfo } from '../../../types/Common';
 import { MenuType } from '../../../enum/Menu';
 import Button from '../../../components/atom/Button';
 
 interface MenuProps {
-    selectedMenu: Menu | undefined;
     setCurrentTab: React.Dispatch<React.SetStateAction<MenuType>>;
-    setSelectedMenu: React.Dispatch<React.SetStateAction<MenuComponent | undefined>>;
+    bookInfo: BookInfo | undefined;
 }
 
-const PaymentConfirm = ({ selectedMenu, setCurrentTab, setSelectedMenu }: MenuProps) => {
+const PaymentConfirm = ({ bookInfo, setCurrentTab }: MenuProps) => {
     const handleClickPrevious = () => {
         setCurrentTab(MenuType.DATE);
     };
@@ -20,11 +19,18 @@ const PaymentConfirm = ({ selectedMenu, setCurrentTab, setSelectedMenu }: MenuPr
     };
 
     return (
-        <div>
+        <div style={{ padding: '20px', gap: '200px' }}>
             <div>결제확인창</div>
-            <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-                <Button onClick={handleClickPrevious}>이전</Button>
-                <Button onClick={handleClickNext}>결제</Button>
+            <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                <div>예약자명 : {bookInfo?.userData.username}</div>
+                <div>예약 시간 : {bookInfo?.bookTime}</div>
+                <div>시술명 : {bookInfo?.menu.menuName}</div>
+                <div>내용 : {bookInfo?.menu.content}</div>
+                <div>가격 : {bookInfo?.menu.price}</div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                    <Button onClick={handleClickPrevious}>이전</Button>
+                    <Button onClick={handleClickNext}>결제</Button>
+                </div>
             </div>
         </div>
     );

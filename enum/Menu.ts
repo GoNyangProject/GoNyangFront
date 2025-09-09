@@ -5,12 +5,10 @@ export enum MenuType {
     PAY_COMPLETE = 'PAYMENT COMPLETE',
 }
 
-export enum MenuOrder {
-    BASIC_GROOMING = 'Basic_Grooming',
-    BATH_PACKAGE = 'Bath_Package',
-    NAIL_BRUSHING = 'Nail_and_Brushing',
-    PREMIUM_PACKAGE = 'Premium_Package',
-    SENIOR_CARE = 'Senior_Care',
-    SKINCARE = 'Skin_Care',
-    SPECIALTY_GROOMING = 'Specialty_Grooming',
+export enum BookingTimes {
+    MORNING = '10:00',
+    LUNCH = '12:00',
+    AFTERNOON_EARLY = '14:00',
+    AFTERNOON_LATE = '16:00',
+    EVENING = '18:00',
 }

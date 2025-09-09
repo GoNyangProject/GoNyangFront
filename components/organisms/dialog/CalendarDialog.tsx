@@ -1,109 +1,66 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Dialog from '../../molecules/Dialog';
 import { DialogType } from '../../../enum/Dialog';
 import { useDialogStore } from '../../../store/dialogStore';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import Button from '../../atom/Button';
-import ImageViewer from '../../molecules/ImageViewer';
-import { CalendarContent } from '../../../styles/components/organism/DatePicker';
-import Textarea from '../../atom/Textarea';
-import test_img from '../../../public/images/test.png';
-import useSWR from 'swr';
 import axiosInstance from '../../../libs/axios';
-import { Post } from '../../../service/crud';
 import { formatDate } from '@/utils/validations/formValidators';
+import { Book, BookInfo, Menu } from '../../../types/Common';
+import { BookingTimes, MenuType } from '../../../enum/Menu';
+import Button from '../../atom/Button';
+import { userStore } from '../../../store/userStore';
 
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data);
 
-const CalendarDialog = () => {
-    const { selectedDate, closeDialog, setSelectedDate } = useDialogStore();
-    const [cancelContent, setCancelContent] = useState<string>('');
-    const [currentPage, setCurrentPage] = useState<number>(0);
+interface bookProps {
+    bookData: Book[];
+    setCurrentTab: React.Dispatch<React.SetStateAction<MenuType>>;
+    selectedMenu: Menu | undefined;
+    setBookInfo: React.Dispatch<React.SetStateAction<BookInfo | undefined>>;
+}
 
-    const { data: data } = useSWR(
-        {
-            url: '/test',
-            method: 'GET',
-        },
-        fetcher,
-        {
-            revalidateOnFocus: true,
-            revalidateOnReconnect: true,
-            fallbackData: '',
-        },
-    );
-
+const CalendarDialog = ({ bookData, setCurrentTab, selectedMenu, setBookInfo }: bookProps) => {
     useEffect(() => {
-        const payload = {};
-        Post('/test', payload, (response) => {}, false);
+        closeDialog(DialogType.CALENDAR);
     }, []);
 
-    const handleCancelBook = () => {};
+    const { selectedDate, closeDialog } = useDialogStore();
+    const [selectedTime, setSelectedTime] = useState<string>();
+    const { userData } = userStore();
+    const currentBookData = useMemo(() => {
+        if (!bookData) {
+            return [];
+        }
+        return bookData.filter((book: Book) => formatDate(new Date(book.bookDate)) === formatDate(selectedDate));
+    }, [bookData, selectedDate]);
+
+    const handlePayBook = () => {
+        if (!selectedTime) {
+            alert('예약 시간을 선택해 주세요');
+            return;
+        }
+        const bookInfo = {
+            menu: selectedMenu!,
+            userData: userData,
+            bookTime: selectedTime!,
+        };
+        setBookInfo(bookInfo);
+        setCurrentTab(MenuType.PAY_CONFIRM);
+    };
     const handleClickCancel = () => {
+        setSelectedTime('');
         closeDialog(DialogType.CALENDAR);
-    };
-
-    const test_data = [
-        {
-            seq: 1,
-            date: selectedDate,
-            value: '테스트1',
-        },
-        {
-            seq: 2,
-            date: selectedDate,
-            value: '테스트2',
-        },
-        {
-            seq: 3,
-            date: selectedDate,
-            value: '테스트3',
-        },
-        {
-            seq: 4,
-            date: selectedDate,
-            value: '테스트4',
-        },
-        {
-            seq: 5,
-            date: selectedDate,
-            value: '테스트5',
-        },
-    ];
-
-    const handleClickPreviousBook = () => {
-        const page = currentPage - 1;
-        if (page < 0) {
-            setCurrentPage(test_data.length - 1);
-        } else {
-            setCurrentPage(page);
-        }
-    };
-    const handleClickNextBook = () => {
-        const page = currentPage + 1;
-        if (test_data.length === page) {
-            setCurrentPage(0);
-        } else {
-            setCurrentPage(page);
-        }
-    };
-
-    const handleChangeCacelBook = (event: ChangeEvent<HTMLTextAreaElement>) => {
-        console.log(event.target.value);
-        setCancelContent(event.target.value);
     };
 
     return (
         <Dialog
             type={DialogType.CALENDAR}
-            title={`${formatDate(selectedDate)} 일정`}
+            title={`${formatDate(selectedDate)} 예약`}
             width="50vw"
             height="70vh"
             style={{ backgroundColor: 'white' }}
-            onClickConfirm={handleCancelBook}
+            onClickConfirm={handlePayBook}
             onClickCancel={handleClickCancel}
-            confirmText={'예약 취소'}
+            confirmText={'결제하기'}
             showBtn={true}
         >
             <div
@@ -117,35 +74,54 @@ const CalendarDialog = () => {
                     alignItems: 'center',
                 }}
             >
-                <Button onClick={handleClickPreviousBook}>
-                    <FontAwesomeIcon icon={faChevronLeft} />
-                </Button>
-                <div style={{ width: '100%', height: '100%' }}>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        width: '100%',
+                        height: '100%',
+                        padding: '0 10px',
+                        alignItems: 'center',
+                    }}
+                >
                     <div
                         style={{
+                            width: '100%',
+                            height: '100%',
                             display: 'flex',
                             flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            width: '100%',
-                            height: '80%',
-                            backgroundColor: 'lime',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            gap: '10px',
                         }}
                     >
-                        <ImageViewer src={test_img} alt={'test'} width={'40%'} height={'50%'} borderRadius={'10px'} />
-                        <CalendarContent>{data[currentPage]}</CalendarContent>
-                    </div>
-                    <div>
-                        <Textarea
-                            style={{ fontSize: '15px', height: '90px' }}
-                            value={cancelContent}
-                            onChange={handleChangeCacelBook}
-                            placeholder={'취소 사유'}
-                        ></Textarea>
+                        {Object.values(BookingTimes).map((time) => {
+                            const timeHour = parseInt(time.split(':')[0]);
+
+                            const isBooked = currentBookData.find((book: Book) => new Date(book.bookDate).getHours() === timeHour);
+
+                            return (
+                                <Button
+                                    key={time}
+                                    onClick={() => setSelectedTime(time)}
+                                    style={{
+                                        padding: '10px 20px',
+                                        border: 'none',
+                                        borderRadius: '5px',
+                                        cursor: 'pointer',
+                                        fontSize: '16px',
+                                        backgroundColor: selectedTime === time ? '#D2B48C' : isBooked ? '#CCCCCC' : 'bisque',
+                                        color: isBooked ? '#666666' : 'black',
+                                        pointerEvents: isBooked ? 'none' : 'auto',
+                                    }}
+                                >
+                                    {time}
+                                </Button>
+                            );
+                        })}
                     </div>
                 </div>
-                <Button onClick={handleClickNextBook}>
-                    <FontAwesomeIcon icon={faChevronRight} />
-                </Button>
             </div>
         </Dialog>
     );
