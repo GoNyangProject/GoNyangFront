@@ -1,7 +1,8 @@
 import React from 'react';
 import { BookInfo } from '../../../types/Common';
 import { MenuType } from '../../../enum/Menu';
-import Button from '../../../components/atom/Button';
+import { Card, InfoItem, InfoLabel, PaymentWrapper, PriceItem, Title } from '../../../styles/pages/menu/Payment';
+import { ButtonContainer, NextButton, PreviousButton } from '../../../styles/pages/menu/Menu';
 
 interface MenuProps {
     setCurrentTab: React.Dispatch<React.SetStateAction<MenuType>>;
@@ -19,20 +20,39 @@ const PaymentConfirm = ({ bookInfo, setCurrentTab }: MenuProps) => {
     };
 
     return (
-        <div style={{ padding: '20px', gap: '200px' }}>
-            <div>결제확인창</div>
-            <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-                <div>예약자명 : {bookInfo?.userData.username}</div>
-                <div>예약 시간 : {bookInfo?.bookTime}</div>
-                <div>시술명 : {bookInfo?.menu.menuName}</div>
-                <div>내용 : {bookInfo?.menu.content}</div>
-                <div>가격 : {bookInfo?.menu.price}</div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                    <Button onClick={handleClickPrevious}>이전</Button>
-                    <Button onClick={handleClickNext}>결제</Button>
+        <PaymentWrapper>
+            <Card>
+                <Title>예약 확인 및 결제</Title>
+                <div>
+                    <InfoItem>
+                        <InfoLabel>예약자명</InfoLabel>
+                        <div>{bookInfo?.userData.username}</div>
+                    </InfoItem>
+                    <InfoItem>
+                        <InfoLabel>예약 시간</InfoLabel>
+                        <div>{bookInfo?.bookTime}</div>
+                    </InfoItem>
+                    <InfoItem>
+                        <InfoLabel>시술명</InfoLabel>
+                        <div>{bookInfo?.menu.menuName}</div>
+                    </InfoItem>
+                    <InfoItem style={{ flexDirection: 'column' }}>
+                        <InfoLabel>내용</InfoLabel>
+                        <div>{bookInfo?.menu.content}</div>
+                    </InfoItem>
                 </div>
-            </div>
-        </div>
+
+                <PriceItem>
+                    <InfoLabel>총 결제 금액</InfoLabel>
+                    <div>{bookInfo?.menu.price.toLocaleString()}</div>
+                </PriceItem>
+
+                <ButtonContainer>
+                    <PreviousButton onClick={handleClickPrevious}>이전</PreviousButton>
+                    <NextButton onClick={handleClickNext}>결제</NextButton>
+                </ButtonContainer>
+            </Card>
+        </PaymentWrapper>
     );
 };
 

@@ -1,10 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import 'react-calendar/dist/Calendar.css';
 import { CustomCalendar } from '../../styles/components/organism/DatePicker';
 import { useDialogStore } from '../../store/dialogStore';
 import { DialogType } from '../../enum/Dialog';
 import { Book } from '../../types/Common';
 import { formatDate } from '@/utils/validations/formValidators';
+import { BookingTimes } from '../../enum/Menu';
 
 interface dateProps {
     bookData: Book[];
@@ -23,14 +24,23 @@ const DatePicker = ({ bookData }: dateProps) => {
         openDialog(DialogType.CALENDAR);
     };
 
-    const bookedList = useMemo(() => {
+    const bookedCountsByDate = useMemo(() => {
+        const counts: { [key: string]: number } = {};
         if (!bookData) {
-            return [];
+            return counts;
         }
-        return bookData.map((book: Book) => {
-            return new Date(book.bookDate);
+
+        bookData.forEach((book: Book) => {
+            const dateKey = formatDate(new Date(book.bookDate))?.toString();
+            if (dateKey) {
+                counts[dateKey] = (counts[dateKey] || 0) + 1;
+            }
         });
+        return counts;
     }, [bookData]);
+
+    // 예약 가능한 전체 슬롯 수를 계산합니다.
+    const totalAvailableSlots = Object.values(BookingTimes).length;
 
     const handleClickMonth = ({ activeStartDate, view }) => {
         if (view === 'month') {
@@ -46,12 +56,14 @@ const DatePicker = ({ bookData }: dateProps) => {
             prev2Label={null}
             onClickDay={onClickDay}
             onActiveStartDateChange={handleClickMonth}
-            // tileDisabled={({ date, view }) => {
-            //     if (view === 'month') {
-            //         return bookedList.some((bookedDate) => bookedDate.toDateString() === date.toDateString());
-            //     }
-            //     return false; // 다른 뷰에서는 비활성화하지 않음
-            // }}
+            tileDisabled={({ date, view }) => {
+                if (view === 'month') {
+                    const dateKey = formatDate(date)?.toString();
+                    const bookedCount = bookedCountsByDate[dateKey!] || 0;
+                    return bookedCount >= totalAvailableSlots;
+                }
+                return false;
+            }}
         />
     );
 };

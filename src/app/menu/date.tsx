@@ -2,10 +2,20 @@
 import React, { useEffect, useState } from 'react';
 import { BookInfo, Menu } from '../../../types/Common';
 import { MenuType } from '../../../enum/Menu';
-import Button from '../../../components/atom/Button';
 import DatePicker from '../../../components/organisms/DatePicker';
 import CalendarDialog from '../../../components/organisms/dialog/CalendarDialog';
-import { DateWrapper, DetailsRow, Price, Rating, ServiceCard, ServiceDescription, ServiceName } from '../../../styles/pages/menu/Menu';
+import {
+    ButtonContainer,
+    DateWrapper,
+    DetailsRow,
+    NextButton,
+    PreviousButton,
+    Price,
+    Rating,
+    ServiceCard,
+    ServiceDescription,
+    ServiceName,
+} from '../../../styles/pages/menu/Menu';
 import { useDialogStore } from '../../../store/dialogStore';
 import useSWR from 'swr';
 import axiosInstance from '../../../libs/axios';
@@ -92,10 +102,10 @@ const BookMenu = ({ selectedMenu, setCurrentTab, setBookInfo }: MenuProps) => {
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <DatePicker bookData={book_data} />
             </div>
-            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
-                <Button onClick={handleClickPrevious}>이전</Button>
-                <Button onClick={handleClickNext}>다음</Button>
-            </div>
+            <ButtonContainer>
+                <PreviousButton onClick={handleClickPrevious}>이전</PreviousButton>
+                <NextButton onClick={handleClickNext}>다음</NextButton>
+            </ButtonContainer>
             <CalendarDialog bookData={book_data} setCurrentTab={setCurrentTab} selectedMenu={selectedMenu} setBookInfo={setBookInfo} />
         </DateWrapper>
     );

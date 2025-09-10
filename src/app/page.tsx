@@ -5,9 +5,7 @@ import Select from '../../components/atom/Select';
 import type { SelectOption } from '../../types/Common';
 import Table from '../../components/atom/Table';
 import { TEST_TABLE_COLUMNS } from '../../constants/table-init';
-import DatePicker from '../../components/organisms/DatePicker';
 import { useDialogStore } from '../../store/dialogStore';
-import CalendarDialog from '../../components/organisms/dialog/CalendarDialog';
 import Card from '../../components/atom/Card';
 import { userStore } from '../../store/userStore';
 
@@ -52,9 +50,9 @@ const Page = () => {
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <Table readOnly={true} columns={TEST_TABLE_COLUMNS} rows={TEST_TABLE_ROWS} isCheckbox={true} />
             </div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <DatePicker />
-            </div>
+            {/*<div style={{ display: 'flex', justifyContent: 'center' }}>*/}
+            {/*    <DatePicker />*/}
+            {/*</div>*/}
             <Card
                 isOpen={true}
                 style={{

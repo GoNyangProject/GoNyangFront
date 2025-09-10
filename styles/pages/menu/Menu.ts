@@ -111,3 +111,43 @@ export const Price = styled.div`
     font-weight: 600;
     color: #333333;
 `;
+
+export const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 20px;
+`;
+
+export const PreviousButton = styled.button`
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #333;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+
+    &:hover {
+        background-color: #f0f0f0;
+    }
+`;
+
+export const NextButton = styled.button`
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background-color: bisque;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+
+    &:hover {
+        background-color: bisque;
+    }
+`;
