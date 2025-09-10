@@ -10,6 +10,8 @@ import { useDialogStore } from '../../store/dialogStore';
 import CalendarDialog from '../../components/organisms/dialog/CalendarDialog';
 import Card from '../../components/atom/Card';
 import { userStore } from '../../store/userStore';
+import TossPayButton from '../../components/atom/TossPayButton';
+import { PaymentsType } from '../../enum/PaymentsType';
 
 const SelectOption = [
     {
@@ -30,9 +32,9 @@ const TEST_TABLE_ROWS = [
     { test1: '2번', test2: '김성우', test3: '두 번째 테스트' },
     { test1: '3번', test2: '박지원', test3: '세 번째 테스트' },
 ];
+const orderName = encodeURIComponent('테스트 상품');
+const customerName = encodeURIComponent('강인구');
 const Page = () => {
-    const { selectedDialogs } = useDialogStore();
-    const { userData } = userStore();
     const handleClickBtn = () => {
         alert('버튼 클릭');
     };
@@ -70,6 +72,17 @@ const Page = () => {
                 하응 기모찌 데스네 카드입니다
             </Card>
             <CalendarDialog />
+            <TossPayButton
+                method={PaymentsType.CARD}
+                options={{
+                    amount: 100,
+                    orderId: 'order_' + new Date().getTime(),
+                    orderName: '테스트 상품',
+                    customerName: '강인구',
+                    successUrl: `${window.location.origin}/payments?orderName=${orderName}&customerName=${customerName}&method=${PaymentsType.CARD}`,
+                    failUrl: `${window.location.origin}/payment/fail`,
+                }}
+            />
         </div>
     );
 };
