@@ -2,7 +2,9 @@ import React from 'react';
 import { BookInfo } from '../../../types/Common';
 import { MenuType } from '../../../enum/Menu';
 import { Card, InfoItem, InfoLabel, PaymentWrapper, PriceItem, Title } from '../../../styles/pages/menu/Payment';
-import { ButtonContainer, NextButton, PreviousButton } from '../../../styles/pages/menu/Menu';
+import { ButtonContainer, PreviousButton } from '../../../styles/pages/menu/Menu';
+import { PaymentsType } from '../../../enum/PaymentsType';
+import TossPayButton from '../../../components/atom/TossPayButton';
 
 interface MenuProps {
     setCurrentTab: React.Dispatch<React.SetStateAction<MenuType>>;
@@ -14,10 +16,10 @@ const PaymentConfirm = ({ bookInfo, setCurrentTab }: MenuProps) => {
         setCurrentTab(MenuType.DATE);
     };
 
-    const handleClickNext = () => {
-        alert('결제가 완료되었습니다!');
-        setCurrentTab(MenuType.PAY_COMPLETE);
-    };
+    // const handleClickPay = () => {
+    //     alert('결제가 완료되었습니다!');
+    //     setCurrentTab(MenuType.PAY_COMPLETE);
+    // };
 
     return (
         <PaymentWrapper>
@@ -49,7 +51,18 @@ const PaymentConfirm = ({ bookInfo, setCurrentTab }: MenuProps) => {
 
                 <ButtonContainer>
                     <PreviousButton onClick={handleClickPrevious}>이전</PreviousButton>
-                    <NextButton onClick={handleClickNext}>결제</NextButton>
+                    <TossPayButton
+                        method={PaymentsType.CARD}
+                        options={{
+                            amount: bookInfo!.menu.price,
+                            orderId: 'order_' + new Date().getTime(),
+                            orderName: bookInfo!.menu.menuName,
+                            customerName: bookInfo!.userData.username,
+                            successUrl: `${window.location.origin}/payments?orderName=${bookInfo!.menu.menuName}&customerName=${bookInfo!.userData.username}&method=${PaymentsType.CARD}`,
+                            failUrl: `${window.location.origin}/payment/fail`,
+                        }}
+                        setCurrentTab={setCurrentTab}
+                    />
                 </ButtonContainer>
             </Card>
         </PaymentWrapper>
