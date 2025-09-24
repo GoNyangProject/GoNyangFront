@@ -1,6 +1,7 @@
 import { Method } from 'axios';
 import { RequestType, ResponseType } from '../enum/Common';
 import { InquiryStatus } from '../enum/InquiryStatus';
+import { User } from '../store/userStore';
 
 export type SelectOption = {
     value: string;
@@ -35,7 +36,17 @@ export type Book = {
     username: string;
     menuName: string;
     content: string;
-    bookDate: string;
+    bookDate: Date;
+    price: number;
+};
+
+export type Menu = {
+    id: number;
+    menuName: string;
+    bookCount: number;
+    content: string;
+    price: number;
+    score: number;
 };
 
 export type PetApiResponse = {
@@ -70,4 +81,9 @@ export type InquiryTableRow = {
     inquiryNumber: string;
     createdAt: string;
     inquiryStatus: InquiryStatus;
+};
+export type BookInfo = {
+    menu: Menu;
+    userData: User;
+    bookTime: string;
 };

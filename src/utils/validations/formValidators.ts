@@ -89,3 +89,22 @@ export const modifyValidateField = (key: AccountFieldsType | PetInfoType, value:
     }
     return '';
 };
+
+export const formatMonth = (date: Date) => {
+    if (!date) {
+        return;
+    }
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    return `${year}-${month}` as unknown as Date;
+};
+
+export const formatDate = (date: Date) => {
+    if (!date) {
+        return;
+    }
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}` as unknown as Date;
+};

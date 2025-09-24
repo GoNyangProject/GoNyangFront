@@ -69,6 +69,7 @@ const Page = () => {
                 menuName: book.menuName,
                 content: book.content,
                 bookDate: book.bookDate,
+                price: book.price,
             });
 
             return acc;

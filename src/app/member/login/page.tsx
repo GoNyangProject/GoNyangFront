@@ -29,6 +29,7 @@ const Page = () => {
             (response) => {
                 if (response.errorCode == '0000') {
                     const userData: User = response.result as User;
+                    console.log(userData);
                     setUserData(userData);
                     router.push('/');
                 }

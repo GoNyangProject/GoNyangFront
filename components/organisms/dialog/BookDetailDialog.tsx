@@ -2,7 +2,8 @@ import React from 'react';
 import { useDialogStore } from '../../../store/dialogStore';
 import { DialogType } from '../../../enum/Dialog';
 import Dialog from '../../molecules/Dialog';
-import { BookContent, BookHeader, BookMainWrapper, BookMenuLogo } from '../../../styles/pages/mypage/Mypage';
+import { BookHeader, BookMainWrapper, BookMenuLogo } from '../../../styles/pages/mypage/Mypage';
+import { DetailsRow, Price, ServiceCard, ServiceDescription, ServiceName } from '../../../styles/pages/menu/Menu';
 
 const BookDetailDialog = () => {
     const { selectedBook, closeDialog } = useDialogStore();
@@ -62,13 +63,22 @@ const BookDetailDialog = () => {
                 </BookHeader>
                 <div style={{ textAlign: 'left', fontSize: '18px' }}>{formattedTime}</div>
                 <BookMainWrapper style={{ flex: 1, border: 'none', padding: 0, justifyContent: 'center', alignItems: 'center' }}>
-                    <BookMenuLogo style={{ width: '40%', height: '100%' }} />
-                    <BookContent>
-                        <div>예약자명 : {selectedBook?.username}</div>
-                        <div>예약일시 : {selectedBook?.bookDate}</div>
-                        <div>시술명 : {selectedBook?.menuName}</div>
-                        <div>내용 : {selectedBook?.content}</div>
-                    </BookContent>
+                    <ServiceCard style={{ justifyContent: 'center', alignItems: 'center' }}>
+                        <BookMenuLogo style={{ width: '40%', height: '100%' }} />
+                        <div
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                textAlign: 'left',
+                            }}
+                        >
+                            <ServiceName>{selectedBook?.menuName}</ServiceName>
+                            <ServiceDescription>{selectedBook?.content}</ServiceDescription>
+                            <DetailsRow style={{ width: '100%', justifyContent: 'right' }}>
+                                <Price style={{ textAlign: 'right' }}>{selectedBook?.price.toLocaleString()} 원</Price>
+                            </DetailsRow>
+                        </div>
+                    </ServiceCard>
                 </BookMainWrapper>
             </div>
         </Dialog>

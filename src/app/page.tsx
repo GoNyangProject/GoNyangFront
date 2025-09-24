@@ -35,6 +35,8 @@ const TEST_TABLE_ROWS = [
 const orderName = encodeURIComponent('테스트 상품');
 const customerName = encodeURIComponent('강인구');
 const Page = () => {
+    const { selectedDialogs } = useDialogStore();
+    const { userData } = userStore();
     const handleClickBtn = () => {
         alert('버튼 클릭');
     };

@@ -11,7 +11,7 @@ interface DialogState {
     selectedDialogs: Dialog[];
     openDialog: (dialogType: DialogType) => void;
     closeDialog: (dialogType: DialogType) => void;
-    selectedDate: Date | null;
+    selectedDate: Date;
     setSelectedDate: (selectedDate: Date) => void;
     selectedBook: Book | null;
     setSelectedBook: (selectedBook: Book) => void;
@@ -19,7 +19,7 @@ interface DialogState {
 
 export const useDialogStore = create<DialogState>((set) => ({
     selectedDialogs: [],
-    selectedDate: null,
+    selectedDate: new Date(),
     selectedBook: null,
     openDialog: (dialogType) =>
         set((state) => ({

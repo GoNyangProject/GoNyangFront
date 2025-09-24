@@ -4,6 +4,7 @@ import { persist } from 'zustand/middleware';
 export type User = {
     memberId: number | null;
     userId: string;
+    username: string;
 };
 
 interface UserState {
@@ -14,7 +15,7 @@ interface UserState {
 export const userStore = create(
     persist<UserState>(
         (set) => ({
-            userData: { memberId: null, userId: '' },
+            userData: { memberId: null, userId: '', username: '' },
             setUserData: (userData) => set(() => ({ userData })),
         }),
         { name: 'user-storage' },
