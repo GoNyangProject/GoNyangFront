@@ -58,7 +58,9 @@ const BookMenu = ({ selectedMenu, setCurrentTab, setBookInfo }: MenuProps) => {
     };
 
     const handleClickNext = () => {
-        setCurrentTab(MenuType.PAY_CONFIRM);
+        alert('예약하실 시간을 선택해주세요.');
+        return;
+        // setCurrentTab(MenuType.PAY_CONFIRM);
     };
 
     const renderStars = (score: number | undefined) => {

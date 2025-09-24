@@ -8,6 +8,7 @@ import { Book, BookInfo, Menu } from '../../../types/Common';
 import { BookingTimes, MenuType } from '../../../enum/Menu';
 import Button from '../../atom/Button';
 import { userStore } from '../../../store/userStore';
+import { DetailsRow, Price, Rating, ServiceCard, ServiceDescription, ServiceName } from '../../../styles/pages/menu/Menu';
 
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data);
 
@@ -35,7 +36,7 @@ const CalendarDialog = ({ bookData, setCurrentTab, selectedMenu, setBookInfo }: 
 
     const handlePayBook = () => {
         if (!selectedTime) {
-            alert('예약 시간을 선택해 주세요');
+            alert('예약하실 시간을 선택해 주세요');
             return;
         }
         const bookInfo = {
@@ -56,7 +57,7 @@ const CalendarDialog = ({ bookData, setCurrentTab, selectedMenu, setBookInfo }: 
             type={DialogType.CALENDAR}
             title={`${formatDate(selectedDate)} 예약`}
             width="50vw"
-            height="70vh"
+            height="60vh"
             style={{ backgroundColor: 'white' }}
             onClickConfirm={handlePayBook}
             onClickCancel={handleClickCancel}
@@ -66,14 +67,22 @@ const CalendarDialog = ({ bookData, setCurrentTab, selectedMenu, setBookInfo }: 
             <div
                 style={{
                     display: 'flex',
-                    flexDirection: 'row',
+                    flexDirection: 'column',
                     justifyContent: 'space-between',
                     width: '100%',
                     height: '100%',
-                    padding: '0 10px',
+                    padding: '10px',
                     alignItems: 'center',
                 }}
             >
+                <ServiceCard style={{ flexDirection: 'column', border: 'none', boxShadow: 0 }}>
+                    <ServiceName>{selectedMenu?.menuName}</ServiceName>
+                    <ServiceDescription>{selectedMenu?.content}</ServiceDescription>
+                    <DetailsRow>
+                        <Rating>{selectedMenu?.score}</Rating>
+                        <Price>{selectedMenu?.price.toLocaleString()} 원</Price>
+                    </DetailsRow>
+                </ServiceCard>
                 <div
                     style={{
                         display: 'flex',
@@ -96,6 +105,7 @@ const CalendarDialog = ({ bookData, setCurrentTab, selectedMenu, setBookInfo }: 
                             gap: '10px',
                         }}
                     >
+                        <div>예약시간</div>
                         {Object.values(BookingTimes).map((time) => {
                             const timeHour = parseInt(time.split(':')[0]);
 
