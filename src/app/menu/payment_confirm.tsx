@@ -16,11 +16,6 @@ const PaymentConfirm = ({ bookInfo, setCurrentTab }: MenuProps) => {
         setCurrentTab(MenuType.DATE);
     };
 
-    // const handleClickPay = () => {
-    //     alert('결제가 완료되었습니다!');
-    //     setCurrentTab(MenuType.PAY_COMPLETE);
-    // };
-
     return (
         <PaymentWrapper>
             <Card>
@@ -58,10 +53,9 @@ const PaymentConfirm = ({ bookInfo, setCurrentTab }: MenuProps) => {
                             orderId: 'order_' + new Date().getTime(),
                             orderName: bookInfo!.menu.menuName,
                             customerName: bookInfo!.userData.username,
-                            successUrl: `${window.location.origin}/payments?orderName=${bookInfo!.menu.menuName}&customerName=${bookInfo!.userData.username}&method=${PaymentsType.CARD}`,
+                            successUrl: `${window.location.origin}/payments?orderName=${encodeURIComponent(bookInfo!.menu.menuName)}&customerName=${encodeURIComponent(bookInfo!.userData.username)}&method=${PaymentsType.CARD}`,
                             failUrl: `${window.location.origin}/payment/fail`,
                         }}
-                        setCurrentTab={setCurrentTab}
                     />
                 </ButtonContainer>
             </Card>

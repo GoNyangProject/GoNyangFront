@@ -10,17 +10,14 @@ type TossPayRequest =
     | {
           method: PaymentsType.CARD;
           options: BasePaymentOptions;
-          setCurrentTab: React.Dispatch<React.SetStateAction<MenuType>>;
       }
     | {
           method: PaymentsType.VIRTUAL_ACCOUNT;
           options: VirtualAccountPaymentOptions;
-          setCurrentTab: React.Dispatch<React.SetStateAction<MenuType>>;
       }
     | {
           method: PaymentsType.TRANSFER;
           options: BasePaymentOptions;
-          setCurrentTab: React.Dispatch<React.SetStateAction<MenuType>>;
       };
 
 interface BasePaymentOptions {
@@ -39,18 +36,16 @@ interface VirtualAccountPaymentOptions extends BasePaymentOptions {
     };
 }
 
-const TossPayButton = ({ method, options, setCurrentTab }: TossPayRequest) => {
+const TossPayButton = ({ method, options }: TossPayRequest) => {
     const handleClickPay = async () => {
         try {
             const clientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY!;
             const tossPayments = await loadTossPayments(clientKey);
-
             await tossPayments.requestPayment(method, options);
         } catch (err) {
             console.error(err);
             return;
         }
-        setCurrentTab(MenuType.PAY_COMPLETE);
     };
 
     return <NextButton onClick={handleClickPay}>결제</NextButton>;
