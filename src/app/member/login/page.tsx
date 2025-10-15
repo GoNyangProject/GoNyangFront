@@ -17,8 +17,6 @@ const Page = () => {
     const { setUserData } = userStore();
 
     const handleClickLogin = () => {
-        console.log('id : ', id);
-        console.log('password : ', password);
         const payload = {
             userId: id,
             password: password,
@@ -29,7 +27,6 @@ const Page = () => {
             (response) => {
                 if (response.errorCode == '0000') {
                     const userData: User = response.result as User;
-                    console.log(userData);
                     setUserData(userData);
                     router.push('/');
                 }

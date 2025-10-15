@@ -85,5 +85,5 @@ export type InquiryTableRow = {
 export type BookInfo = {
     menu: Menu;
     userData: User;
-    bookTime: string;
+    bookDate: string;
 };

@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 export type User = {
-    memberId: number | null;
+    memberId: string;
     userId: string;
     username: string;
 };
@@ -15,7 +15,7 @@ interface UserState {
 export const userStore = create(
     persist<UserState>(
         (set) => ({
-            userData: { memberId: null, userId: '', username: '' },
+            userData: { memberId: '', userId: '', username: '' },
             setUserData: (userData) => set(() => ({ userData })),
         }),
         { name: 'user-storage' },

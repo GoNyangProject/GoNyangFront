@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { BookInfo } from '../../../types/Common';
 import { MenuType } from '../../../enum/Menu';
 import { Card, InfoItem, InfoLabel, PaymentWrapper, PriceItem, Title } from '../../../styles/pages/menu/Payment';
@@ -27,7 +27,7 @@ const PaymentConfirm = ({ bookInfo, setCurrentTab }: MenuProps) => {
                     </InfoItem>
                     <InfoItem>
                         <InfoLabel>예약 시간</InfoLabel>
-                        <div>{bookInfo?.bookTime}</div>
+                        <div>{bookInfo?.bookDate}</div>
                     </InfoItem>
                     <InfoItem>
                         <InfoLabel>시술명</InfoLabel>
@@ -53,8 +53,8 @@ const PaymentConfirm = ({ bookInfo, setCurrentTab }: MenuProps) => {
                             orderId: 'order_' + new Date().getTime(),
                             orderName: bookInfo!.menu.menuName,
                             customerName: bookInfo!.userData.username,
-                            successUrl: `${window.location.origin}/payments?orderName=${encodeURIComponent(bookInfo!.menu.menuName)}&customerName=${encodeURIComponent(bookInfo!.userData.username)}&method=${PaymentsType.CARD}`,
-                            failUrl: `${window.location.origin}/payment/fail`,
+                            successUrl: `${window.location.origin}/payments?orderName=${encodeURIComponent(bookInfo!.menu.menuName)}&customerName=${encodeURIComponent(bookInfo!.userData.username)}&method=${PaymentsType.CARD}&menuId=${encodeURIComponent(bookInfo!.menu.id)}&bookDate=${encodeURIComponent(bookInfo!.bookDate)}`,
+                            failUrl: `${window.location.origin}/payments/fail`,
                         }}
                     />
                 </ButtonContainer>

@@ -42,7 +42,7 @@ const CalendarDialog = ({ bookData, setCurrentTab, selectedMenu, setBookInfo }: 
         const bookInfo = {
             menu: selectedMenu!,
             userData: userData,
-            bookTime: selectedTime!,
+            bookDate: `${formatDate(selectedDate)} ${selectedTime!}`,
         };
         setBookInfo(bookInfo);
         setCurrentTab(MenuType.PAY_CONFIRM);
