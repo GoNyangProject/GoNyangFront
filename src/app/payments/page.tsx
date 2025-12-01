@@ -102,34 +102,43 @@ const Page = () => {
     return (
         <CompleteWrapper>
             <ContentCard>
-                <SuccessHeader>
-                    <IconWrapper>
-                        <FontAwesomeIcon
-                            icon={faCalendarCheck}
-                            // 아이콘 자체의 크기는 IconWrapper에서 조절하므로 여기서 style은 제거합니다.
-                        />
-                    </IconWrapper>
-                    <Title>예약 및 결제 완료 🎉</Title>
-                    <p style={{ color: '#888', fontSize: '15px' }}>성공적으로 결제가 처리되었습니다.</p>
-                </SuccessHeader>
+                {payment?.status === 'SUCCESS' && (
+                    <>
+                        <SuccessHeader>
+                            <IconWrapper>
+                                <FontAwesomeIcon
+                                    icon={faCalendarCheck}
+                                    // 아이콘 자체의 크기는 IconWrapper에서 조절하므로 여기서 style은 제거합니다.
+                                />
+                            </IconWrapper>
+                            <Title>예약 및 결제 완료 🎉</Title>
+                            <p style={{ color: '#888', fontSize: '15px' }}>성공적으로 결제가 처리되었습니다.</p>
+                        </SuccessHeader>
+                        <InfoListWrapper>
+                            <InfoItem>
+                                <InfoLabel>결제 상품</InfoLabel>
+                                <InfoValue>{payment.orderName}</InfoValue>
+                            </InfoItem>
+                            <InfoItem>
+                                <InfoLabel>결제 일시</InfoLabel>
+                                <InfoValue>{new Date(payment.approvedAt).toLocaleString('ko-KR')}</InfoValue>
+                            </InfoItem>
 
-                {payment && (
-                    <InfoListWrapper>
-                        <InfoItem>
-                            <InfoLabel>결제 상품</InfoLabel>
-                            <InfoValue>{payment.orderName}</InfoValue>
-                        </InfoItem>
-                        <InfoItem>
-                            <InfoLabel>결제 일시</InfoLabel>
-                            <InfoValue>{new Date(payment.approvedAt).toLocaleString('ko-KR')}</InfoValue>
-                        </InfoItem>
-
-                        {/* 총 결제 금액을 강조 */}
-                        <InfoItem>
-                            <InfoLabel style={{ fontWeight: 700 }}>총 결제 금액</InfoLabel>
-                            <InfoValue $isPrice>{payment.amount.toLocaleString()}원</InfoValue>
-                        </InfoItem>
-                    </InfoListWrapper>
+                            {/* 총 결제 금액을 강조 */}
+                            <InfoItem>
+                                <InfoLabel style={{ fontWeight: 700 }}>총 결제 금액</InfoLabel>
+                                <InfoValue $isPrice>{payment.amount.toLocaleString()}원</InfoValue>
+                            </InfoItem>
+                        </InfoListWrapper>
+                    </>
+                )}
+                {payment?.status === 'EXIST' && (
+                    <SuccessHeader>
+                        <IconWrapper>
+                            <FontAwesomeIcon icon={faCalendarCheck} />
+                        </IconWrapper>
+                        <Title>이미 처리된 결제입니다.</Title>
+                    </SuccessHeader>
                 )}
 
                 {!payment && <p style={{ color: 'red', marginTop: '20px' }}>결제 정보가 없습니다. 관리자에게 문의하세요.</p>}
