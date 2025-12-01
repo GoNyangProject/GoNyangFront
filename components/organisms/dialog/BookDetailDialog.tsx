@@ -4,11 +4,32 @@ import { DialogType } from '../../../enum/Dialog';
 import Dialog from '../../molecules/Dialog';
 import { BookHeader, BookMainWrapper, BookMenuLogo } from '../../../styles/pages/mypage/Mypage';
 import { DetailsRow, Price, ServiceCard, ServiceDescription, ServiceName } from '../../../styles/pages/menu/Menu';
+import { Post } from '../../../service/crud';
+import { useRouter } from 'next/navigation';
 
 const BookDetailDialog = () => {
+    const router = useRouter();
     const { selectedBook, closeDialog } = useDialogStore();
 
-    const handleCancelBook = () => {};
+    const handleCancelBook = () => {
+        if (confirm('정말 예약을 취소하시겠습니까?')) {
+            const payload = {
+                orderId: selectedBook?.orderId,
+            };
+            Post(
+                '/book/cancel',
+                payload,
+                (response) => {
+                    console.log(response);
+                    if (response.type === 'SUCCESS') {
+                        alert('예약 취소가 완료되었습니다.');
+                    }
+                },
+                false,
+            );
+            window.location.reload();
+        }
+    };
 
     const handleClickCancel = () => {
         closeDialog(DialogType.BOOK_DETAIL);

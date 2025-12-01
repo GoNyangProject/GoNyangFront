@@ -1,5 +1,5 @@
 'use client';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { userStore } from '../../../../store/userStore';
 import useSWR from 'swr';
 import axiosInstance from '../../../../libs/axios';
@@ -27,7 +27,11 @@ const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload
 const Page = () => {
     const { userData } = userStore();
     const [search, setSearch] = useState<string>('');
-    const { openDialog, setSelectedBook } = useDialogStore();
+    const { openDialog,closeDialog, setSelectedBook } = useDialogStore();
+
+    useEffect(() => {
+        closeDialog(DialogType.BOOK_DETAIL);
+    }, []);
 
     const { data: book_data } = useSWR(
         {
@@ -64,12 +68,13 @@ const Page = () => {
             }
 
             acc[key].push({
-                uuid: book.uuid,
+                orderId: book.orderId,
                 username: book.username,
                 menuName: book.menuName,
                 content: book.content,
                 bookDate: book.bookDate,
                 price: book.price,
+                deletedAt: book.deletedAt,
             });
 
             return acc;
@@ -138,10 +143,23 @@ const Page = () => {
                                 <BookMainWrapper>
                                     <BookMenuLogo />
                                     <BookContent>
+                                        {book.deletedAt ? (
+                                            <div
+                                                style={{
+                                                    backgroundColor: 'bisque',
+                                                    borderRadius: '10px',
+                                                    padding: '2px 5px',
+                                                }}
+                                            >
+                                                취소됨
+                                            </div>
+                                        ) : (
+                                            ''
+                                        )}
+
                                         <div>예약자명 : {book.username}</div>
                                         <div>예약일시 : {book.bookDate}</div>
                                         {/*<div>시술명 : {book.menuName}</div>*/}
-                                        {/*<div>내용 : {book.content}</div>*/}
                                     </BookContent>
                                     <BookControlls>
                                         <Button

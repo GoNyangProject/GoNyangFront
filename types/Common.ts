@@ -32,12 +32,13 @@ export type Response = {
 };
 
 export type Book = {
-    uuid: string;
+    orderId: string;
     username: string;
     menuName: string;
     content: string;
     bookDate: Date;
     price: number;
+    deletedAt: Date;
 };
 
 export type Menu = {
