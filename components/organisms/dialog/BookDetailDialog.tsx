@@ -20,7 +20,6 @@ const BookDetailDialog = () => {
                 '/book/cancel',
                 payload,
                 (response) => {
-                    console.log(response);
                     if (response.type === 'SUCCESS') {
                         alert('예약 취소가 완료되었습니다.');
                     }

@@ -84,7 +84,6 @@ const Page = () => {
                 memberId: userData.memberId,
                 bookDate: bookDate,
             };
-            console.log(bookPayload.memberId);
             Post('/book', bookPayload, (response) => {}, false);
         }
     }, [searchParams, userData]);
