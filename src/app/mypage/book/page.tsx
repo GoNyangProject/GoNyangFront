@@ -27,17 +27,21 @@ const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload
 const Page = () => {
     const { userData } = userStore();
     const [search, setSearch] = useState<string>('');
-    const { openDialog,closeDialog, setSelectedBook } = useDialogStore();
+    const { openDialog, closeDialog, setSelectedBook } = useDialogStore();
 
     useEffect(() => {
         closeDialog(DialogType.BOOK_DETAIL);
     }, []);
 
+    const isMemberIdValid = !!userData.memberId;
+
     const { data: book_data } = useSWR(
-        {
-            url: `/mypage/book?memberId=${userData.memberId}`,
-            method: 'GET',
-        },
+        isMemberIdValid
+            ? {
+                  url: `/mypage/book?memberId=${userData.memberId}`,
+                  method: 'GET',
+              }
+            : null,
         fetcher,
         {
             revalidateOnFocus: false,

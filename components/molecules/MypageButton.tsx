@@ -1,5 +1,5 @@
 import React from 'react';
-import { MypageWrapper } from '../../styles/components/atom/Header';
+import { MypageWrapper } from '../../styles/components/molecules/Header';
 import Button from '../atom/Button';
 import { useRouter } from 'next/navigation';
 import { MypageURL } from '../../enum/Mypage';

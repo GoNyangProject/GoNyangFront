@@ -34,11 +34,16 @@ const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload
 
 const Page = () => {
     const { userData } = userStore();
+
+    const isUserValid = !!userData.userId;
+
     const { data: user_account } = useSWR(
-        {
-            url: `/mypage/useraccount?userId=${userData.userId}`,
-            method: 'GET',
-        },
+        isUserValid
+            ? {
+                  url: `/mypage/useraccount?userId=${userData.userId}`,
+                  method: 'GET',
+              }
+            : null,
         fetcher,
         {
             revalidateOnFocus: false,

@@ -6,7 +6,7 @@ import Input from '../../../../components/atom/Input';
 import Button from '../../../../components/atom/Button';
 import { Post } from '../../../../service/crud';
 import { useRouter } from 'next/navigation';
-import { ButtonWrapper } from '../../../../styles/components/atom/Header';
+import { ButtonWrapper } from '../../../../styles/components/molecules/Header';
 import { User, userStore } from '../../../../store/userStore';
 
 const Page = () => {

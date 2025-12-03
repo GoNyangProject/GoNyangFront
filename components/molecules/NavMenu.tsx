@@ -1,5 +1,5 @@
 import React from 'react';
-import { HeaderButton, HeaderNavWrapper } from '../../styles/components/atom/Header';
+import { HeaderButton, HeaderNavWrapper } from '../../styles/components/molecules/Header';
 import { useRouter } from 'next/navigation';
 
 const NavMenu = () => {
