@@ -72,7 +72,7 @@ const Page = () => {
     const [isPetEditMode, setIsPetEditMode] = useState(false);
 
     useEffect(() => {
-        if (!user_account) return;
+        if (!user_account || user_account.length === 0) return;
 
         const newProfile = {
             [AccountFieldsType.NAME]: user_account.username || '',
