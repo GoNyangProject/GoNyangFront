@@ -11,7 +11,7 @@ import {
     Label,
     Value,
 } from '../../styles/components/molecules/InfoItem';
-import { ImagePlaceholder, ImagePlaceHolderWrapper } from '../../styles/pages/mypage/account';
+import { ImagePlaceholder, ImagePlaceHolderWrapper } from '../../styles/pages/mypage/Account';
 import { AccountFieldsType, PetInfoType } from '../../enum/FormFields';
 import { JoinValidErrorMessage } from '../../styles/pages/join/JoinValidErrorMessage';
 

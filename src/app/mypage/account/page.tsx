@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { AccountBox, AccountHeader, AccountTitle } from '../../../../styles/pages/mypage/account';
+import { AccountBox, AccountHeader, AccountTitle } from '../../../../styles/pages/mypage/Account';
 import InfoItem from '../../../../components/molecules/InfoItem';
 import { ActionButton, ActionButtonWrapper, PetPaginationWrapper } from '../../../../styles/components/molecules/InfoItem';
 import { AccountFieldsType, PetInfoType } from '../../../../enum/FormFields';

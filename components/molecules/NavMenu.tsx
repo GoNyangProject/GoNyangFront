@@ -6,7 +6,7 @@ const NavMenu = () => {
     const router = useRouter();
     return (
         <HeaderNavWrapper>
-            <HeaderButton>회사소개</HeaderButton>
+            <HeaderButton>About</HeaderButton>
             <HeaderButton onClick={() => router.push('/menu')}>예약</HeaderButton>
             <HeaderButton>공지사항</HeaderButton>
             <HeaderButton>커뮤니티</HeaderButton>
