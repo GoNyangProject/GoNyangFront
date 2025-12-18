@@ -38,12 +38,10 @@ const Page = () => {
     const isUserValid = !!userData.userId;
 
     const { data: user_account } = useSWR(
-        isUserValid
-            ? {
-                  url: `/mypage/useraccount?userId=${userData.userId}`,
-                  method: 'GET',
-              }
-            : null,
+        {
+            url: `/mypage/useraccount?userId=${userData.userId}`,
+            method: 'GET',
+        },
         fetcher,
         {
             revalidateOnFocus: false,

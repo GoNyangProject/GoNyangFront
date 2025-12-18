@@ -1,17 +1,16 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_BACK_URL,
+    baseURL: '/',
 });
-
 axiosInstance.interceptors.request.use((config) => {
     const token = localStorage.getItem('Authorization');
     const refreshToken = localStorage.getItem('Refresh-Token');
     if (token) {
         config.headers.Authorization = token;
     } else if (token == null && !config.data.url.includes('/member') && !config.data.url.includes('/menu')) {
-        // alert('토큰이 만료되었습니다.');
-        // window.location.href = '/member/login';
+        alert('토큰이 만료되었습니다.');
+        window.location.href = '/member/login';
         return config;
     }
     if (refreshToken) {
@@ -27,7 +26,7 @@ axiosInstance.interceptors.response.use(
     async (error) => {
         const errorCode = error.response.status;
         if (errorCode === 403) {
-            alert('토큰이 만료되었습니다.');
+            alert('토큰이 만료되었습니다.\n다시 로그인 해주세요.');
             localStorage.clear();
             window.location.href = '/member/login';
             return;

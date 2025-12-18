@@ -181,7 +181,7 @@ const Page = () => {
                                 <MenuCard key={menu.id}>
                                     <MenuImageBox>
                                         {/* 이미지가 없을 경우를 대비해 배경색이나 placeholder 처리 가능 */}
-                                        <img src={`/images/menu/${menu.id}.png`} alt={menu.menuName} />
+                                        <img src={`${process.env.NEXT_PUBLIC_MENU_URL}/${menu.id}.png`} alt={menu.menuName} />
                                     </MenuImageBox>
                                     <MenuName>{menu.menuName}</MenuName>
                                 </MenuCard>
