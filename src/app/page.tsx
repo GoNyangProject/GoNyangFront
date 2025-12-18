@@ -2,7 +2,6 @@
 import React, { useRef, useState } from 'react';
 import Button from '../../components/atom/Button';
 import { useDialogStore } from '../../store/dialogStore';
-import Card from '../../components/atom/Card';
 import { userStore } from '../../store/userStore';
 import {
     GroomerCardWrapper,
@@ -25,6 +24,11 @@ import {
     SectionHeader,
 } from '../../styles/pages/Main';
 import { useRouter } from 'next/navigation';
+import useSWR from 'swr';
+import axiosInstance from '../../libs/axios';
+import { Menu } from '../../types/Common';
+
+const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
 
 // const SelectOption = [
 //     {
@@ -45,16 +49,6 @@ import { useRouter } from 'next/navigation';
 //     { test1: '2번', test2: '김성우', test3: '두 번째 테스트' },
 //     { test1: '3번', test2: '박지원', test3: '세 번째 테스트' },
 // ];
-
-const SERVICES = [
-    { id: 1, name: '기본 미용', img: '/images/menu/1.png' }, // 경로에 맞게 수정
-    { id: 2, name: '목욕 패키지', img: '/images/menu/2.png' },
-    { id: 3, name: '발톱 & 브러싱', img: '/images/menu/3.png' },
-    { id: 4, name: '스페셜 미용', img: '/images/menu/4.png' },
-    { id: 5, name: '스킨케어', img: '/images/menu/5.png' },
-    { id: 6, name: '시니어 케어', img: '/images/menu/6.png' },
-    { id: 7, name: '프리미엄 패키지', img: '/images/menu/7.png' },
-];
 
 const orderName = encodeURIComponent('테스트 상품');
 const customerName = encodeURIComponent('강인구');
@@ -98,6 +92,19 @@ const Page = () => {
     const handleClickBook = () => {
         router.push('/menu');
     };
+
+    const { data: menu_data } = useSWR(
+        {
+            url: `/menu`,
+            method: 'GET',
+        },
+        fetcher,
+        {
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+            fallbackData: [],
+        },
+    );
 
     return (
         <MainWrapper>
@@ -170,13 +177,13 @@ const Page = () => {
                             onMouseUp={onDragEnd}
                             onMouseLeave={onDragEnd}
                         >
-                            {SERVICES.map((service) => (
-                                <MenuCard key={service.id}>
+                            {menu_data.map((menu: Menu) => (
+                                <MenuCard key={menu.id}>
                                     <MenuImageBox>
                                         {/* 이미지가 없을 경우를 대비해 배경색이나 placeholder 처리 가능 */}
-                                        <img src={service.img} alt={service.name} />
+                                        <img src={`/images/menu/${menu.id}.png`} alt={menu.menuName} />
                                     </MenuImageBox>
-                                    <MenuName>{service.name}</MenuName>
+                                    <MenuName>{menu.menuName}</MenuName>
                                 </MenuCard>
                             ))}
                         </MenuScrollContainer>
