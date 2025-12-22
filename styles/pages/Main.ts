@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, {keyframes} from 'styled-components';
 
 export const MainWrapper = styled.div`
     display: flex;
@@ -232,4 +232,46 @@ export const MenuName = styled.span`
     font-size: 1.2rem;
     font-weight: 600;
     color: #4a3a2a;
+`;
+
+export const scrollRight = keyframes`
+    0% {
+        transform: translateX(200%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+`;
+
+export const MarqueeContainer = styled.div`
+    width: 100%;
+    overflow: hidden; // 스크롤바 방지 핵심
+    background-color: #fff;
+    padding: 20px 0;
+    position: relative;
+`;
+
+export const MarqueeTrack = styled.div`
+    display: flex;
+    width: max-content;
+    animation: ${scrollRight} 30s linear infinite;
+
+    &:hover {
+        animation-play-state: paused;
+    }
+`;
+
+export const MarqueeItem = styled.div`
+    width: 200px;
+    margin: 0 30px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+
+    img {
+        width: 100%;
+        height: auto;
+        display: block;
+        object-fit: contain;
+    }
 `;
