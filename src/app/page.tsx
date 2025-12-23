@@ -1,5 +1,5 @@
 'use client';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Button from '../../components/atom/Button';
 import { useDialogStore } from '../../store/dialogStore';
 import { userStore } from '../../store/userStore';
@@ -11,8 +11,10 @@ import {
     HeroSubtitle,
     HeroTitle,
     MainItemsWrapper,
-    MainWrapper, MarqueeContainer,
-    MarqueeItem, MarqueeTrack,
+    MainWrapper,
+    MarqueeContainer,
+    MarqueeItem,
+    MarqueeTrack,
     MenuCard,
     MenuFadeWrapper,
     MenuImageBox,
@@ -28,7 +30,6 @@ import { useRouter } from 'next/navigation';
 import useSWR from 'swr';
 import axiosInstance from '../../libs/axios';
 import { Menu } from '../../types/Common';
-import Marquee from 'react-fast-marquee';
 import Card from '../../components/atom/Card';
 
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
@@ -55,12 +56,6 @@ const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload
 
 const orderName = encodeURIComponent('테스트 상품');
 const customerName = encodeURIComponent('강인구');
-const marqueeList = [
-    { name: 'aws', src: '/images/marquee/aws.png' },
-    { name: 'google', src: '/images/marquee/google.png' },
-    { name: 'microsoft', src: '/images/marquee/microsoft.png' },
-    { name: 'oracle', src: '/images/marquee/oracle.png' },
-];
 const Page = () => {
     const router = useRouter();
     const { selectedDialogs } = useDialogStore();
@@ -114,6 +109,23 @@ const Page = () => {
             fallbackData: [],
         },
     );
+
+    const { data: contract_data } = useSWR(
+        {
+            url: `/contract`,
+            method: 'GET',
+        },
+        fetcher,
+        {
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+            fallbackData: [],
+        },
+    );
+
+    useEffect(() => {
+        console.log(contract_data);
+    }, [contract_data]);
 
     return (
         <MainWrapper>
@@ -200,9 +212,9 @@ const Page = () => {
                 </MenuSection>
                 <MarqueeContainer>
                     <MarqueeTrack>
-                        {marqueeList.map((logo) => (
-                            <MarqueeItem key={`${logo.name}`}>
-                                <img src={logo.src} alt={logo.name} />
+                        {contract_data.map((contract) => (
+                            <MarqueeItem key={`${contract.name}`}>
+                                <img src={contract.imgUrl} alt={contract.name} />
                             </MarqueeItem>
                         ))}
                     </MarqueeTrack>

@@ -21,7 +21,7 @@ export const HeroSectionContainer = styled.section`
     background-color: #e7dbc9;
     text-align: center;
     box-shadow: 0 4px 15px rgba(255, 165, 0, 0.1);
-    border-radius: 12px;
+    border-radius: 0 0 12px 12px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -262,7 +262,7 @@ export const MarqueeTrack = styled.div`
 `;
 
 export const MarqueeItem = styled.div`
-    width: 200px;
+    width: 120px;
     margin: 0 30px;
     flex-shrink: 0;
     display: flex;
