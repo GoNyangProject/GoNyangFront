@@ -123,10 +123,6 @@ const Page = () => {
         },
     );
 
-    useEffect(() => {
-        console.log(contract_data);
-    }, [contract_data]);
-
     return (
         <MainWrapper>
             <MainItemsWrapper>
