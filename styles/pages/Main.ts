@@ -63,12 +63,14 @@ export const GroomerSectionContainer = styled.section`
     text-align: center;
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
 `;
 
 export const SectionHeader = styled.h2`
     font-size: 2.5rem;
     font-weight: 700;
-    color: #a68967; /* 메인 컬러로 헤더 강조 */
+    color: white; /* 메인 컬러로 헤더 강조 */
     margin-bottom: 50px;
     position: relative;
 

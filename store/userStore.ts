@@ -5,6 +5,7 @@ export type User = {
     memberId: string;
     userId: string;
     username: string;
+    userType: string;
 };
 
 interface UserState {
@@ -15,7 +16,7 @@ interface UserState {
 export const userStore = create(
     persist<UserState>(
         (set) => ({
-            userData: { memberId: '', userId: '', username: '' },
+            userData: { memberId: '', userId: '', username: '', userType: '' },
             setUserData: (userData) => set(() => ({ userData })),
         }),
         { name: 'user-storage' },
