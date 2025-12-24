@@ -8,10 +8,6 @@ axiosInstance.interceptors.request.use((config) => {
     const refreshToken = localStorage.getItem('Refresh-Token');
     if (token) {
         config.headers.Authorization = token;
-    } else if (token == null && !config.data.url.includes('/member') && !config.data.url.includes('/menu')) {
-        alert('토큰이 만료되었습니다.');
-        window.location.href = '/member/login';
-        return config;
     }
     if (refreshToken) {
         config.headers['Refresh-Token'] = refreshToken;
