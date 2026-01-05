@@ -50,3 +50,18 @@ export const INQUIRY_COLUMNS: Array<{ key: string; value: string }> = [
         value: '상태',
     },
 ];
+
+export const NOTICE_COLUMNS: Array<{ key: string; value: string }> = [
+    {
+        key: 'id',
+        value: '작성번호',
+    },
+    {
+        key: 'title',
+        value: '제목',
+    },
+    {
+        key: 'createdAt',
+        value: '작성일',
+    },
+];
