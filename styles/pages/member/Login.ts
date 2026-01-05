@@ -26,6 +26,7 @@ export const LoginTitle = styled.div`
     padding: 10px 20px;
     border-radius: 15px;
     background-color: bisque;
+    margin-top: 20px;
 `;
 
 export const LoginFormWrapper = styled.div`
@@ -37,4 +38,5 @@ export const LoginFormWrapper = styled.div`
     align-items: center;
     gap: 20px;
     padding: 10px;
+    margin-bottom: 20px;
 `;

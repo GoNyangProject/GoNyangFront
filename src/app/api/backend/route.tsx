@@ -2,12 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Request, Response } from '../../../../types/Common';
 import { ResponseType } from '../../../../enum/Common';
 
-const DOMAIN = process.env.BACK_URL;
+const DOMAIN = process.env.NEXT_PUBLIC_BACK_URL;
 
-const _fetch = async (param: Request, incomingHeaders: Headers) => {
-    const authHeader = incomingHeaders.get('Authorization');
-    const refreshHeader = incomingHeaders.get('Refresh-Token');
-
+const _fetch = async (param: Request, cookieString: string) => {
     const result: Response = {
         type: ResponseType.SUCCESS,
         errorCode: '0000',
@@ -17,53 +14,51 @@ const _fetch = async (param: Request, incomingHeaders: Headers) => {
         method: param.method,
         headers: {
             'content-type': 'application/json',
-            ...(authHeader ? { Authorization: authHeader } : {}),
-            ...(refreshHeader ? { 'Refresh-Token': refreshHeader } : {}),
+            Cookie: cookieString,
         },
-        body: JSON.stringify(param.param),
+        body: param.method === 'GET' || param.method === 'DELETE' ? undefined : JSON.stringify(param.param),
     });
 
+    const responseJson: Response = await response.json();
+
     if (!response.ok) {
-        if (response.status === 403) {
-            throw {
-                message: 'Forbidden 403',
-                status: 403,
-                errorCode: '403',
-            };
-        }
-        const errorJson = await response.json();
-        console.log(errorJson);
         throw {
-            message: errorJson.message || response.statusText,
+            message: responseJson.message || response.statusText,
             status: response.status,
-            errorCode: errorJson.errorCode || String(response.status),
+            errorCode: responseJson.errorCode || String(response.status),
         };
     }
 
-    const authorization = response.headers.get('Authorization');
-    const refreshToken = response.headers.get('Refresh-Token');
-    const responseJson: Response = await response.json();
-    if (param.url === '/member/login' && authorization != null && refreshToken != null) {
-        result.authorization = authorization;
-        result.refreshToken = refreshToken;
-        result.result = responseJson.result;
-    } else {
-        if (responseJson) {
-            result.errorCode = responseJson.errorCode;
-            result.message = responseJson.message;
-            result.result = responseJson.result;
-        }
-    }
+    result.errorCode = responseJson.errorCode;
+    result.message = responseJson.message;
+    result.result = responseJson.result;
 
-    return result;
+    return {
+        result,
+        //프록시타게하려면 쿠키도 같이보내야함 유실되기때문에
+        setCookie: response.headers.get('set-cookie'),
+    };
 };
 
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
-        const result = await _fetch(body as Request, req.headers);
-        return NextResponse.json(result);
-    } catch (error) {
+
+        const cookieHeader = req.headers.get('cookie') ?? '';
+        const { result, setCookie } = await _fetch(body as Request, cookieHeader);
+
+        const response = NextResponse.json(result);
+
+        if (setCookie) {
+            response.headers.set('set-cookie', setCookie);
+        }
+
+        if (body.url.includes('/logout')) {
+            response.cookies.set('accessToken', '', { path: '/', expires: new Date(0) });
+            response.cookies.set('refreshToken', '', { path: '/', expires: new Date(0)});
+        }
+        return response;
+    } catch (error: any) {
         return NextResponse.json(
             {
                 type: ResponseType.FAIL,

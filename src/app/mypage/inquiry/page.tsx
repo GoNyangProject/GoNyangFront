@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useMemo, useState } from 'react';
 import { INQUIRY_COLUMNS } from '../../../../constants/table-init';
 import InquiryTable from '../../../../components/atom/InquiryTable';
@@ -6,16 +7,19 @@ import Input from '../../../../components/atom/Input';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { InquiryStatus } from '../../../../enum/InquiryStatus';
-import { DropdownOption, DropdownOptions, DropdownWrapper, InquiryWrapper, SearchInputWrapper } from '../../../../styles/pages/mypage/Inquiry';
+import { DropdownOption, DropdownOptions, DropdownWrapper, InquiryHeader, InquiryWrapper, SearchInputWrapper } from '../../../../styles/pages/mypage/Inquiry';
 import axiosInstance from '../../../../libs/axios';
 import { userStore } from '../../../../store/userStore';
-import useSWR from 'swr';
+import useSWR, {mutate} from 'swr';
 import { InquiryDetailResponse, InquiryResponse, InquiryTableRow } from '../../../../types/Common';
 import Pagination from '../../../../components/molecules/Pagination';
 import { Post } from '../../../../service/crud';
 import InquiryDetailCard from '../../../../components/molecules/InquiryDetailCard';
+import Button from '../../../../components/atom/Button';
+import InquiryQuestion from '../../../../components/molecules/InquiryQuestion';
 
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
+
 const Page = () => {
     const [statusOpen, setStatusOpen] = useState(false);
     const [selectedStatus, setSelectedStatus] = useState<InquiryStatus>(InquiryStatus.ALL);
@@ -23,10 +27,12 @@ const Page = () => {
     const [appliedKeyword, setAppliedKeyword] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedInquiry, setSelectedInquiry] = useState<InquiryDetailResponse | null>(null);
+    const [isWriting, setIsWriting] = useState(false);
 
     const rowsPerPage = 5;
     const { userData } = userStore();
-    const { data: user_inquiry } = useSWR(
+
+    const { data: user_inquiry = [] } = useSWR(
         {
             url: `/mypage/inquiry?userId=${userData.userId}`,
             method: 'GET',
@@ -35,10 +41,11 @@ const Page = () => {
         {
             revalidateOnFocus: false,
             revalidateOnReconnect: false,
-            fallbackData: [],
         },
     );
+
     const statusOptions = Object.values(InquiryStatus);
+
     const inquiryRows: InquiryTableRow[] = useMemo(
         () =>
             user_inquiry.map((inquiry: InquiryResponse) => ({
@@ -49,6 +56,7 @@ const Page = () => {
             })),
         [user_inquiry],
     );
+
     const filteredRows: InquiryTableRow[] = useMemo(
         () =>
             inquiryRows
@@ -56,75 +64,98 @@ const Page = () => {
                 .filter((row) => row.title.toLowerCase().includes(appliedKeyword.toLowerCase())),
         [inquiryRows, selectedStatus, appliedKeyword],
     );
+
     const totalPage = Math.ceil(filteredRows.length / rowsPerPage);
+
     const paginatedRows = useMemo(() => filteredRows.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage), [filteredRows, currentPage]);
-    const handleCellClick = (key: string, rowData: any) => {
+
+    const handleCellClick = (_key: string, rowData: any) => {
         const payload = { inquiryNumber: rowData.inquiryNumber };
+
         Post(
             '/mypage/inquiry',
             payload,
             (response) => {
-                setSelectedInquiry(response.result as unknown as InquiryDetailResponse);
-                setStatusOpen(false);
+                setSelectedInquiry(response.result as InquiryDetailResponse);
             },
             false,
         );
     };
+
     return (
         <InquiryWrapper>
-            <h1>내 문의함</h1>
-
-            {selectedInquiry ? (
-                <InquiryDetailCard inquiry={selectedInquiry} onBack={() => setSelectedInquiry(null)} />
+            {isWriting ? (
+                <InquiryQuestion
+                    onBack={() => setIsWriting(false)}
+                    onSuccess={() => {
+                        setIsWriting(false);
+                        mutate({
+                            url: `/mypage/inquiry?userId=${userData.userId}`,
+                            method: 'GET',
+                        });
+                    }}
+                />
             ) : (
                 <>
-                    <div style={{ display: 'flex', gap: '10px' }}>
-                        <SearchInputWrapper>
-                            <Input
-                                style={{
-                                    backgroundColor: 'white',
-                                    padding: '5px 10px',
-                                    border: 'none',
-                                    fontSize: '20px',
-                                    boxShadow: 'none',
-                                }}
-                                width="100%"
-                                placeholder="검색어를 입력해주세요"
-                                value={searchKeyword}
-                                onChange={(e) => setSearchKeyword(e.target.value)}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter') {
-                                        setAppliedKeyword(searchKeyword);
-                                    }
-                                }}
-                            />
-                            <FontAwesomeIcon icon={faMagnifyingGlass} color="gray" cursor="pointer" style={{ padding: '5px' }} />
-                        </SearchInputWrapper>
+                    <InquiryHeader>
+                        <h1>내 문의함</h1>
+                        {!selectedInquiry && <Button onClick={() => setIsWriting(true)}>1:1 문의하기</Button>}
+                    </InquiryHeader>
 
-                        <DropdownWrapper onClick={() => setStatusOpen((prev) => !prev)}>
-                            {selectedStatus}
-                            <FontAwesomeIcon icon={faChevronDown} color="gray" />
-                            {statusOpen && (
-                                <DropdownOptions>
-                                    {statusOptions.map((status) => (
-                                        <DropdownOption
-                                            key={status}
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                setSelectedStatus(status as InquiryStatus);
-                                                setStatusOpen(false);
-                                            }}
-                                        >
-                                            {status}
-                                        </DropdownOption>
-                                    ))}
-                                </DropdownOptions>
-                            )}
-                        </DropdownWrapper>
-                    </div>
+                    {selectedInquiry ? (
+                        <InquiryDetailCard inquiry={selectedInquiry} onBack={() => setSelectedInquiry(null)} />
+                    ) : (
+                        <>
+                            <div style={{ display: 'flex', gap: '10px' }}>
+                                <SearchInputWrapper>
+                                    <Input
+                                        style={{
+                                            backgroundColor: 'white',
+                                            padding: '5px 10px',
+                                            border: 'none',
+                                            fontSize: '20px',
+                                            boxShadow: 'none',
+                                        }}
+                                        width="100%"
+                                        placeholder="검색어를 입력해주세요"
+                                        value={searchKeyword}
+                                        onChange={(e) => setSearchKeyword(e.target.value)}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                setAppliedKeyword(searchKeyword);
+                                            }
+                                        }}
+                                    />
+                                    <FontAwesomeIcon icon={faMagnifyingGlass} color="gray" style={{ padding: '5px' }} />
+                                </SearchInputWrapper>
 
-                    <InquiryTable columns={INQUIRY_COLUMNS} rows={paginatedRows} readOnly={true} clickKeys={['title']} onCellClick={handleCellClick} />
-                    <Pagination currentPage={currentPage} totalPage={totalPage} changePage={setCurrentPage}></Pagination>
+                                <DropdownWrapper onClick={() => setStatusOpen((prev) => !prev)}>
+                                    {selectedStatus}
+                                    <FontAwesomeIcon icon={faChevronDown} color="gray" />
+                                    {statusOpen && (
+                                        <DropdownOptions>
+                                            {statusOptions.map((status) => (
+                                                <DropdownOption
+                                                    key={status}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        setSelectedStatus(status as InquiryStatus);
+                                                        setStatusOpen(false);
+                                                    }}
+                                                >
+                                                    {status}
+                                                </DropdownOption>
+                                            ))}
+                                        </DropdownOptions>
+                                    )}
+                                </DropdownWrapper>
+                            </div>
+
+                            <InquiryTable columns={INQUIRY_COLUMNS} rows={paginatedRows} readOnly clickKeys={['title']} onCellClick={handleCellClick} />
+
+                            <Pagination currentPage={currentPage} totalPage={totalPage} changePage={setCurrentPage} />
+                        </>
+                    )}
                 </>
             )}
         </InquiryWrapper>

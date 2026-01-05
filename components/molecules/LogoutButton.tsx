@@ -1,19 +1,25 @@
 import React from 'react';
 import { HeaderLoginWrapper } from '../../styles/components/molecules/Header';
-import { useRouter } from 'next/navigation';
 import Button from '../atom/Button';
 import { userStore } from '../../store/userStore';
-
-const initialUserStoreState = userStore.getState();
+import { Post } from '../../service/crud';
+import { useRouter } from 'next/navigation';
 
 const LogoutButton = () => {
     const router = useRouter();
     const handleClickLogout = () => {
-        localStorage.clear();
-        userStore.persist.clearStorage();
-        userStore.setState(initialUserStoreState, true);
-        router.push('/member/login');
-        router.refresh();
+        const payload = {};
+        Post(
+            '/member/logout',
+            payload,
+            () => {
+                userStore.getState().reset();
+                userStore.persist.clearStorage();
+                router.push('/member/login');
+                router.refresh();
+            },
+            false,
+        );
     };
 
     return (

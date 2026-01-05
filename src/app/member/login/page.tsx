@@ -4,10 +4,11 @@ import Card from '../../../../components/atom/Card';
 import { LoginFormWrapper, LoginLayoutMain, LoginLayoutWrapper, LoginTitle } from '../../../../styles/pages/member/Login';
 import Input from '../../../../components/atom/Input';
 import Button from '../../../../components/atom/Button';
-import { Post } from '../../../../service/crud';
 import { useRouter } from 'next/navigation';
 import { ButtonWrapper } from '../../../../styles/components/molecules/Header';
 import { User, userStore } from '../../../../store/userStore';
+import SocialLoginButtons from '../../../../components/molecules/SocialLoginButtons';
+import { Post } from '../../../../service/crud';
 
 const Page = () => {
     const router = useRouter();
@@ -25,10 +26,13 @@ const Page = () => {
             '/member/login',
             payload,
             (response) => {
-                if (response.errorCode == '0000') {
+                if (response.type == 'SUCCESS') {
                     const userData: User = response.result as User;
                     setUserData(userData);
                     router.push('/');
+                } else {
+                    alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+                    router.push('/member/login');
                 }
             },
             false,
@@ -48,7 +52,7 @@ const Page = () => {
                         padding: '20px 30px',
                         display: 'flex',
                         flexDirection: 'column',
-                        overflowY: 'auto',
+                        overflowY: 'hidden',
                         alignItems: 'center',
                         justifyContent: 'center',
                         backgroundColor: 'white',
@@ -100,6 +104,7 @@ const Page = () => {
                                 회원가입
                             </Button>
                         </ButtonWrapper>
+                        <SocialLoginButtons></SocialLoginButtons>
                     </LoginFormWrapper>
                 </Card>
             </LoginLayoutMain>

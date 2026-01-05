@@ -12,26 +12,23 @@ const Header = () => {
     const router = useRouter();
 
     const userData = userStore((state) => state.userData);
-    const isLoggedIn = !!userData.memberId;
+    const isLoggedIn = Boolean(userData?.memberId);
 
     return (
         <HeaderWrapper>
             <NavMenu />
             <HeaderLogo onClick={() => router.push('/')}>로고부분이에요</HeaderLogo>
+
             <UserWrapper>
                 {isLoggedIn ? (
                     <>
-                        <LogoutButton />
                         <MypageButton />
+                        <LogoutButton />
                     </>
                 ) : (
                     <LoginButton />
                 )}
             </UserWrapper>
-            {/*<UserWrapper>*/}
-            {/*    <LoginButton />*/}
-            {/*    <LogoutButton />*/}
-            {/*</UserWrapper>*/}
         </HeaderWrapper>
     );
 };

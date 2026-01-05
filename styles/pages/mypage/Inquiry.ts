@@ -1,5 +1,12 @@
 import styled from 'styled-components';
 
+export const InquiryHeader = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+`;
+
 export const InquiryWrapper = styled.div`
     width: 40%;
     display: flex;

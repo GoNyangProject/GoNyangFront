@@ -1,15 +1,16 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from '../../components/atom/Button';
 import Select from '../../components/atom/Select';
 import type { SelectOption } from '../../types/Common';
 import Table from '../../components/atom/Table';
 import { TEST_TABLE_COLUMNS } from '../../constants/table-init';
-import { useDialogStore } from '../../store/dialogStore';
 import Card from '../../components/atom/Card';
 import { userStore } from '../../store/userStore';
 import TossPayButton from '../../components/atom/TossPayButton';
 import { PaymentsType } from '../../enum/PaymentsType';
+import useSWR from 'swr';
+import axiosInstance from '../../libs/axios';
 
 const SelectOption = [
     {
@@ -30,11 +31,29 @@ const TEST_TABLE_ROWS = [
     { test1: '2번', test2: '김성우', test3: '두 번째 테스트' },
     { test1: '3번', test2: '박지원', test3: '세 번째 테스트' },
 ];
+
 const orderName = encodeURIComponent('테스트 상품');
 const customerName = encodeURIComponent('강인구');
+const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
 const Page = () => {
-    const { selectedDialogs } = useDialogStore();
-    const { userData } = userStore();
+    const { setUserData } = userStore();
+    const { data: user_data } = useSWR(
+        {
+            url: `/auth/me`,
+            method: 'GET',
+        },
+        fetcher,
+        {
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+        },
+    );
+    useEffect(() => {
+        if (user_data) {
+            setUserData(user_data);
+        }
+    }, [user_data, setUserData]);
+
     const handleClickBtn = () => {
         alert('버튼 클릭');
     };
