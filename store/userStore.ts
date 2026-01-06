@@ -5,10 +5,11 @@ export type User = {
     memberId: string;
     userId: string;
     username: string;
+    role: string;
 };
 
 interface UserState {
-    userData: User;
+    userData: User | null;
     setUserData: (userData: User) => void;
     reset: () => void;
 }
@@ -16,13 +17,12 @@ interface UserState {
 export const userStore = create(
     persist<UserState>(
         (set) => ({
-            userData: { memberId: '', userId: '', username: '' },
+            userData: null,
             setUserData: (userData) => set({ userData }),
-            reset: () =>
-                set({
-                    userData: { memberId: '', userId: '', username: '' },
-                }),
+            reset: () => set({ userData: null }),
         }),
-        { name: 'user-storage' },
+        {
+            name: 'user-storage',
+        },
     ),
 );

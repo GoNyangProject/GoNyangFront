@@ -5,7 +5,7 @@ import { LoginFormWrapper, LoginLayoutMain, LoginLayoutWrapper, LoginTitle } fro
 import Input from '../../../../components/atom/Input';
 import Button from '../../../../components/atom/Button';
 import { useRouter } from 'next/navigation';
-import { ButtonWrapper } from '../../../../styles/components/molecules/Header';
+import { ButtonWrapper } from '../../../../styles/components/molecules/Header/Header';
 import { User, userStore } from '../../../../store/userStore';
 import SocialLoginButtons from '../../../../components/molecules/SocialLoginButtons';
 import { Post } from '../../../../service/crud';

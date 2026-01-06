@@ -1,5 +1,5 @@
 import React from 'react';
-import { HeaderLoginWrapper } from '../../styles/components/molecules/Header';
+import { HeaderLoginWrapper } from '../../styles/components/molecules/Header/Header';
 import Button from '../atom/Button';
 import { userStore } from '../../store/userStore';
 import { Post } from '../../service/crud';
