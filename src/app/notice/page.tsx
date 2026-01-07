@@ -1,6 +1,6 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import { NoticeCardWrapper } from '../../../styles/pages/menu/Notice';
+import React, { useMemo, useState } from 'react';
+import { NoticeCardWrapper, SearchWrapper } from '../../../styles/pages/menu/Notice';
 import { MainWrapper } from '../../../styles/pages/Main';
 import Input from '../../../components/atom/Input';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,21 +12,24 @@ import { NoticeInfo } from '../../../types/Common';
 import axiosInstance from '../../../libs/axios';
 import useSWR from 'swr';
 import { BoardType } from '../../../enum/BoardType';
+import Pagination from '../../../components/molecules/Pagination';
+import { useRouter } from 'next/navigation';
 
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
-
+const SIZE = 10;
 const Page = () => {
+    const router = useRouter();
     const [currentKeyword, setCurrentKeyword] = useState<string>('');
     const [searchKeyword, setSearchKeyword] = useState<string>('');
+    const [page, setPage] = useState<number>(1);
 
-    const handleClickNotice = (key: string, rowData: NoticeInfo, event: React.MouseEvent) => {
-        // 특정 데이터를 활용해 알림창 띄우기
-        alert(`${rowData.title} 글을 클릭하셨습니다!`);
+    const handleClickNotice = (key: string, noticeData: NoticeInfo, event: React.MouseEvent) => {
+        router.push(`/notice/detail?notice=${noticeData.id}`);
     };
 
     const { data: notice_data } = useSWR(
         {
-            url: `/board?boardCode=${BoardType.NOTICE}&searchKeyword=${searchKeyword}`,
+            url: `/board?boardCode=${BoardType.NOTICE}&searchKeyword=${searchKeyword}&size=${SIZE}&page=${page}`,
             method: 'GET',
         },
         fetcher,
@@ -37,41 +40,55 @@ const Page = () => {
         },
     );
 
-    useEffect(() => {
-        console.log(notice_data);
+    const noticeDataRows = useMemo(() => {
+        if (!notice_data || !Array.isArray(notice_data.boards)) {
+            return [];
+        }
+        return notice_data.boards.map((notice: NoticeInfo) => ({
+            id: notice.id,
+            title: notice.title,
+            content: notice.content,
+            createdAt: notice.createdAt,
+        }));
     }, [notice_data]);
+
+    const totalPage = Math.ceil(notice_data.totalCount / SIZE);
 
     return (
         <MainWrapper style={{ padding: '25px' }}>
             <NoticeCardWrapper>
-                <SearchInputWrapper>
-                    <Input
-                        style={{
-                            backgroundColor: 'white',
-                            padding: '5px 10px',
-                            border: 'none',
-                            fontSize: '20px',
-                            boxShadow: 'none',
-                        }}
-                        width="100%"
-                        placeholder="검색어를 입력해주세요"
-                        value={currentKeyword}
-                        onChange={(e) => setCurrentKeyword(e.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                                setSearchKeyword(currentKeyword);
-                            }
-                        }}
-                    />
-                    <FontAwesomeIcon
-                        icon={faMagnifyingGlass}
-                        color="gray"
-                        cursor="pointer"
-                        style={{ padding: '5px' }}
-                        onClick={() => setSearchKeyword(currentKeyword)}
-                    />
-                </SearchInputWrapper>
-                <Table columns={NOTICE_COLUMNS} rows={notice_data} readOnly={true} clickKeys={['title']} onCellClick={handleClickNotice} />
+                <h1>공지사항</h1>
+                <SearchWrapper>
+                    <SearchInputWrapper>
+                        <Input
+                            style={{
+                                backgroundColor: 'white',
+                                padding: '5px 10px',
+                                border: 'none',
+                                fontSize: '20px',
+                                boxShadow: 'none',
+                            }}
+                            width="100%"
+                            placeholder="검색어를 입력해주세요"
+                            value={currentKeyword}
+                            onChange={(e) => setCurrentKeyword(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    setSearchKeyword(currentKeyword);
+                                }
+                            }}
+                        />
+                        <FontAwesomeIcon
+                            icon={faMagnifyingGlass}
+                            color="gray"
+                            cursor="pointer"
+                            style={{ padding: '5px' }}
+                            onClick={() => setSearchKeyword(currentKeyword)}
+                        />
+                    </SearchInputWrapper>
+                    <Table columns={NOTICE_COLUMNS} rows={noticeDataRows} readOnly={true} clickKeys={['title']} onCellClick={handleClickNotice} />
+                    <Pagination currentPage={page} totalPage={totalPage} changePage={setPage}></Pagination>
+                </SearchWrapper>
             </NoticeCardWrapper>
         </MainWrapper>
     );

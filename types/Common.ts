@@ -92,5 +92,7 @@ export type BookInfo = {
 export type NoticeInfo = {
     id: number;
     title: string;
+    content: string;
     createdAt: string;
+    totalCount: number;
 };

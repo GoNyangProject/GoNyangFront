@@ -34,6 +34,10 @@ const CalendarDialog = ({ bookData, setCurrentTab, selectedMenu, setBookInfo }: 
         return bookData.filter((book: Book) => formatDate(new Date(book.bookDate)) === formatDate(selectedDate));
     }, [bookData, selectedDate]);
 
+    useEffect(() => {
+        console.log(currentBookData);
+    }, [currentBookData]);
+
     const handlePayBook = () => {
         if (!selectedTime) {
             alert('예약하실 시간을 선택해 주세요');
@@ -75,7 +79,7 @@ const CalendarDialog = ({ bookData, setCurrentTab, selectedMenu, setBookInfo }: 
                     alignItems: 'center',
                 }}
             >
-                <ServiceCard style={{ flexDirection: 'column', border: 'none', boxShadow: 0 }}>
+                <ServiceCard style={{ flexDirection: 'column', border: 'none' }}>
                     <ServiceName>{selectedMenu?.menuName}</ServiceName>
                     <ServiceDescription>{selectedMenu?.content}</ServiceDescription>
                     <DetailsRow>
@@ -109,7 +113,7 @@ const CalendarDialog = ({ bookData, setCurrentTab, selectedMenu, setBookInfo }: 
                         {Object.values(BookingTimes).map((time) => {
                             const timeHour = parseInt(time.split(':')[0]);
 
-                            const isBooked = currentBookData.find((book: Book) => new Date(book.bookDate).getHours() === timeHour);
+                            const isBooked = currentBookData.find((book: Book) => new Date(book.bookDate).getHours() === timeHour && book.deletedAt == null);
 
                             return (
                                 <Button
