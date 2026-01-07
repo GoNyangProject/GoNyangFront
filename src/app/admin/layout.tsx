@@ -20,7 +20,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const { userData, reset } = userStore();
     const [isClient, setIsClient] = useState(false); // Hydration 이슈 방지
 
-    const { data: user_data } = useSWR(
+    const { data: user_data, error } = useSWR(
         {
             url: `/auth/me`,
             method: 'GET',
@@ -31,18 +31,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             revalidateOnReconnect: false,
         },
     );
-    console.log(user_data);
     useEffect(() => {
         setIsClient(true); // 클라이언트 측에서 마운트되었음을 표시
     }, []);
 
     useEffect(() => {
         if (!isClient) return; // 클라이언트 측에서만 동작
-        if (!userData || userData.role !== 'ROLE_ADMIN') {
+        const isLocalAdmin = userData?.role === 'ROLE_ADMIN';
+        const isServerAdmin = user_data?.role === 'ROLE_ADMIN';
+        if (!isLocalAdmin || !isServerAdmin || error) {
             alert('관리자 권한이 필요합니다.');
             reset();
-            router.push('/member/login'); // 로그인 페이지로 리다이렉트
-            return;
+            router.push('/member/login');
         }
     }, [userData, router, reset, isClient]);
     return (

@@ -25,7 +25,7 @@ export const Td = styled.td<{ $isClick?: boolean }>`
     padding: 0 12px;
     line-height: 1.5;
     cursor: ${(props) => (props.$isClick ? 'pointer' : 'default')};
-    text-align: center;
+    text-align: left;
 `;
 
 export const Tr = styled.tr`

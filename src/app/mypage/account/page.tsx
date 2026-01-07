@@ -35,12 +35,12 @@ const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload
 const Page = () => {
     const { userData } = userStore();
 
-    const isUserValid = !!userData.userId;
+    const isUserValid = !!userData?.userId;
 
     const { data: user_account } = useSWR(
         isUserValid
             ? {
-                  url: `/mypage/useraccount?userId=${userData.userId}`,
+                  url: `/mypage/useraccount?userId=${userData?.userId}`,
                   method: 'GET',
               }
             : null,
@@ -124,7 +124,7 @@ const Page = () => {
 
     const handleSave = async (field: AccountFieldsType | PetInfoType, newValue: string) => {
         const fieldType = Object.keys(AccountFieldsType).find((key) => AccountFieldsType[key as keyof typeof AccountFieldsType] === field);
-        const payload = { userId: userData.userId, fieldType, value: newValue };
+        const payload = { userId: userData?.userId, fieldType, value: newValue };
 
         const errorMsg = modifyValidateField(field, newValue);
         if (errorMsg) {
@@ -143,7 +143,7 @@ const Page = () => {
             '/mypage/useraccount/profile',
             payload,
             () => {
-                mutate({ url: `/mypage/useraccount?userId=${userData.userId}`, method: 'GET' });
+                mutate({ url: `/mypage/useraccount?userId=${userData?.userId}`, method: 'GET' });
             },
             false,
         );
@@ -170,7 +170,7 @@ const Page = () => {
         if (!confirmDelete) return;
         const targetPet = pets[currentPetIndex];
         if (!targetPet.petId) return;
-        const payload = { userId: userData.userId, petId: targetPet.petId };
+        const payload = { userId: userData?.userId, petId: targetPet.petId };
         Post(
             '/mypage/useraccount/profile/pet/delete',
             payload,
@@ -239,7 +239,7 @@ const Page = () => {
         }
 
         const payload = {
-            userId: userData.userId,
+            userId: userData?.userId,
             petId: targetPet.petId,
             name: targetPet[PetInfoType.NAME],
             breed: targetPet[PetInfoType.Breed],
@@ -253,7 +253,7 @@ const Page = () => {
             '/mypage/useraccount/profile/pet',
             payload,
             () => {
-                mutate({ url: `/mypage/useraccount?userId=${userData.userId}`, method: 'GET' });
+                mutate({ url: `/mypage/useraccount?userId=${userData?.userId}`, method: 'GET' });
                 setIsPetEditMode(false);
                 setPetValidationErrors({});
             },

@@ -88,3 +88,19 @@ export type BookInfo = {
     userData: User;
     bookDate: string;
 };
+
+export type AdminMemberList = {
+    id: number;
+    displayName: string;
+    createdAt: string;
+    useCount: number;
+    totalSpentAmount: number;
+    status: string;
+    memo: string;
+};
+
+// export type AdminMemberResponse = {
+//     content: AdminMemberList;
+//     totalPages: number;
+//     totalElements: number;
+// };

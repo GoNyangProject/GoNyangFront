@@ -30,3 +30,23 @@ export const Post = (url: string, payload: object, callback?: (response: Respons
             if (isAlert) alert(response.message);
         });
 };
+
+export const Get = (url: string, callback?: (response: Response) => void) => {
+    const response: Response = {
+        type: ResponseType.SUCCESS,
+        errorCode: '0000',
+    };
+
+    axiosInstance
+        .post('/api/backend', {
+            url,
+            method: 'GET',
+        })
+        .then((res) => {
+            response.result = res.data.result;
+            if (typeof callback === 'function') callback(response);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+};
