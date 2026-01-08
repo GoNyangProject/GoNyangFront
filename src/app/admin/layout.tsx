@@ -29,6 +29,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {
             revalidateOnFocus: false,
             revalidateOnReconnect: false,
+            fallbackData: [],
         },
     );
     useEffect(() => {
@@ -37,7 +38,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     useEffect(() => {
         if (!isClient) return; // 클라이언트 측에서만 동작
-        const isLocalAdmin = userData?.role === 'ROLE_ADMIN';
+        const isLocalAdmin = userData?.userType === 'ROLE_ADMIN';
         const isServerAdmin = user_data?.role === 'ROLE_ADMIN';
         if (!isLocalAdmin || !isServerAdmin || error) {
             alert('관리자 권한이 필요합니다.');

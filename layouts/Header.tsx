@@ -20,7 +20,7 @@ const Header = () => {
 
     const userData = userStore((state) => state.userData);
     const isLoggedIn = Boolean(userData?.memberId);
-    const isAdmin = userData?.role === 'ROLE_ADMIN';
+    const isAdmin = userData?.userType === 'ROLE_ADMIN';
 
     return (
         <HeaderWrapper>
