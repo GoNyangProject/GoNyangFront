@@ -166,7 +166,7 @@ const Page = () => {
         if (!confirmDelete) return;
         const targetPet = pets[currentPetIndex];
         if (!targetPet.petId) return;
-        const payload = { userId: userData.userId, petId: targetPet.petId };
+        const payload = { userId: userData?.userId, petId: targetPet.petId };
         Post(
             '/mypage/useraccount/profile/pet/delete',
             payload,
@@ -235,7 +235,7 @@ const Page = () => {
         }
 
         const payload = {
-            userId: userData.userId,
+            userId: userData?.userId,
             petId: targetPet.petId,
             name: targetPet[PetInfoType.NAME],
             breed: targetPet[PetInfoType.Breed],
@@ -249,7 +249,7 @@ const Page = () => {
             '/mypage/useraccount/profile/pet',
             payload,
             () => {
-                mutate({ url: `/mypage/useraccount?userId=${userData.userId}`, method: 'GET' });
+                mutate({ url: `/mypage/useraccount?userId=${userData?.userId}`, method: 'GET' });
                 setIsPetEditMode(false);
                 setPetValidationErrors({});
             },

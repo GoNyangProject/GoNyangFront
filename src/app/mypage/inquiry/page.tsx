@@ -10,7 +10,7 @@ import { InquiryStatus } from '../../../../enum/InquiryStatus';
 import { DropdownOption, DropdownOptions, DropdownWrapper, InquiryHeader, InquiryWrapper, SearchInputWrapper } from '../../../../styles/pages/mypage/Inquiry';
 import axiosInstance from '../../../../libs/axios';
 import { userStore } from '../../../../store/userStore';
-import useSWR, {mutate} from 'swr';
+import useSWR, { mutate } from 'swr';
 import { InquiryDetailResponse, InquiryResponse, InquiryTableRow } from '../../../../types/Common';
 import Pagination from '../../../../components/molecules/Pagination';
 import { Post } from '../../../../service/crud';
@@ -34,7 +34,7 @@ const Page = () => {
 
     const { data: user_inquiry = [] } = useSWR(
         {
-            url: `/mypage/inquiry?userId=${userData.userId}`,
+            url: `/mypage/inquiry?userId=${userData?.userId}`,
             method: 'GET',
         },
         fetcher,
@@ -90,7 +90,7 @@ const Page = () => {
                     onSuccess={() => {
                         setIsWriting(false);
                         mutate({
-                            url: `/mypage/inquiry?userId=${userData.userId}`,
+                            url: `/mypage/inquiry?userId=${userData?.userId}`,
                             method: 'GET',
                         });
                     }}
