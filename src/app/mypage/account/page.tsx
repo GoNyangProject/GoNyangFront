@@ -35,11 +35,9 @@ const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload
 const Page = () => {
     const { userData } = userStore();
 
-    const isUserValid = !!userData.userId;
-
     const { data: user_account } = useSWR(
         {
-            url: `/mypage/useraccount?userId=${userData.userId}`,
+            url: `/mypage/useraccount?userId=${userData?.userId}`,
             method: 'GET',
         },
         fetcher,
@@ -122,7 +120,7 @@ const Page = () => {
 
     const handleSave = async (field: AccountFieldsType | PetInfoType, newValue: string) => {
         const fieldType = Object.keys(AccountFieldsType).find((key) => AccountFieldsType[key as keyof typeof AccountFieldsType] === field);
-        const payload = { userId: userData.userId, fieldType, value: newValue };
+        const payload = { userId: userData?.userId, fieldType, value: newValue };
 
         const errorMsg = modifyValidateField(field, newValue);
         if (errorMsg) {
@@ -141,7 +139,7 @@ const Page = () => {
             '/mypage/useraccount/profile',
             payload,
             () => {
-                mutate({ url: `/mypage/useraccount?userId=${userData.userId}`, method: 'GET' });
+                mutate({ url: `/mypage/useraccount?userId=${userData?.userId}`, method: 'GET' });
             },
             false,
         );

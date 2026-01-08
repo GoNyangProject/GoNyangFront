@@ -56,7 +56,7 @@ const Mypage = ({ children }: MypageProps) => {
             <MenuBarWrapper>
                 <MenuBarHeader>
                     <MypageLogo />
-                    <MypageUser>{userData.userId}</MypageUser>
+                    <MypageUser>{userData?.userId}</MypageUser>
                 </MenuBarHeader>
                 <MenuBarBody>
                     <Button

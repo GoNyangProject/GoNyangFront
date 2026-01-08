@@ -32,8 +32,6 @@ import axiosInstance from '../../libs/axios';
 import { Menu } from '../../types/Common';
 import Card from '../../components/atom/Card';
 
-const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
-
 // const SelectOption = [
 //     {
 //         value: '1',
@@ -54,30 +52,26 @@ const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload
 //     { test1: '3번', test2: '박지원', test3: '세 번째 테스트' },
 // ];
 
-const orderName = encodeURIComponent('테스트 상품');
-const customerName = encodeURIComponent('강인구');
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
 const Page = () => {
     const { setUserData } = userStore();
-    const { data: user_data } = useSWR(
-        {
-            url: `/auth/me`,
-            method: 'GET',
-        },
-        fetcher,
-        {
-            revalidateOnFocus: false,
-            revalidateOnReconnect: false,
-        },
-    );
-    useEffect(() => {
-        if (user_data) {
-            setUserData(user_data);
-        }
-    }, [user_data, setUserData]);
+    // const { data: user_data } = useSWR(
+    //     {
+    //         url: `/auth/me`,
+    //         method: 'GET',
+    //     },
+    //     fetcher,
+    //     {
+    //         revalidateOnFocus: false,
+    //         revalidateOnReconnect: false,
+    //     },
+    // );
+    // useEffect(() => {
+    //     if (user_data) {
+    //         setUserData(user_data);
+    //     }
+    // }, [user_data, setUserData]);
 
-    const handleClickBtn = () => {
-        alert('버튼 클릭');
     const router = useRouter();
     const { selectedDialogs } = useDialogStore();
     const { userData } = userStore();

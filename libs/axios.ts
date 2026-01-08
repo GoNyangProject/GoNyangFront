@@ -56,7 +56,7 @@ axiosInstance.interceptors.response.use(
         const status = error.response?.status;
         if (status === 401) {
             alert('로그인이 필요합니다.');
-            window.location.href = '/member/login';
+            // window.location.href = '/member/login';
         } else if (status === 403) {
             alert('권한이 없습니다.');
         }
