@@ -33,15 +33,11 @@ const Page = () => {
         closeDialog(DialogType.BOOK_DETAIL);
     }, []);
 
-    const isMemberIdValid = !!userData.memberId;
-
     const { data: book_data } = useSWR(
-        isMemberIdValid
-            ? {
-                  url: `/mypage/book?memberId=${userData.memberId}`,
-                  method: 'GET',
-              }
-            : null,
+        {
+            url: `/mypage/book?memberId=${userData.memberId}`,
+            method: 'GET',
+        },
         fetcher,
         {
             revalidateOnFocus: false,

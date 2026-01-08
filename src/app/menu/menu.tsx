@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ButtonWrapper, MenuContent, MenuImg, MenuMainWrapper, MenuName, MenuTitle, MenuWrapper } from '../../../styles/pages/menu/Menu';
 import Button from '../../../components/atom/Button';
 import { Menu as MenuComponent } from '../../../types/Common';
 import { MenuType } from '../../../enum/Menu';
+import { userStore } from '../../../store/userStore';
+import { useRouter } from 'next/navigation';
 
 interface MenuProps {
     data: MenuComponent[];
@@ -11,7 +13,15 @@ interface MenuProps {
 }
 
 const Menu = ({ data, setCurrentTab, setSelectedMenu }: MenuProps) => {
+    const router = useRouter();
+    const { userData } = userStore();
     const handleClickBook = (id: number) => {
+        const isMemberIdValid = !!userData.memberId;
+        if (!isMemberIdValid) {
+            alert('로그인 후 예약가능합니다.');
+            router.push('/member/login');
+            return;
+        }
         const menu = data.find((menu) => menu.id === id);
         if (menu) {
             setSelectedMenu(menu);

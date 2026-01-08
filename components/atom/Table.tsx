@@ -118,7 +118,7 @@ const Table = ({
                                         resize={true}
                                         readOnly={readOnly}
                                         style={{
-                                            textAlign: 'z',
+                                            textAlign: 'left',
                                             border: '0',
                                             color: '#808080',
                                             fontWeight: '300',

@@ -88,3 +88,11 @@ export type BookInfo = {
     userData: User;
     bookDate: string;
 };
+
+export type NoticeInfo = {
+    id: number;
+    title: string;
+    content: string;
+    createdAt: string;
+    totalCount: number;
+};

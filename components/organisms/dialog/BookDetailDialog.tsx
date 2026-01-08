@@ -22,11 +22,11 @@ const BookDetailDialog = () => {
                 (response) => {
                     if (response.type === 'SUCCESS') {
                         alert('예약 취소가 완료되었습니다.');
+                        window.location.reload();
                     }
                 },
                 false,
             );
-            window.location.reload();
         }
     };
 

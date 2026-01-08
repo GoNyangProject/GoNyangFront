@@ -6,6 +6,7 @@ export type User = {
     userId: string;
     username: string;
     role: string;
+    userType: string;
 };
 
 interface UserState {

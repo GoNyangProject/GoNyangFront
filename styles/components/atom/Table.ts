@@ -1,39 +1,40 @@
 import styled from 'styled-components';
 
 export const TableWrapper = styled.table`
+    width: 100%;
     border-collapse: collapse;
-    text-align: center;
-    border-top: 1px solid rgba(166, 137, 103, 0.4);
+    text-align: left; /* 가운데 정렬 대신 왼쪽 정렬 */
 `;
 
 export const Th = styled.th`
-    height: 50px;
-    font-weight: 400;
-    box-sizing: border-box;
-    background: #a68967;
-    border-width: 1px 0;
-
-    & + th {
-        border-left: 1px solid rgba(87, 90, 95, 0.4);
-    }
-`;
-
-export const Tr = styled.tr`
-    border-bottom: 1px solid rgba(87, 90, 95, 0.4);
+    height: 48px;
+    font-weight: 500;
+    font-size: 14px;
+    color: #555;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0 12px;
+    line-height: 1.5;
 `;
 
 export const Td = styled.td<{ $isClick?: boolean }>`
-    height: 50px;
-    color: #000000;
-    font-weight: 300;
-    box-sizing: border-box;
-    cursor: ${(props) => (props.$isClick ? 'pointer' : '')};
-
-    & + td {
-        border-left: 1px solid rgba(87, 90, 95, 0.4);
-    }
+    height: 48px;
+    font-size: 14px;
+    color: #000;
+    font-weight: 400;
+    padding: 0 12px;
+    line-height: 1.5;
+    cursor: ${(props) => (props.$isClick ? 'pointer' : 'default')};
+    text-align: center;
 `;
 
+export const Tr = styled.tr`
+    border-bottom: 1px solid #e0e0e0;
+
+    &:nth-child(even) {
+        background-color: #fafafa; /* 홀짝 줄무늬 */
+    }
+`;
 export const Tbody = styled.tbody`
     text-align: center;
 `;

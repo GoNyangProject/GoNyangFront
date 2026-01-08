@@ -1,36 +1,58 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Button from '../../components/atom/Button';
-import Select from '../../components/atom/Select';
-import type { SelectOption } from '../../types/Common';
-import Table from '../../components/atom/Table';
-import { TEST_TABLE_COLUMNS } from '../../constants/table-init';
-import Card from '../../components/atom/Card';
+import { useDialogStore } from '../../store/dialogStore';
 import { userStore } from '../../store/userStore';
-import TossPayButton from '../../components/atom/TossPayButton';
-import { PaymentsType } from '../../enum/PaymentsType';
+import {
+    GroomerCardWrapper,
+    GroomerName,
+    GroomerSectionContainer,
+    HeroSectionContainer,
+    HeroSubtitle,
+    HeroTitle,
+    MainItemsWrapper,
+    MainWrapper,
+    MarqueeContainer,
+    MarqueeItem,
+    MarqueeTrack,
+    MenuCard,
+    MenuFadeWrapper,
+    MenuImageBox,
+    MenuName,
+    MenuScrollContainer,
+    MenuSection,
+    ProfileContent,
+    ProfileImage,
+    QualificationsList,
+    SectionHeader,
+} from '../../styles/pages/Main';
+import { useRouter } from 'next/navigation';
 import useSWR from 'swr';
 import axiosInstance from '../../libs/axios';
+import { Menu } from '../../types/Common';
+import Card from '../../components/atom/Card';
 
-const SelectOption = [
-    {
-        value: '1',
-        label: 'test1',
-    },
-    {
-        value: '2',
-        label: 'test2',
-    },
-    {
-        value: '3',
-        label: 'test3',
-    },
-];
-const TEST_TABLE_ROWS = [
-    { test1: '1번', test2: '강인구', test3: '첫 번째 테스트' },
-    { test1: '2번', test2: '김성우', test3: '두 번째 테스트' },
-    { test1: '3번', test2: '박지원', test3: '세 번째 테스트' },
-];
+const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
+
+// const SelectOption = [
+//     {
+//         value: '1',
+//         label: 'test1',
+//     },
+//     {
+//         value: '2',
+//         label: 'test2',
+//     },
+//     {
+//         value: '3',
+//         label: 'test3',
+//     },
+// ];
+// const TEST_TABLE_ROWS = [
+//     { test1: '1번', test2: '강인구', test3: '첫 번째 테스트' },
+//     { test1: '2번', test2: '김성우', test3: '두 번째 테스트' },
+//     { test1: '3번', test2: '박지원', test3: '세 번째 테스트' },
+// ];
 
 const orderName = encodeURIComponent('테스트 상품');
 const customerName = encodeURIComponent('강인구');
@@ -56,53 +78,185 @@ const Page = () => {
 
     const handleClickBtn = () => {
         alert('버튼 클릭');
+    const router = useRouter();
+    const { selectedDialogs } = useDialogStore();
+    const { userData } = userStore();
+    const scrollRef = useRef(null);
+    const [isDrag, setIsDrag] = useState(false);
+    const [startX, setStartX] = useState(0);
+    const [scrollPos, setScrollPos] = useState('left'); // 'left', 'middle', 'right', 'none'
+
+    useEffect(() => {
+        console.log(userData);
+    }, [userData]);
+
+    const handleScroll = (e) => {
+        const { scrollLeft, scrollWidth, clientWidth } = e.currentTarget;
+
+        const isAtStart = scrollLeft <= 5;
+        const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 5;
+
+        if (isAtStart && isAtEnd) setScrollPos('none');
+        else if (isAtStart) setScrollPos('left');
+        else if (isAtEnd) setScrollPos('right');
+        else setScrollPos('middle');
     };
 
-    const handleChangeOption = (option: SelectOption) => {
-        console.log(option);
+    const onDragStart = (e) => {
+        e.preventDefault();
+        setIsDrag(true);
+        setStartX(e.pageX + scrollRef.current.scrollLeft);
     };
+
+    const onDragEnd = () => {
+        setIsDrag(false);
+    };
+
+    const onDragMove = (e) => {
+        if (isDrag) {
+            scrollRef.current.scrollLeft = startX - e.pageX;
+        }
+    };
+
+    const handleClickBook = () => {
+        router.push('/menu');
+    };
+
+    const { data: menu_data } = useSWR(
+        {
+            url: `/menu`,
+            method: 'GET',
+        },
+        fetcher,
+        {
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+            fallbackData: [],
+        },
+    );
+
+    const { data: contract_data } = useSWR(
+        {
+            url: `/contract`,
+            method: 'GET',
+        },
+        fetcher,
+        {
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+            fallbackData: [],
+        },
+    );
 
     return (
-        <div style={{ display: 'flex', gap: '20px', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <Button onClick={handleClickBtn}>하이</Button>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <Select option={SelectOption} onChange={handleChangeOption} />
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <Table readOnly={true} columns={TEST_TABLE_COLUMNS} rows={TEST_TABLE_ROWS} isCheckbox={true} />
-            </div>
-            {/*<div style={{ display: 'flex', justifyContent: 'center' }}>*/}
-            {/*    <DatePicker />*/}
-            {/*</div>*/}
-            <Card
-                isOpen={true}
-                style={{
-                    width: '50%',
-                    padding: '20px 30px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    overflowY: 'auto',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
-                하응 기모찌 데스네 카드입니다
-            </Card>
-            {/*<CalendarDialog />*/}
-            <TossPayButton
-                method={PaymentsType.CARD}
-                options={{
-                    amount: 100,
-                    orderId: 'order_' + new Date().getTime(),
-                    orderName: '테스트 상품',
-                    customerName: '강인구',
-                    successUrl: `${window.location.origin}/payments?orderName=${orderName}&customerName=${customerName}&method=${PaymentsType.CARD}`,
-                    failUrl: `${window.location.origin}/payment/fail`,
-                }}
-            />
-        </div>
+        <MainWrapper>
+            <MainItemsWrapper>
+                {/*<div style={{ display: 'flex', justifyContent: 'center' }}>*/}
+                {/*    <Select option={SelectOption} onChange={handleChangeOption} />*/}
+                {/*</div>*/}
+                {/*<div style={{display: 'flex', justifyContent: 'center'}}>*/}
+                {/*    <Table readOnly={true} columns={TEST_TABLE_COLUMNS} rows={TEST_TABLE_ROWS} isCheckbox={true}/>*/}
+                {/*</div>*/}
+                <HeroSectionContainer>
+                    <HeroTitle>
+                        스트레스 없이 편안하게
+                        <br />
+                        냥이를 위한 프리미엄 미용 서비스
+                    </HeroTitle>
+                    <HeroSubtitle>
+                        전문 캣 그루머의 1:1 케어와 무마취/저자극 기술로
+                        <br />
+                        소중한 우리 아이의 행복한 미용 경험을 약속합니다.
+                    </HeroSubtitle>
+                    <Button
+                        onClick={handleClickBook}
+                        style={{
+                            fontSize: '1.2rem',
+                            padding: '15px 40px',
+                            backgroundColor: 'bisque',
+                            borderColor: 'bisque',
+                            color: '#4a3a2a',
+                            fontWeight: '700',
+                            borderRadius: '8px',
+                        }}
+                    >
+                        예약하러 가기
+                    </Button>
+                </HeroSectionContainer>
+                {/*<div style={{ width: '100%', backgroundColor: 'white', borderRadius: '10px', height: '60px' }} />*/}
+                <GroomerSectionContainer>
+                    <SectionHeader>전문 캣 그루머 소개</SectionHeader>
+                    <GroomerCardWrapper>
+                        {/* 캣 그루머 사진 영역 */}
+                        <ProfileImage />
+
+                        <ProfileContent>
+                            <GroomerName>김집사 그루머 (Kim Jip-sa)</GroomerName>
+                            <p style={{ color: '#4a3a2a', lineHeight: 1.6 }}>
+                                &#34;고양이의 언어와 컨디션을 최우선으로 생각합니다.&#34;
+                                <br />
+                                10년 경력의 캣 전문 미용사로, 반려묘의 스트레스를 최소화하는 무마취 저자극 미용 노하우를 보유하고 있습니다. 아이들이 편안함을
+                                느낄 때 최고의 아름다움이 나온다고 믿습니다.
+                            </p>
+
+                            <QualificationsList>
+                                <li>KFA 공인 캣 그루머 자격증 1급</li>
+                                <li>반려동물 행동 교정사 수료</li>
+                                <li>무마취/저자극 미용 경력 10년</li>
+                                <li>누적 미용 건수 5,000건 이상</li>
+                            </QualificationsList>
+                        </ProfileContent>
+                    </GroomerCardWrapper>
+                </GroomerSectionContainer>
+                <MenuSection>
+                    <SectionHeader>미용 서비스 메뉴</SectionHeader>
+                    <MenuFadeWrapper scrollPos={scrollPos}>
+                        <MenuScrollContainer
+                            ref={scrollRef}
+                            onScroll={handleScroll}
+                            onMouseDown={onDragStart}
+                            onMouseMove={onDragMove}
+                            onMouseUp={onDragEnd}
+                            onMouseLeave={onDragEnd}
+                        >
+                            {menu_data.map((menu: Menu) => (
+                                <MenuCard key={menu.id}>
+                                    <MenuImageBox>
+                                        {/* 이미지가 없을 경우를 대비해 배경색이나 placeholder 처리 가능 */}
+                                        <img src={`${process.env.NEXT_PUBLIC_MENU_URL}/${menu.id}.png`} alt={menu.menuName} />
+                                    </MenuImageBox>
+                                    <MenuName>{menu.menuName}</MenuName>
+                                </MenuCard>
+                            ))}
+                        </MenuScrollContainer>
+                    </MenuFadeWrapper>
+                </MenuSection>
+                <MarqueeContainer>
+                    <MarqueeTrack>
+                        {contract_data.map((contract) => (
+                            <MarqueeItem key={`${contract.name}`}>
+                                <img src={contract.imgUrl} alt={contract.name} />
+                            </MarqueeItem>
+                        ))}
+                    </MarqueeTrack>
+                </MarqueeContainer>
+                <Card
+                    isOpen={true}
+                    style={{
+                        width: '50%',
+                        padding: '20px 30px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        overflowY: 'auto',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    Card 컴포넌트
+                </Card>
+                {/*<CalendarDialog />*/}
+            </MainItemsWrapper>
+        </MainWrapper>
     );
 };
 
