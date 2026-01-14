@@ -112,3 +112,23 @@ export type AdminMemberList = {
 //     totalPages: number;
 //     totalElements: number;
 // };
+// types/admin/inquiry.ts (권장 위치)
+
+export type InquiryItem = {
+    id: number;
+    name: string;
+    createdAt: string;
+    category: string;
+    inquiryNumber: string;
+    inquiryStatus: string;
+    title: string;
+    content?: string;
+    answer?: string;
+};
+
+// API 응답 전체 구조 타입
+export type AdminInquiryListResponse = {
+    content: InquiryItem[];
+    totalPages: number;
+    totalElements: number;
+};

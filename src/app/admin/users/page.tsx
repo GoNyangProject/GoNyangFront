@@ -15,6 +15,9 @@ import MemoCell from '../../../../components/molecules/admin/MemoCell';
 import { Get, Post } from '../../../../service/crud';
 import { ResponseType } from '../../../../enum/Common';
 import MemoModal from '../../../../components/molecules/admin/MemoModal';
+import { FilterWrapper } from '../../../../styles/pages/admin/users';
+import AdminFilter from '../../../../components/molecules/admin/AdminFilter';
+import { ADMIN_USERS_OPTION, ADMIN_USERS_STATUS_OPTION } from '../../../../data/data-init';
 
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
 const Page = () => {
@@ -22,10 +25,12 @@ const Page = () => {
     const [search, setSearch] = useState('');
     const [searchInput, setSearchInput] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [sortOption, setSortOption] = useState('');
+    const [status, setStatus] = useState('');
     const [selectedMember, setSelectedMember] = useState<AdminMemberList | null>(null);
     const { data: memberList } = useSWR(
         {
-            url: `/admin/member/list?search=${search}&page=${page - 1}&size=15`,
+            url: `/admin/member/list?search=${search}&page=${page - 1}&size=15&sort=${sortOption}&status=${status}`,
             method: 'GET',
         },
         fetcher,
@@ -60,7 +65,7 @@ const Page = () => {
             (response) => {
                 if (response.result) {
                     alert(`${statusText} 처리가 완료되었습니다.`);
-                    mutate({ url: `/admin/member/list?search=${search}&page=${page - 1}&size=10`, method: 'GET' });
+                    mutate({ url: `/admin/member/list?search=${search}&page=${page - 1}&size=15&sort=${sortOption}&status=${status}`, method: 'GET' });
                 } else {
                     alert('상태 변경에 실패했습니다. 다시 시도해주세요.');
                 }
@@ -94,7 +99,7 @@ const Page = () => {
                 if (response.type === 'SUCCESS') {
                     alert('수정이 완료되었습니다.');
                     setIsModalOpen(false);
-                    mutate({ url: `/admin/member/list?search=${search}&page=${page - 1}&size=10`, method: 'GET' });
+                    mutate({ url: `/admin/member/list?search=${search}&page=${page - 1}&size=15&sort=${sortOption}&status=${status}`, method: 'GET' });
                 }
             },
             false,
@@ -109,11 +114,10 @@ const Page = () => {
             '/admin/member/memo/delete',
             payload,
             (response) => {
-                console.log(response);
                 if (response.type === 'SUCCESS') {
                     alert('삭제가 완료되었습니다.');
                     setIsModalOpen(false);
-                    mutate({ url: `/admin/member/list?search=${search}&page=${page - 1}&size=10`, method: 'GET' });
+                    mutate({ url: `/admin/member/list?search=${search}&page=${page - 1}&size=15&sort=${sortOption}&status=${status}`, method: 'GET' });
                 }
             },
             false,
@@ -134,6 +138,14 @@ const Page = () => {
             default:
                 return undefined;
         }
+    };
+    const handleOptionChange = (val: string) => {
+        setSortOption(val);
+        setPage(1);
+    };
+    const handleStatusOption = (val: string) => {
+        setStatus(val);
+        setPage(1);
     };
     return (
         <>
@@ -158,6 +170,10 @@ const Page = () => {
                         <FontAwesomeIcon icon={faMagnifyingGlass} color="gray" style={{ padding: '5px' }} />
                     </SearchInputWrapper>
                 </div>
+                <FilterWrapper>
+                    <AdminFilter options={ADMIN_USERS_OPTION} value={sortOption} onChange={handleOptionChange} placeholder="정렬" />
+                    <AdminFilter options={ADMIN_USERS_STATUS_OPTION} value={status} onChange={handleStatusOption} placeholder="회원 상태" />
+                </FilterWrapper>
             </div>
             <InquiryTable columns={UserManagementColumn} rows={row} readOnly={true} renderCustomCell={renderCustomCell}></InquiryTable>
             <Pagination currentPage={page} totalPage={totalPages} changePage={(newPage) => setPage(newPage)} />

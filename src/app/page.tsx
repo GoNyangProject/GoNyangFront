@@ -1,7 +1,6 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import Button from '../../components/atom/Button';
-import { useDialogStore } from '../../store/dialogStore';
 import { userStore } from '../../store/userStore';
 import {
     GroomerCardWrapper,
@@ -31,49 +30,32 @@ import useSWR from 'swr';
 import axiosInstance from '../../libs/axios';
 import { Menu } from '../../types/Common';
 import Card from '../../components/atom/Card';
-
-// const SelectOption = [
-//     {
-//         value: '1',
-//         label: 'test1',
-//     },
-//     {
-//         value: '2',
-//         label: 'test2',
-//     },
-//     {
-//         value: '3',
-//         label: 'test3',
-//     },
-// ];
-// const TEST_TABLE_ROWS = [
-//     { test1: '1번', test2: '강인구', test3: '첫 번째 테스트' },
-//     { test1: '2번', test2: '김성우', test3: '두 번째 테스트' },
-//     { test1: '3번', test2: '박지원', test3: '세 번째 테스트' },
-// ];
+import { getCookie } from '@/utils/cookie';
 
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
 const Page = () => {
     const { setUserData } = userStore();
-    // const { data: user_data } = useSWR(
-    //     {
-    //         url: `/auth/me`,
-    //         method: 'GET',
-    //     },
-    //     fetcher,
-    //     {
-    //         revalidateOnFocus: false,
-    //         revalidateOnReconnect: false,
-    //     },
-    // );
-    // useEffect(() => {
-    //     if (user_data) {
-    //         setUserData(user_data);
-    //     }
-    // }, [user_data, setUserData]);
+    const token = getCookie('accessToken');
+    const { data: user_data, error } = useSWR(
+        token
+            ? {
+                  url: `/auth/me`,
+                  method: 'GET',
+              }
+            : null,
+        fetcher,
+        { revalidateOnFocus: false },
+    );
+
+    useEffect(() => {
+        if (error) console.error('SWR 에러 발생:', error);
+        if (user_data) {
+            console.log('유저 데이터 로드 성공:', user_data);
+            setUserData(user_data);
+        }
+    }, [user_data, error]);
 
     const router = useRouter();
-    const { selectedDialogs } = useDialogStore();
     const { userData } = userStore();
     const scrollRef = useRef(null);
     const [isDrag, setIsDrag] = useState(false);
@@ -113,7 +95,13 @@ const Page = () => {
     };
 
     const handleClickBook = () => {
-        router.push('/menu');
+        if (!userData) {
+            if (confirm('로그인이 필요한 서비스입니다. 로그인 페이지로 이동할까요?')) {
+                router.push('/member/login');
+            }
+        } else {
+            router.push('/menu');
+        }
     };
 
     const { data: menu_data } = useSWR(

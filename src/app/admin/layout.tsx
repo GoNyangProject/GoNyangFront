@@ -13,6 +13,7 @@ import {
     Sidebar,
     SidebarLink,
 } from '../../../styles/components/molecules/Header/AdminHeader';
+import { getCookie } from '@/utils/cookie';
 
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -20,32 +21,32 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const { userData, reset } = userStore();
     const [isClient, setIsClient] = useState(false); // Hydration 이슈 방지
 
+    const token = getCookie('accessToken');
     const { data: user_data, error } = useSWR(
-        {
-            url: `/auth/me`,
-            method: 'GET',
-        },
+        token
+            ? {
+                  url: `/auth/me`,
+                  method: 'GET',
+              }
+            : null,
         fetcher,
-        {
-            revalidateOnFocus: false,
-            revalidateOnReconnect: false,
-            fallbackData: [],
-        },
+        { revalidateOnFocus: false },
     );
+
     useEffect(() => {
         setIsClient(true); // 클라이언트 측에서 마운트되었음을 표시
     }, []);
 
-    useEffect(() => {
-        if (!isClient) return; // 클라이언트 측에서만 동작
-        const isLocalAdmin = userData?.userType === 'ROLE_ADMIN';
-        const isServerAdmin = user_data?.role === 'ROLE_ADMIN';
-        if (!isLocalAdmin || !isServerAdmin || error) {
-            alert('관리자 권한이 필요합니다.');
-            reset();
-            router.push('/member/login');
-        }
-    }, [userData, router, reset, isClient]);
+    // useEffect(() => {
+    //     if (!isClient) return; // 클라이언트 측에서만 동작
+    //     const isLocalAdmin = userData?.userType === 'ROLE_ADMIN';
+    //     const isServerAdmin = user_data?.role === 'ROLE_ADMIN';
+    //     if (!isLocalAdmin || !isServerAdmin || error) {
+    //         alert('관리자 권한이 필요합니다.');
+    //         reset();
+    //         router.push('/member/login');
+    //     }
+    // }, [userData, router, reset, isClient]);
     return (
         <AdminLayoutWrapper>
             <Sidebar>
@@ -59,6 +60,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     </SidebarLink>
                     <SidebarLink onClick={() => router.push('/admin/products')}>
                         <Icon /> 상품 관리
+                    </SidebarLink>
+                    <SidebarLink onClick={() => router.push('/admin/inquiry')}>
+                        <Icon /> 문의 관리
                     </SidebarLink>
                 </nav>
                 <ReturnToUserHome onClick={() => router.push('/')}>
