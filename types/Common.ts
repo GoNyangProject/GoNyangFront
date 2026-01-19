@@ -95,6 +95,8 @@ export type NoticeInfo = {
     content: string;
     createdAt: string;
     totalCount: number;
+    viewCount: number;
+    imgUrl: string;
 };
 
 export type AdminMemberList = {
