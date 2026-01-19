@@ -32,10 +32,16 @@ export const HeaderLoginWrapper = styled.div`
 `;
 
 export const HeaderWrapper = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
     display: flex;
+    justify-content: center;
     background-color: #a68967;
     color: black;
-    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 `;
 
 export const HeaderMainWrapper = styled.header`

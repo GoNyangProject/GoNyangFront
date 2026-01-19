@@ -9,7 +9,7 @@ const NavMenu = () => {
             <HeaderButton>About</HeaderButton>
             <HeaderButton onClick={() => router.push('/menu')}>예약</HeaderButton>
             <HeaderButton onClick={() => router.push('/notice')}>공지사항</HeaderButton>
-            <HeaderButton>커뮤니티</HeaderButton>
+            <HeaderButton onClick={() => router.push('/community')}>커뮤니티</HeaderButton>
         </HeaderNavWrapper>
     );
 };

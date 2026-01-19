@@ -65,3 +65,10 @@ export const NOTICE_COLUMNS: Array<{ key: string; value: string }> = [
         value: '작성일',
     },
 ];
+export const communityColumns: Array<{ key: string; value: string }> = [
+    { key: 'id', value: '번호' },
+    { key: 'title', value: '제목' },
+    { key: 'authorName', value: '작성자' },
+    { key: 'createdAt', value: '작성일' },
+    { key: 'viewCount', value: '조회' },
+];
