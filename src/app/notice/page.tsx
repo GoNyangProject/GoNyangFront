@@ -49,6 +49,7 @@ const Page = () => {
             title: notice.title,
             content: notice.content,
             createdAt: notice.createdAt,
+            viewCount: notice.viewCount || '0',
         }));
     }, [notice_data]);
 

@@ -1,24 +1,43 @@
 'use client';
 import React, { useEffect } from 'react';
 import axiosInstance from '../../../../libs/axios';
-import { useSearchParams } from 'next/navigation';
-import useSWR from 'swr';
+import { useRouter, useSearchParams } from 'next/navigation';
+import useSWR, { mutate } from 'swr';
+import {
+    ButtonWrapper,
+    DetailBody,
+    DetailContainer,
+    DetailContent,
+    DetailHeader,
+    DetailImageBox,
+    DetailMeta,
+    DetailTitle,
+    NoticeCardWrapper,
+} from '../../../../styles/pages/menu/Notice';
+import { MainWrapper } from '../../../../styles/pages/Main';
+import Button from '../../../../components/atom/Button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { Post } from '../../../../service/crud'; // 스타일 경로 확인 필요
 
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
+
 const Page = () => {
     const params = useSearchParams();
+    const router = useRouter();
     const boardId = params.get('notice');
 
-    const { data: notice_detail_data } = useSWR(
-        {
-            url: `/board/detail?boardCode=${boardId}`,
-            method: 'GET',
-        },
+    const { data: notice_detail_data, isLoading } = useSWR(
+        boardId
+            ? {
+                  url: `/board/detail?boardCode=${boardId}`,
+                  method: 'GET',
+              }
+            : null,
         fetcher,
         {
             revalidateOnFocus: false,
             revalidateOnReconnect: false,
-            fallbackData: [],
         },
     );
 
@@ -26,7 +45,71 @@ const Page = () => {
         console.log(notice_detail_data);
     }, [notice_detail_data]);
 
-    return <div>gdgd</div>;
+    const handleClickLike = () => {
+        const payload = {
+            boardId: boardId,
+        };
+        Post(
+            '/board/like',
+            payload,
+            () => {
+                mutate(
+                    { url: `/board/detail?boardCode=${boardId}`, method: 'GET' },
+                    {
+                        ...notice_detail_data,
+                        likeCount: (notice_detail_data.likeCount || 0) + 1,
+                    },
+                    false,
+                );
+            },
+            false,
+        );
+    };
+
+    useEffect(() => {
+        console.log(notice_detail_data);
+    }, [notice_detail_data]);
+
+    if (isLoading) return <NoticeCardWrapper>로딩 중...</NoticeCardWrapper>;
+    if (!notice_detail_data) return <NoticeCardWrapper>데이터를 찾을 수 없습니다.</NoticeCardWrapper>;
+
+    return (
+        <MainWrapper>
+            <NoticeCardWrapper style={{ padding: '40px 0' }}>
+                <DetailContainer>
+                    <DetailHeader>
+                        <DetailTitle>{notice_detail_data.title || '제목이 없습니다.'}</DetailTitle>
+                        <DetailMeta>
+                            <span>작성일: {notice_detail_data.createdAt?.split('T')[0]}</span>
+                            <div className="divider" />
+                            <span>작성자: 관리자</span>
+                            <div className="divider" />
+                            <span>조회수: {notice_detail_data.viewCount || 0}</span>
+                            <div className="divider" />
+                            <span onClick={handleClickLike} style={{ cursor: 'pointer' }}>
+                                <FontAwesomeIcon style={{ color: 'red' }} icon={faHeart} /> 좋아요: {notice_detail_data.likeCount || 0}
+                            </span>
+                        </DetailMeta>
+                    </DetailHeader>
+                    <DetailBody>
+                        {notice_detail_data.imgUrl ? (
+                            <DetailImageBox>
+                                <img src={`${notice_detail_data.imgUrl}`} alt={notice_detail_data.id} />
+                            </DetailImageBox>
+                        ) : (
+                            ''
+                        )}
+                        <DetailContent>{notice_detail_data.content || '내용이 없습니다.'}</DetailContent>
+                    </DetailBody>
+                    <ButtonWrapper>
+                        <Button style={{ padding: '10px 24px', fontSize: '15px' }} onClick={() => router.push('/notice')}>
+                            목록으로
+                        </Button>
+                    </ButtonWrapper>
+                </DetailContainer>
+            </NoticeCardWrapper>
+        </MainWrapper>
+    );
 };
 
 export default Page;
