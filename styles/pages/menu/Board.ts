@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const NoticeCardWrapper = styled.div`
+export const BoardCardWrapper = styled.div`
     display: flex;
     flex-direction: column;
     width: 60%;
@@ -35,6 +35,21 @@ export const DetailHeader = styled(SearchWrapper)`
     padding: 30px 40px;
     border-bottom: 1px solid #f5ebd7;
     background-color: #fffaf0;
+`;
+
+export const DetailTitleWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+`;
+
+export const DetailUpdateWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 `;
 
 export const DetailTitle = styled.h2`
@@ -95,6 +110,22 @@ export const DetailContent = styled.div`
     word-break: break-all;
 `;
 
+export const CommentInputWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 100%;
+    padding: 15px;
+`;
+
+export const CommentListWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+    justify-content: center;
+`;
+
 export const ButtonWrapper = styled.div`
     width: 100%;
     display: flex;
@@ -102,4 +133,7 @@ export const ButtonWrapper = styled.div`
     padding: 20px 40px;
     border-top: 1px solid #f5ebd7;
     background-color: #fffaf0;
+    align-items: center;
+    white-space: nowrap;
+    gap: 15px;
 `;

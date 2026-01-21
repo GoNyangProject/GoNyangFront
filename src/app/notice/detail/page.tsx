@@ -4,6 +4,7 @@ import axiosInstance from '../../../../libs/axios';
 import { useRouter, useSearchParams } from 'next/navigation';
 import useSWR, { mutate } from 'swr';
 import {
+    BoardCardWrapper,
     ButtonWrapper,
     DetailBody,
     DetailContainer,
@@ -12,8 +13,7 @@ import {
     DetailImageBox,
     DetailMeta,
     DetailTitle,
-    NoticeCardWrapper,
-} from '../../../../styles/pages/menu/Notice';
+} from '../../../../styles/pages/menu/Board';
 import { MainWrapper } from '../../../../styles/pages/Main';
 import Button from '../../../../components/atom/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -70,12 +70,12 @@ const Page = () => {
         console.log(notice_detail_data);
     }, [notice_detail_data]);
 
-    if (isLoading) return <NoticeCardWrapper>로딩 중...</NoticeCardWrapper>;
-    if (!notice_detail_data) return <NoticeCardWrapper>데이터를 찾을 수 없습니다.</NoticeCardWrapper>;
+    if (isLoading) return <BoardCardWrapper>로딩 중...</BoardCardWrapper>;
+    if (!notice_detail_data) return <BoardCardWrapper>데이터를 찾을 수 없습니다.</BoardCardWrapper>;
 
     return (
         <MainWrapper>
-            <NoticeCardWrapper style={{ padding: '40px 0' }}>
+            <BoardCardWrapper style={{ padding: '40px 0' }}>
                 <DetailContainer>
                     <DetailHeader>
                         <DetailTitle>{notice_detail_data.title || '제목이 없습니다.'}</DetailTitle>
@@ -107,7 +107,7 @@ const Page = () => {
                         </Button>
                     </ButtonWrapper>
                 </DetailContainer>
-            </NoticeCardWrapper>
+            </BoardCardWrapper>
         </MainWrapper>
     );
 };

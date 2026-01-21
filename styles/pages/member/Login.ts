@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const LoginLayoutWrapper = styled.div`
     width: 100vw;
-    height: calc(100vh - 70px);
+    height: 100vh;
     display: flex;
     //background-color: bisque;
     background: url('/images/login_background.png') no-repeat center center;

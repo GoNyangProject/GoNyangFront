@@ -1,6 +1,6 @@
 'use client';
 import React, { useMemo, useState } from 'react';
-import { NoticeCardWrapper, SearchWrapper } from '../../../styles/pages/menu/Notice';
+import { BoardCardWrapper, SearchWrapper } from '../../../styles/pages/menu/Board';
 import { MainWrapper } from '../../../styles/pages/Main';
 import Input from '../../../components/atom/Input';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -57,7 +57,7 @@ const Page = () => {
 
     return (
         <MainWrapper style={{ padding: '25px' }}>
-            <NoticeCardWrapper>
+            <BoardCardWrapper>
                 <h1>공지사항</h1>
                 <SearchWrapper>
                     <SearchInputWrapper>
@@ -90,7 +90,7 @@ const Page = () => {
                     <Table columns={NOTICE_COLUMNS} rows={noticeDataRows} readOnly={true} clickKeys={['title']} onCellClick={handleClickNotice} />
                     <Pagination currentPage={page} totalPage={totalPage} changePage={setPage}></Pagination>
                 </SearchWrapper>
-            </NoticeCardWrapper>
+            </BoardCardWrapper>
         </MainWrapper>
     );
 };
