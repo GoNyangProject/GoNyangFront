@@ -18,7 +18,8 @@ import { MainWrapper } from '../../../../styles/pages/Main';
 import Button from '../../../../components/atom/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
-import { Post } from '../../../../service/crud'; // 스타일 경로 확인 필요
+import { Post } from '../../../../service/crud';
+import {userStore} from "../../../../store/userStore"; // 스타일 경로 확인 필요
 
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
 
@@ -26,11 +27,11 @@ const Page = () => {
     const params = useSearchParams();
     const router = useRouter();
     const boardId = params.get('notice');
-
+    const { userData } = userStore();
     const { data: notice_detail_data, isLoading } = useSWR(
         boardId
             ? {
-                  url: `/board/detail?boardCode=${boardId}`,
+                  url: `/board/detail?boardCode=${boardId}&userId=${userData?.userId}`,
                   method: 'GET',
               }
             : null,

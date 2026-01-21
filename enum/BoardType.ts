@@ -1,5 +1,7 @@
 export enum BoardType {
     NOTICE = 'NOTICE',
-    COMMUNITY = 'COMMUNITY',
+    FREE_COMMUNITY = 'FREE_COMMUNITY',
     INQUIRY = 'INQUIRY',
+    FLEA_MARKET = 'FLEA_MARKET',
+    INFO = 'INFO',
 }

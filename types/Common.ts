@@ -134,3 +134,20 @@ export type AdminInquiryListResponse = {
     totalPages: number;
     totalElements: number;
 };
+
+export type BoardResponseDTO = {
+    id: number;
+    title: string;
+    content?: string; // 목록에서는 안 올 수도 있으니 선택 사항
+    createdAt: string; // JSON으로 넘어올 땐 보통 string 형태입니다.
+    viewCount: number;
+    likeCount: number;
+    imgUrl?: string;
+    userId: string;
+};
+
+export type CommunityListResponse = {
+    boards: BoardResponseDTO[];
+    totalPages: number;
+    totalElements: number;
+};
