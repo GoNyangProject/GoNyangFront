@@ -16,7 +16,7 @@ import { Get, Post } from '../../../../service/crud';
 import { ResponseType } from '../../../../enum/Common';
 import MemoModal from '../../../../components/molecules/admin/MemoModal';
 import { FilterWrapper } from '../../../../styles/pages/admin/users';
-import AdminFilter from '../../../../components/molecules/admin/AdminFilter';
+import DropDawnFilter from '../../../../components/molecules/admin/DropDawnFilter';
 import { ADMIN_USERS_OPTION, ADMIN_USERS_STATUS_OPTION } from '../../../../data/data-init';
 
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
@@ -171,8 +171,8 @@ const Page = () => {
                     </SearchInputWrapper>
                 </div>
                 <FilterWrapper>
-                    <AdminFilter options={ADMIN_USERS_OPTION} value={sortOption} onChange={handleOptionChange} placeholder="정렬" />
-                    <AdminFilter options={ADMIN_USERS_STATUS_OPTION} value={status} onChange={handleStatusOption} placeholder="회원 상태" />
+                    <DropDawnFilter options={ADMIN_USERS_OPTION} value={sortOption} onChange={handleOptionChange} placeholder="정렬" />
+                    <DropDawnFilter options={ADMIN_USERS_STATUS_OPTION} value={status} onChange={handleStatusOption} placeholder="회원 상태" />
                 </FilterWrapper>
             </div>
             <InquiryTable columns={UserManagementColumn} rows={row} readOnly={true} renderCustomCell={renderCustomCell}></InquiryTable>

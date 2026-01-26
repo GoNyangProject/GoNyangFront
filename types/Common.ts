@@ -151,3 +151,14 @@ export type CommunityListResponse = {
     totalPages: number;
     totalElements: number;
 };
+
+export type FileInfoResponse = {
+    src: string;
+    fileName?: string;
+};
+
+export type FileUploadResponse = {
+    message: string;
+    result?: FileInfoResponse;
+    type: string;
+};

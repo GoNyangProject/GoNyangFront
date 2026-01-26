@@ -55,12 +55,11 @@ const InquiryQuestion = ({ onBack, onSuccess }: InquiryQuestionProps) => {
             return;
         }
         const category = (selectedOption ?? DEFAULT_CATEGORY).value;
-        const payload = { title: title, content: content, userId: userData.userId, category: category };
+        const payload = { title: title, content: content, userId: userData?.userId, category: category };
         Post(
             '/mypage/inquiry/inquiries',
             payload,
             (response) => {
-                console.log(response.result);
                 if (response.result) {
                     alert('문의가 정상적으로 접수되었습니다.');
                     onSuccess();

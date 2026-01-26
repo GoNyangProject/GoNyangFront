@@ -7,7 +7,7 @@ import InquiryTable from '../../../../components/atom/InquiryTable';
 import useSWR, { mutate } from 'swr';
 import axiosInstance from '../../../../libs/axios';
 import { UserInquiryColumn } from '../../../../constants/admin/table-init';
-import AdminFilter from '../../../../components/molecules/admin/AdminFilter';
+import DropDawnFilter from '../../../../components/molecules/admin/DropDawnFilter';
 import { CATEGORY_MAP, CATEGORY_OPTIONS, STATUS_MAP, STATUS_OPTIONS } from '../../../../data/data-init';
 import { FilterWrapper, SearchInputWrapper } from '../../../../styles/pages/admin/inquiry';
 import Pagination from '../../../../components/molecules/Pagination';
@@ -125,8 +125,8 @@ const Page = () => {
                 </div>
             </div>
             <FilterWrapper>
-                <AdminFilter options={STATUS_OPTIONS} value={status} onChange={handleStatusChange} placeholder="상태 선택" />
-                <AdminFilter options={CATEGORY_OPTIONS} value={category} onChange={handleCategoryChange} placeholder="카테고리 선택" />
+                <DropDawnFilter options={STATUS_OPTIONS} value={status} onChange={handleStatusChange} placeholder="상태 선택" />
+                <DropDawnFilter options={CATEGORY_OPTIONS} value={category} onChange={handleCategoryChange} placeholder="카테고리 선택" />
             </FilterWrapper>
             <InquiryTable
                 columns={UserInquiryColumn}

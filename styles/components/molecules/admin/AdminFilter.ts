@@ -10,6 +10,7 @@ export const DropdownWrapper = styled.div`
     position: relative;
     min-width: 120px;
     justify-content: space-between;
+    width: 100%;
 `;
 
 export const DropdownOptions = styled.div`

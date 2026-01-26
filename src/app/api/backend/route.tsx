@@ -40,11 +40,59 @@ const _fetch = async (param: Request, cookieString: string) => {
     };
 };
 
+// export async function POST(req: NextRequest) {
+//     try {
+//         const body = await req.json();
+//
+//         const cookieHeader = req.headers.get('cookie') ?? '';
+//         const { result, setCookie } = await _fetch(body as Request, cookieHeader);
+//
+//         const response = NextResponse.json(result);
+//
+//         if (setCookie) {
+//             response.headers.set('set-cookie', setCookie);
+//         }
+//
+//         if (body.url.includes('/logout')) {
+//             response.cookies.set('accessToken', '', { path: '/', expires: new Date(0) });
+//             response.cookies.set('refreshToken', '', { path: '/', expires: new Date(0)});
+//         }
+//         return response;
+//     } catch (error: any) {
+//         return NextResponse.json(
+//             {
+//                 type: ResponseType.FAIL,
+//                 message: error?.message || 'Unknown Error',
+//                 errorCode: error?.errorCode,
+//             },
+//             {
+//                 status: error?.status || 400,
+//             },
+//         );
+//     }
+// }
 export async function POST(req: NextRequest) {
     try {
-        const body = await req.json();
-
+        const contentType = req.headers.get('content-type') || '';
         const cookieHeader = req.headers.get('cookie') ?? '';
+
+        if (contentType.includes('multipart/form-data')) {
+            const formData = await req.formData();
+            const targetUrl = formData.get('url') as string;
+            formData.delete('url');
+            const response = await fetch(`${DOMAIN}${targetUrl}`, {
+                method: 'POST',
+                headers: {
+                    Cookie: cookieHeader,
+                },
+                body: formData,
+            });
+
+            const result = await response.json();
+            return NextResponse.json(result);
+        }
+        //  2. 기존 로직: 일반 JSON 요청인 경우
+        const body = await req.json();
         const { result, setCookie } = await _fetch(body as Request, cookieHeader);
 
         const response = NextResponse.json(result);
@@ -55,8 +103,9 @@ export async function POST(req: NextRequest) {
 
         if (body.url.includes('/logout')) {
             response.cookies.set('accessToken', '', { path: '/', expires: new Date(0) });
-            response.cookies.set('refreshToken', '', { path: '/', expires: new Date(0)});
+            response.cookies.set('refreshToken', '', { path: '/', expires: new Date(0) });
         }
+
         return response;
     } catch (error: any) {
         return NextResponse.json(

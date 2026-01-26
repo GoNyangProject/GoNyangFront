@@ -50,3 +50,30 @@ export const Get = (url: string, callback?: (response: Response) => void) => {
             console.error(error);
         });
 };
+export const Upload = (url: string, formData: FormData, callback?: (response: Response) => void) => {
+    const response: Response = {
+        type: ResponseType.SUCCESS,
+        errorCode: '0000',
+    };
+    formData.append('url', url);
+
+    axiosInstance
+        .post('/api/backend', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+        .then((res) => {
+            response.result = res.data.result;
+            response.message = res.data.message;
+            response.errorCode = res.data.errorCode;
+
+            if (typeof callback === 'function') callback(response);
+        })
+        .catch((error) => {
+            console.error('Upload Error:', error);
+            response.type = ResponseType.FAIL;
+            response.message = '파일 업로드에 실패하였습니다.';
+            alert(response.message);
+        });
+};

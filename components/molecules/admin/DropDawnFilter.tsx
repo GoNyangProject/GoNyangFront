@@ -26,7 +26,7 @@ const useOutsideClick = (callback: () => void) => {
 
     return ref;
 };
-const AdminFilter = ({ options, value, placeholder, onChange }: AdminFilterProps) => {
+const DropDawnFilter = ({ options, value, placeholder, onChange }: AdminFilterProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useOutsideClick(() => setIsOpen(false));
     const selectedLabel = options.find((opt) => opt.value === value)?.label || placeholder;
@@ -55,4 +55,4 @@ const AdminFilter = ({ options, value, placeholder, onChange }: AdminFilterProps
     );
 };
 
-export default AdminFilter;
+export default DropDawnFilter;
