@@ -8,7 +8,7 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { SearchInputWrapper } from '../../../styles/pages/mypage/Inquiry';
 import Table from '../../../components/atom/Table';
 import { NOTICE_COLUMNS } from '../../../constants/table-init';
-import { NoticeInfo } from '../../../types/Common';
+import { BoardInfo } from '../../../types/Common';
 import axiosInstance from '../../../libs/axios';
 import useSWR from 'swr';
 import { BoardType } from '../../../enum/BoardType';
@@ -23,7 +23,7 @@ const Page = () => {
     const [searchKeyword, setSearchKeyword] = useState<string>('');
     const [page, setPage] = useState<number>(1);
 
-    const handleClickNotice = (key: string, noticeData: NoticeInfo, event: React.MouseEvent) => {
+    const handleClickNotice = (key: string, noticeData: BoardInfo, event: React.MouseEvent) => {
         router.push(`/notice/detail?notice=${noticeData.id}`);
     };
 
@@ -44,7 +44,7 @@ const Page = () => {
         if (!notice_data || !Array.isArray(notice_data.boards)) {
             return [];
         }
-        return notice_data.boards.map((notice: NoticeInfo) => ({
+        return notice_data.boards.map((notice: BoardInfo) => ({
             id: notice.id,
             title: notice.title,
             content: notice.content,

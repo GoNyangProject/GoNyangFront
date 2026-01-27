@@ -110,22 +110,6 @@ export const DetailContent = styled.div`
     word-break: break-all;
 `;
 
-export const CommentInputWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    width: 100%;
-    padding: 15px;
-`;
-
-export const CommentListWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    width: 100%;
-    justify-content: center;
-`;
-
 export const ButtonWrapper = styled.div`
     width: 100%;
     display: flex;

@@ -17,14 +17,15 @@ import InquiryTable from '../../../components/atom/InquiryTable';
 import { communityColumns } from '../../../constants/table-init';
 import useSWR from 'swr';
 import axiosInstance from '../../../libs/axios';
-import { BoardResponseDTO } from '../../../types/Common';
+import { BoardInfo, BoardResponseDTO } from '../../../types/Common';
 import { BoardType } from '../../../enum/BoardType';
 import { getCookie } from '@/utils/cookie';
-import { router } from 'next/client';
-import Pagination from "../../../components/molecules/Pagination";
+import Pagination from '../../../components/molecules/Pagination';
+import { useRouter } from 'next/navigation';
 
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
 const Page = () => {
+    const router = useRouter();
     const [category, setCategory] = useState('자유게시판');
     const [page, setPage] = useState(1);
     const [boardType, setBoardType] = useState<BoardType>(BoardType.FREE_COMMUNITY);
@@ -39,8 +40,10 @@ const Page = () => {
         {
             revalidateOnFocus: false,
             revalidateOnReconnect: false,
+            fallbackData: [],
         },
     );
+
     const handleRenderCustomCell = (key: string, row: BoardResponseDTO, rowIndex: number) => {
         if (key === 'displayId') {
             const total = communityList?.totalElements || 0;
@@ -66,6 +69,11 @@ const Page = () => {
         setBoardType(BoardType.FLEA_MARKET);
         setPage(1);
     };
+
+    const handleClickCommunity = (key: string, communityData: BoardInfo, event: React.MouseEvent) => {
+        router.push(`/community/detail?community=${communityData.id}`);
+    };
+
     const row = communityList?.boards || [];
     const totalPages = communityList?.totalPages || 0;
     return (
@@ -96,7 +104,14 @@ const Page = () => {
 
                     <PostListWrapper>
                         {row.length > 0 ? (
-                            <InquiryTable columns={communityColumns} rows={row} renderCustomCell={handleRenderCustomCell} />
+                            <InquiryTable
+                                columns={communityColumns}
+                                rows={row}
+                                renderCustomCell={handleRenderCustomCell}
+                                readOnly={true}
+                                clickKeys={['title']}
+                                onCellClick={handleClickCommunity}
+                            />
                         ) : (
                             <div style={{ textAlign: 'center', color: '#888', paddingTop: '100px' }}>아직 게시글이 없습니다. 첫 글을 남겨보세요! 🐾</div>
                         )}

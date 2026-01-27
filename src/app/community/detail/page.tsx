@@ -1,12 +1,10 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useSWR, { mutate } from 'swr';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
     BoardCardWrapper,
     ButtonWrapper,
-    CommentInputWrapper,
-    CommentListWrapper,
     DetailBody,
     DetailContainer,
     DetailContent,
@@ -25,33 +23,45 @@ import Button from '../../../../components/atom/Button';
 import { MainWrapper } from '../../../../styles/pages/Main';
 import { userStore } from '../../../../store/userStore';
 import { BoardType } from '../../../../enum/BoardType';
+import { CommentList } from '../../../../types/Common';
+import {
+    ActionGroup,
+    ChildrenWrapper,
+    CommentContent,
+    CommentHeader,
+    CommentInfo,
+    CommentInputWrapper,
+    CommentItemContainer,
+    CommentListWrapper,
+    ReplyInputBox,
+} from '../../../../styles/pages/menu/Comment';
 
-const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
+const fetcher = (payload: any) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
 
 const Page = () => {
     const router = useRouter();
-    // const test = "<p>안녕하세요!</p><img src='https://s3.../photo1.jpg' /><p>오늘의 사진입니다.</p>";
     const params = useSearchParams();
     const boardId = params.get('community');
 
-    const [comment, setComment] = useState<string>();
+    const [comment, setComment] = useState<string>(''); // 메인 댓글용
+    const [replyComment, setReplyComment] = useState<string>(''); // 대댓글용
+    const [currentReplyId, setCurrentReplyId] = useState<number>(0); // 대댓글 입력창 열기용 ID
 
     const { userData } = userStore();
 
+    // 1. 게시글 상세 정보 조회
     const { data: community_detail_data, isLoading } = useSWR(
         boardId
             ? {
-                  url: `/board/detail?boardCode=${11}`,
+                  url: `/board/detail?boardCode=${11}&userId=${userData?.userId}`,
                   method: 'GET',
               }
             : null,
         fetcher,
-        {
-            revalidateOnFocus: false,
-            revalidateOnReconnect: false,
-        },
+        { revalidateOnFocus: false, revalidateOnReconnect: false },
     );
 
+    // 2. 댓글 목록 조회
     const { data: comment_data } = useSWR(
         boardId
             ? {
@@ -60,43 +70,40 @@ const Page = () => {
               }
             : null,
         fetcher,
-        {
-            revalidateOnFocus: false,
-            revalidateOnReconnect: false,
-        },
+        { revalidateOnFocus: false, revalidateOnReconnect: false, fallbackData: [] },
     );
 
+    useEffect(() => {
+        console.log(comment_data);
+    }, [comment_data]);
+
+    // 좋아요 핸들러
     const handleClickLike = () => {
-        const payload = {
-            boardId: 11,
-        };
+        const payload = { boardId: 11 };
         Post(
             '/board/like',
             payload,
             () => {
-                mutate(
-                    { url: `/board/detail?boardCode=${11}`, method: 'GET' },
-                    {
-                        ...community_detail_data,
-                        likeCount: (community_detail_data.likeCount || 0) + 1,
-                    },
-                    false,
-                );
+                mutate({ url: `/board/detail?boardCode=${11}`, method: 'GET' });
             },
             false,
         );
     };
 
+    // 메인 댓글 등록
     const handleCommentSubmit = () => {
         if (!userData) {
             alert('로그인 후 이용해주세요');
-            router.push('/memebr/login');
+            router.push('/member/login');
             return;
         }
+        if (!comment.trim()) return alert('댓글 내용을 입력해주세요.');
+
         const payload = {
             memberId: userData.memberId,
-            boardCode: BoardType.COMMUNITY,
+            boardCode: BoardType.FREE_COMMUNITY,
             content: comment,
+            parentId: currentReplyId ? currentReplyId : null, // 루트 댓글
         };
 
         Post(
@@ -104,11 +111,49 @@ const Page = () => {
             payload,
             (response) => {
                 if (response.type === 'SUCCESS') {
-                    mutate({ url: `/comment?boardId=${boardId}`, method: 'GET' }, false);
+                    setComment(''); // 입력란 초기화
+                    mutate({ url: `/comment?boardId=${boardId}`, method: 'GET' });
                 }
             },
             false,
         );
+    };
+
+    // 대댓글 등록
+    const handleReplySubmit = (parentId: number) => {
+        console.log(parentId);
+        if (!userData) {
+            alert('로그인 후 이용해주세요');
+            router.push('/member/login');
+            return;
+        }
+        if (!replyComment.trim()) return alert('답글 내용을 입력해주세요.');
+
+        const payload = {
+            memberId: userData.memberId,
+            boardCode: BoardType.FREE_COMMUNITY,
+            content: replyComment,
+            parentId: parentId, // 부모 댓글 ID 전달
+        };
+
+        Post(
+            '/comment',
+            payload,
+            (response) => {
+                if (response.type === 'SUCCESS') {
+                    setReplyComment(''); // 대댓글 입력란 초기화
+                    setCurrentReplyId(0); // 입력창 닫기
+                    mutate({ url: `/comment?boardId=${boardId}`, method: 'GET' });
+                }
+            },
+            false,
+        );
+    };
+
+    // 답글 버튼 클릭 시
+    const handleClickReply = (item: CommentList) => {
+        setReplyComment(''); // 기존에 쓰던 내용 지우기
+        setCurrentReplyId(item.id === currentReplyId ? 0 : item.id); // 토글 방식
     };
 
     if (isLoading) return <BoardCardWrapper>로딩 중...</BoardCardWrapper>;
@@ -121,7 +166,7 @@ const Page = () => {
                     <DetailHeader>
                         <DetailTitleWrapper>
                             <DetailTitle>{community_detail_data.title || '제목이 없습니다.'}</DetailTitle>
-                            {userData?.memberId === community_detail_data.member.memberId ? (
+                            {userData?.memberId === community_detail_data.member.memberId && (
                                 <DetailUpdateWrapper>
                                     <Button style={{ padding: '10px 24px', fontSize: '15px' }}>수정</Button>
                                     <Button
@@ -134,8 +179,6 @@ const Page = () => {
                                         삭제
                                     </Button>
                                 </DetailUpdateWrapper>
-                            ) : (
-                                ''
                             )}
                         </DetailTitleWrapper>
                         <DetailMeta>
@@ -150,16 +193,17 @@ const Page = () => {
                             </span>
                         </DetailMeta>
                     </DetailHeader>
+
                     <DetailBody>
-                        {community_detail_data.imgUrl ? (
+                        {community_detail_data.imgUrl && (
                             <DetailImageBox>
-                                <img src={`${community_detail_data.imgUrl}`} alt={community_detail_data.id} />
+                                <img src={`${community_detail_data.imgUrl}`} alt="board-img" />
                             </DetailImageBox>
-                        ) : (
-                            ''
                         )}
                         <DetailContent>{community_detail_data.content || '내용이 없습니다.'}</DetailContent>
                     </DetailBody>
+
+                    {/* 메인 댓글 입력창 */}
                     <CommentInputWrapper>
                         <textarea
                             value={comment}
@@ -174,81 +218,63 @@ const Page = () => {
                                 resize: 'none',
                             }}
                         />
-                        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-                            <Button onClick={handleCommentSubmit} style={{ padding: '8px 20px', whiteSpace: 'nowrap' }}>
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
+                            <Button onClick={handleCommentSubmit} style={{ padding: '8px 20px' }}>
                                 등록
                             </Button>
                         </div>
                     </CommentInputWrapper>
+
                     <ButtonWrapper>
                         <CommentListWrapper>
                             {comment_data && comment_data.length > 0 ? (
-                                // 재귀 함수를 Page 안에서 즉시 정의해서 사용
-                                (function renderComments(items: any[], depth = 0) {
-                                    return items.map((item) => (
-                                        <div
-                                            key={item.id}
-                                            style={{
-                                                marginLeft: depth > 0 ? `${depth * 20}px` : '0',
-                                                paddingLeft: depth > 0 ? '15px' : '0',
-                                                borderLeft: depth > 0 ? '2px solid #f0f0f0' : 'none',
-                                            }}
-                                        >
-                                            <div
-                                                style={{
-                                                    display: 'flex',
-                                                    justifyContent: 'space-between',
-                                                    alignItems: 'center',
-                                                }}
-                                            >
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                                    <span
-                                                        style={{
-                                                            fontWeight: 'bold',
-                                                            fontSize: '14px',
-                                                        }}
-                                                    >
-                                                        {item.username || '익명'}
-                                                    </span>
-                                                    <span
-                                                        style={{
-                                                            fontSize: '12px',
-                                                            color: '#999',
-                                                        }}
-                                                    >
-                                                        {item.createdAt?.split('T')[0]}
-                                                    </span>
-                                                </div>
-                                                <button
-                                                    style={{
-                                                        background: 'none',
-                                                        border: 'none',
-                                                        color: '#a68967',
-                                                        cursor: 'pointer',
-                                                        fontSize: '12px',
-                                                    }}
-                                                >
-                                                    답글
-                                                </button>
-                                            </div>
+                                (function renderComments(items: CommentList[], depth = 0) {
+                                    return items.map((item: CommentList) => (
+                                        <CommentItemContainer key={item.id} $depth={depth}>
+                                            <CommentHeader>
+                                                <CommentInfo>
+                                                    <span className="writer">{item.writer || '익명'}</span>
+                                                    <span className="date">{item.createdAt.toString().split('T')[0]}</span>
+                                                </CommentInfo>
+                                                <ActionGroup>
+                                                    <Button>삭제</Button>
+                                                    <Button onClick={() => handleClickReply(item)}>{currentReplyId === item.id ? '닫기' : '답글'}</Button>
+                                                </ActionGroup>
+                                            </CommentHeader>
 
-                                            {/* 댓글 본문 */}
-                                            <div
-                                                style={{
-                                                    marginTop: '8px',
-                                                    fontSize: '15px',
-                                                    color: '#333',
-                                                    lineHeight: '1.5',
-                                                }}
-                                            >
-                                                {item.content}
-                                            </div>
+                                            <CommentContent>{item.content}</CommentContent>
 
-                                            {/* 대댓글이 있으면 재귀 호출 */}
-                                            {item.children && item.children.length > 0 && (
-                                                <div style={{ marginTop: '20px' }}>{renderComments(item.children, depth + 1)}</div>
+                                            {/* 대댓글 입력창 */}
+                                            {currentReplyId === item.id && (
+                                                <ReplyInputBox>
+                                                    <textarea
+                                                        value={replyComment}
+                                                        onChange={(e) => setReplyComment(e.target.value)}
+                                                        placeholder={`${item.writer}님께 답글 남기기...`}
+                                                    />
+                                                    <div className="button-group">
+                                                        <Button
+                                                            onClick={() => setCurrentReplyId(0)}
+                                                            style={{
+                                                                backgroundColor: '#999',
+                                                                padding: '4px 12px',
+                                                                fontSize: '12px',
+                                                            }}
+                                                        >
+                                                            취소
+                                                        </Button>
+                                                        <Button onClick={() => handleReplySubmit(item.id)} style={{ padding: '4px 12px', fontSize: '12px' }}>
+                                                            답글 등록
+                                                        </Button>
+                                                    </div>
+                                                </ReplyInputBox>
                                             )}
-                                        </div>
+
+                                            {/* 대댓글 재귀 호출 */}
+                                            {item.children && item.children.length > 0 && (
+                                                <ChildrenWrapper>{renderComments(item.children, depth + 1)}</ChildrenWrapper>
+                                            )}
+                                        </CommentItemContainer>
                                     ));
                                 })(comment_data)
                             ) : (
@@ -262,9 +288,6 @@ const Page = () => {
                 </DetailContainer>
             </BoardCardWrapper>
         </MainWrapper>
-        /*
-            <div dangerouslySetInnerHTML={{__html: test}}/>
-        */
     );
 };
 

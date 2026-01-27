@@ -89,14 +89,30 @@ export type BookInfo = {
     bookDate: string;
 };
 
-export type NoticeInfo = {
+export type BoardInfo = {
     id: number;
+    userId: string;
     title: string;
     content: string;
     createdAt: string;
     totalCount: number;
     viewCount: number;
+    likeCount: number;
     imgUrl: string;
+};
+
+export type CommunityInfo = {
+    boards: [];
+    totalElements: number;
+    totalPages: number;
+};
+export type CommentList = {
+    children: Array<CommentList>;
+    content: string;
+    createdAt: Date;
+    deletedAt: Date;
+    id: number;
+    writer: string;
 };
 
 export type AdminMemberList = {

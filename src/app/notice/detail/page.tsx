@@ -19,7 +19,7 @@ import Button from '../../../../components/atom/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { Post } from '../../../../service/crud';
-import {userStore} from "../../../../store/userStore"; // 스타일 경로 확인 필요
+import { userStore } from '../../../../store/userStore'; // 스타일 경로 확인 필요
 
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
 
@@ -39,12 +39,9 @@ const Page = () => {
         {
             revalidateOnFocus: false,
             revalidateOnReconnect: false,
+            fallbackData: [],
         },
     );
-
-    useEffect(() => {
-        console.log(notice_detail_data);
-    }, [notice_detail_data]);
 
     const handleClickLike = () => {
         const payload = {
