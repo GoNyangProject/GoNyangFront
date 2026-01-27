@@ -3,13 +3,16 @@ import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
 import Image from '@tiptap/extension-image';
-import { useCallback, useRef, useState } from 'react'; // useCallback 추가
+import { useCallback, useEffect, useRef, useState } from 'react'; // useCallback 추가
 import { Post, Upload } from '../../../../service/crud';
 import { FileUploadResponse } from '../../../../types/Common';
 import { Container, EditorWrapper, FilterSection, SubmitButton, TitleInput } from '../../../../styles/pages/community/write/CommunityWrite';
 import DropDawnFilter from '../../../../components/molecules/admin/DropDawnFilter';
 import Link from '@tiptap/extension-link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import useSWR from 'swr';
+import { userStore } from '../../../../store/userStore';
+import axiosInstance from '../../../../libs/axios';
 
 const BOARD_OPTIONS = [
     { label: '자유게시판', value: 'FREE_COMMUNITY' },
@@ -17,11 +20,28 @@ const BOARD_OPTIONS = [
     { label: '나눔 장터', value: 'FLEA_MARKET' },
 ];
 
+const fetcher = (payload: any) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
+
 const Page = () => {
     const [title, setTitle] = useState('');
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [boardCode, setBoardCode] = useState('');
     const router = useRouter();
+    const params = useSearchParams();
+    const boardId = params.get('boardId');
+
+    const { userData } = userStore();
+
+    const { data: board_detail_data } = useSWR(
+        boardId
+            ? {
+                  url: `/board/detail?boardCode=${boardId}&userId=${userData?.userId}`,
+                  method: 'GET',
+              }
+            : null,
+        fetcher,
+        { revalidateOnFocus: false, revalidateOnReconnect: false, fallbackData: [] },
+    );
 
     const editor = useEditor({
         extensions: [
@@ -44,6 +64,17 @@ const Page = () => {
         ],
         immediatelyRender: false,
     });
+
+    useEffect(() => {
+        if (board_detail_data) {
+            console.log(board_detail_data);
+            setTitle(board_detail_data.title);
+            setBoardCode(board_detail_data.boardCode);
+            if (editor && board_detail_data.content) {
+                editor.commands.setContent(board_detail_data.content);
+            }
+        }
+    }, [board_detail_data, editor]);
 
     const setLink = useCallback(() => {
         if (!editor) return;
@@ -106,6 +137,7 @@ const Page = () => {
             title,
             content: editor.getHTML(),
             boardCode: boardCode,
+            boardId: boardId,
         };
         Post(
             '/community/save',

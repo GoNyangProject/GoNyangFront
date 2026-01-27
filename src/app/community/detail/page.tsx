@@ -53,7 +53,7 @@ const Page = () => {
     const { data: community_detail_data, isLoading } = useSWR(
         boardId
             ? {
-                  url: `/board/detail?boardCode=${11}&userId=${userData?.userId}`,
+                  url: `/board/detail?boardCode=${boardId}&userId=${userData?.userId}`,
                   method: 'GET',
               }
             : null,
@@ -169,6 +169,10 @@ const Page = () => {
         }
     };
 
+    const handleClickEdit = () => {
+        router.push(`/community/write?boardId=${boardId}`);
+    };
+
     if (isLoading) return <BoardCardWrapper>로딩 중...</BoardCardWrapper>;
     if (!community_detail_data) return <BoardCardWrapper>데이터를 찾을 수 없습니다.</BoardCardWrapper>;
 
@@ -181,7 +185,9 @@ const Page = () => {
                             <DetailTitle>{community_detail_data.title || '제목이 없습니다.'}</DetailTitle>
                             {userData?.memberId === community_detail_data.member.memberId && (
                                 <DetailUpdateWrapper>
-                                    <Button style={{ padding: '10px 24px', fontSize: '15px' }}>수정</Button>
+                                    <Button onClick={handleClickEdit} style={{ padding: '10px 24px', fontSize: '15px' }}>
+                                        수정
+                                    </Button>
                                     <Button
                                         style={{
                                             padding: '10px 24px',
@@ -213,7 +219,8 @@ const Page = () => {
                                 <img src={`${community_detail_data.imgUrl}`} alt="board-img" />
                             </DetailImageBox>
                         )}
-                        <DetailContent>{community_detail_data.content || '내용이 없습니다.'}</DetailContent>
+                        {/*<DetailContent>{community_detail_data.content || '내용이 없습니다.'}</DetailContent>*/}
+                        <DetailContent dangerouslySetInnerHTML={{ __html: community_detail_data.content }} />
                     </DetailBody>
 
                     {/* 메인 댓글 입력창 */}
