@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import useSWR, { mutate } from 'swr';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
@@ -73,11 +73,6 @@ const Page = () => {
         { revalidateOnFocus: false, revalidateOnReconnect: false, fallbackData: [] },
     );
 
-    useEffect(() => {
-        console.log(comment_data);
-    }, [comment_data]);
-
-    // 좋아요 핸들러
     const handleClickLike = () => {
         const payload = { boardId: 11 };
         Post(
@@ -90,7 +85,6 @@ const Page = () => {
         );
     };
 
-    // 메인 댓글 등록
     const handleCommentSubmit = () => {
         if (!userData) {
             alert('로그인 후 이용해주세요');
@@ -119,7 +113,6 @@ const Page = () => {
         );
     };
 
-    // 대댓글 등록
     const handleReplySubmit = (parentId: number) => {
         console.log(parentId);
         if (!userData) {
@@ -150,10 +143,30 @@ const Page = () => {
         );
     };
 
-    // 답글 버튼 클릭 시
     const handleClickReply = (item: CommentList) => {
         setReplyComment(''); // 기존에 쓰던 내용 지우기
         setCurrentReplyId(item.id === currentReplyId ? 0 : item.id); // 토글 방식
+    };
+
+    const handleClickDeleteReply = (item: CommentList) => {
+        if (confirm('정말 삭제하시겠습니까?')) {
+            const payload = {
+                commentId: item.id,
+            };
+            Post(
+                '/comment/delete',
+                payload,
+                (response) => {
+                    if (response.type === 'SUCCESS') {
+                        mutate({
+                            url: `/comment?boardId=${boardId}`,
+                            method: 'GET',
+                        });
+                    }
+                },
+                false,
+            );
+        }
     };
 
     if (isLoading) return <BoardCardWrapper>로딩 중...</BoardCardWrapper>;
@@ -218,8 +231,15 @@ const Page = () => {
                                 resize: 'none',
                             }}
                         />
-                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
-                            <Button onClick={handleCommentSubmit} style={{ padding: '8px 20px' }}>
+                        <div
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'flex-end',
+                                marginTop: '10px',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Button onClick={handleCommentSubmit} style={{ padding: '8px 20px', whiteSpace: 'nowrap' }}>
                                 등록
                             </Button>
                         </div>
@@ -237,7 +257,7 @@ const Page = () => {
                                                     <span className="date">{item.createdAt.toString().split('T')[0]}</span>
                                                 </CommentInfo>
                                                 <ActionGroup>
-                                                    <Button>삭제</Button>
+                                                    <Button onClick={() => handleClickDeleteReply(item)}>삭제</Button>
                                                     <Button onClick={() => handleClickReply(item)}>{currentReplyId === item.id ? '닫기' : '답글'}</Button>
                                                 </ActionGroup>
                                             </CommentHeader>
