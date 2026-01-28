@@ -3,26 +3,34 @@ import 'react-calendar/dist/Calendar.css';
 import { CustomCalendar } from '../../styles/components/organism/DatePicker';
 import { useDialogStore } from '../../store/dialogStore';
 import { DialogType } from '../../enum/Dialog';
-import { Book } from '../../types/Common';
+import {AdminBlockResponse, AdminBookResponse, Book} from '../../types/Common';
 import { formatDate } from '@/utils/validations/formValidators';
 import { BookingTimes } from '../../enum/Menu';
 
 interface dateProps {
-    bookData: Book[];
+    bookData: (Book | AdminBookResponse)[];
+    isAdmin?: boolean;
+    blockData: AdminBlockResponse[];
+    onDateChange?: (date: Date) => void;
 }
 
-const DatePicker = ({ bookData }: dateProps) => {
+const DatePicker = ({ bookData, isAdmin, onDateChange, blockData }: dateProps) => {
     const [date, setDate] = useState<Date>(new Date());
     const { setSelectedDate, openDialog } = useDialogStore();
     const onClickDay = (date: Date) => {
-        if (!date) {
-            return;
-        }
-        const clickedDate = formatDate(date);
-        setDate(clickedDate as Date);
+        if (!date) return;
+        setDate(date);
         setSelectedDate(date);
-        openDialog(DialogType.CALENDAR);
+        if (isAdmin && onDateChange) {
+            onDateChange(date);
+        }
+        if (!isAdmin) {
+            openDialog(DialogType.CALENDAR);
+        }
     };
+    const blockedDates = useMemo(() => {
+        return new Set(blockData?.map((b) => b.blockDate));
+    }, [blockData]);
 
     const bookedCountsByDate = useMemo(() => {
         const counts: { [key: string]: number } = {};
@@ -39,7 +47,6 @@ const DatePicker = ({ bookData }: dateProps) => {
         return counts;
     }, [bookData]);
 
-    // 예약 가능한 전체 슬롯 수를 계산합니다.
     const totalAvailableSlots = Object.values(BookingTimes).length;
 
     const handleClickMonth = ({ activeStartDate, view }) => {
@@ -55,14 +62,50 @@ const DatePicker = ({ bookData }: dateProps) => {
             next2Label={null}
             prev2Label={null}
             onClickDay={onClickDay}
-            onActiveStartDateChange={handleClickMonth}
             tileDisabled={({ date, view }) => {
+                if (isAdmin) return false;
                 if (view === 'month') {
                     const dateKey = formatDate(date)?.toString();
+
+                    if (blockedDates.has(dateKey)) return true;
+
                     const bookedCount = bookedCountsByDate[dateKey!] || 0;
                     return bookedCount >= totalAvailableSlots;
                 }
                 return false;
+            }}
+            tileContent={({ date, view }) => {
+                if (view === 'month') {
+                    const dateKey = formatDate(date)?.toString();
+
+                    if (blockedDates.has(dateKey)) {
+                        return (
+                            <div className="dot-container">
+                                <span style={{ fontSize: '10px' }}>🔒</span>
+                            </div>
+                        );
+                    }
+                    const count = bookedCountsByDate[dateKey!] || 0;
+                    if (count > 0) {
+                        if (isAdmin) {
+                            return (
+                                <div className="dot-container">
+                                    <div className="dot"></div>
+                                </div>
+                            );
+                        }
+                    }
+                }
+                return null;
+            }}
+            tileClassName={({ date, view }) => {
+                if (view === 'month') {
+                    const dateKey = formatDate(date)?.toString();
+                    if (blockedDates.has(dateKey)) {
+                        return 'blocked-tile';
+                    }
+                }
+                return null;
             }}
         />
     );

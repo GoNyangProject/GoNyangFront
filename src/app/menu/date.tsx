@@ -52,6 +52,18 @@ const BookMenu = ({ selectedMenu, setCurrentTab, setBookInfo }: MenuProps) => {
             fallbackData: '',
         },
     );
+    const { data: block_data } = useSWR(
+        {
+            url: `/admin/block/list`,
+            method: 'GET',
+        },
+        fetcher,
+        {
+            revalidateOnFocus: true,
+            revalidateOnReconnect: true,
+            fallbackData: '',
+        },
+    );
 
     const handleClickPrevious = () => {
         setCurrentTab(MenuType.MENU);
@@ -102,7 +114,7 @@ const BookMenu = ({ selectedMenu, setCurrentTab, setBookInfo }: MenuProps) => {
                 </DetailsRow>
             </ServiceCard>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <DatePicker bookData={book_data} />
+                <DatePicker bookData={book_data} blockData={block_data || []} isAdmin={false} />
             </div>
             <ButtonContainer>
                 <PreviousButton onClick={handleClickPrevious}>이전</PreviousButton>
