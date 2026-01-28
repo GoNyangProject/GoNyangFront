@@ -178,3 +178,20 @@ export type FileUploadResponse = {
     result?: FileInfoResponse;
     type: string;
 };
+
+export type AdminBookResponse = {
+    orderId: string;
+    bookDate: string;
+    price: number;
+    memberId: string;
+    username: string;
+    userPhone: string | null;
+    menuName: string;
+    cancelled: boolean;
+};
+
+export type AdminBlockResponse = {
+    id: number;
+    blockDate: string;
+    reason: string;
+};

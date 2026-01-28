@@ -58,8 +58,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     <SidebarLink onClick={() => router.push('/admin/users')}>
                         <Icon /> 회원 관리
                     </SidebarLink>
-                    <SidebarLink onClick={() => router.push('/admin/products')}>
-                        <Icon /> 상품 관리
+                    <SidebarLink onClick={() => router.push('/admin/reservation')}>
+                        <Icon /> 예약 관리
                     </SidebarLink>
                     <SidebarLink onClick={() => router.push('/admin/inquiry')}>
                         <Icon /> 문의 관리
