@@ -91,8 +91,8 @@ const Page = () => {
         const payload = {
             memberId: userData.memberId,
             boardId: boardId,
-            content: comment,
-            parentId: currentReplyId ? currentReplyId : null, // 루트 댓글
+            content: content,
+            parentId: null, // 루트 댓글
         };
 
         Post(
@@ -187,9 +187,7 @@ const Page = () => {
                         )}
                         <DetailContent className="view-content" dangerouslySetInnerHTML={{ __html: community_detail_data.content }} />
                     </DetailBody>
-
                     <CommentInput onSubmit={handleCommentSubmit} />
-
                     <ButtonWrapper>
                         <CommentListWrapper>
                             {comment_data && comment_data.length > 0 ? (
