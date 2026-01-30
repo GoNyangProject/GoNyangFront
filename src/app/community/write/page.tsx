@@ -75,9 +75,8 @@ const Page = () => {
     });
 
     useEffect(() => {
-        if (board_detail_data) {
-            console.log(board_detail_data);
-            setTitle(board_detail_data.title);
+        if (board_detail_data && !Array.isArray(board_detail_data)) {
+            setTitle(board_detail_data.title || '');
             setBoardCode(board_detail_data.boardCode);
             if (editor && board_detail_data.content) {
                 editor.commands.setContent(board_detail_data.content);
