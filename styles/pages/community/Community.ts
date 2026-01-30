@@ -59,12 +59,16 @@ export const SectionHeader = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
     margin-bottom: 20px;
 `;
 
 export const BoardTitle = styled.h3`
-    font-size: 1.3rem;
-    color: #4a3a2a;
+    margin-bottom: 0;
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-size: 24px; /* 기존 사이즈에 맞춰 조절 */
+    font-weight: bold;
 `;
 
 export const WriteButton = styled.button`
@@ -87,4 +91,30 @@ export const PostListWrapper = styled.div`
     padding: 20px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     min-height: 500px;
+`;
+
+export const SearchInputWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    border: 1px solid bisque;
+    border-radius: 5px;
+    width: 100%;
+    align-items: center;
+`;
+
+export const HeaderLeftGroup = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 20px;
+`;
+
+export const FilterGroup = styled.div`
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+`;
+
+export const HeaderRightGroup = styled.div`
+    flex-shrink: 0;
+    margin-left: 20px;
 `;

@@ -13,6 +13,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import useSWR from 'swr';
 import { userStore } from '../../../../store/userStore';
 import axiosInstance from '../../../../libs/axios';
+import { getCookie } from '@/utils/cookie';
 
 const BOARD_OPTIONS = [
     { label: '자유게시판', value: 'FREE_COMMUNITY' },
@@ -20,7 +21,7 @@ const BOARD_OPTIONS = [
     { label: '나눔 장터', value: 'FLEA_MARKET' },
 ];
 
-const fetcher = (payload: any) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
+const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
 
 const Page = () => {
     const [title, setTitle] = useState('');
@@ -29,6 +30,14 @@ const Page = () => {
     const router = useRouter();
     const params = useSearchParams();
     const boardId = params.get('boardId');
+
+    useEffect(() => {
+        const hasToken = getCookie('accessToken');
+        if (!hasToken) {
+            alert('로그인한 사용자만 접근할 수 있습니다.');
+            router.replace('/member/login');
+        }
+    }, [router]);
 
     const { userData } = userStore();
 
