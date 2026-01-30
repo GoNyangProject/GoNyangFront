@@ -6,8 +6,12 @@ import {
     CategoryList,
     CommunityContainer,
     CommunityWrapper,
+    FilterGroup,
+    HeaderLeftGroup,
+    HeaderRightGroup,
     MainSection,
     PostListWrapper,
+    SearchInputWrapper,
     SectionHeader,
     SideBar,
     SideTitle,
@@ -22,18 +26,27 @@ import { BoardType } from '../../../enum/BoardType';
 import { getCookie } from '@/utils/cookie';
 import Pagination from '../../../components/molecules/Pagination';
 import { useRouter } from 'next/navigation';
+import Input from '../../../components/atom/Input';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import DropDawnFilter from '../../../components/molecules/admin/DropDawnFilter';
+import { COMMUNITY_SORT_OPTION } from '../../../data/data-init';
 
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
+
 const Page = () => {
     const router = useRouter();
     const [category, setCategory] = useState('자유게시판');
     const [page, setPage] = useState(1);
+    const [search, setSearch] = useState('');
+    const [searchInput, setSearchInput] = useState('');
+    const [sortOption, setSortOption] = useState('');
     const [boardType, setBoardType] = useState<BoardType>(BoardType.FREE_COMMUNITY);
     const size = 10;
     const hasToken = getCookie('accessToken');
     const { data: communityList } = useSWR(
         {
-            url: `/community/list?&page=${page - 1}&size=10&boardCode=${boardType}`,
+            url: `/community/list?&page=${page - 1}&size=10&boardCode=${boardType}&search=${search}&sort=${sortOption}`,
             method: 'GET',
         },
         fetcher,
@@ -46,8 +59,7 @@ const Page = () => {
 
     const handleRenderCustomCell = (key: string, row: BoardResponseDTO, rowIndex: number) => {
         if (key === 'displayId') {
-            const total = communityList?.totalElements || 0;
-            return <span>{total - (page - 1) * size - rowIndex}</span>;
+            return <span>{(page - 1) * size + rowIndex + 1}</span>;
         }
         if (key === 'createdAt') {
             return <span>{row.createdAt?.split('T')[0]}</span>;
@@ -56,18 +68,37 @@ const Page = () => {
     };
     const handleClickInfo = () => {
         setCategory('정보공유');
+        setSearch('');
+        setSortOption('');
         setBoardType(BoardType.INFO);
         setPage(1);
     };
     const handleClickFree = () => {
         setCategory('자유게시판');
+        setSearch('');
+        setSortOption('');
         setBoardType(BoardType.FREE_COMMUNITY);
         setPage(1);
     };
     const handleClickFleaMarket = () => {
         setCategory('나눔장터');
+        setSearch('');
+        setSortOption('');
         setBoardType(BoardType.FLEA_MARKET);
         setPage(1);
+    };
+    const handleOptionChange = (val: string) => {
+        setSortOption(val);
+        setPage(1);
+    };
+    const handleSearch = () => {
+        setSearch(searchInput);
+        setPage(1);
+    };
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            handleSearch();
+        }
     };
 
     const handleClickCommunity = (key: string, communityData: BoardInfo, event: React.MouseEvent) => {
@@ -98,8 +129,39 @@ const Page = () => {
                 {/* 우측 게시판 */}
                 <MainSection>
                     <SectionHeader>
-                        <BoardTitle>{category}</BoardTitle>
-                        {hasToken && <WriteButton onClick={() => router.push('/community/write')}>글쓰기</WriteButton>}
+                        {/* 왼쪽 그룹: 제목 + 검색창 + 필터 */}
+                        <HeaderLeftGroup>
+                            <BoardTitle>{category}</BoardTitle>
+
+                            <SearchInputWrapper style={{ marginBottom: 0 }}>
+                                <Input
+                                    style={{
+                                        backgroundColor: 'white',
+                                        padding: '5px 10px',
+                                        border: 'none',
+                                        fontSize: '16px',
+                                        boxShadow: 'none',
+                                    }}
+                                    width="250px"
+                                    placeholder="검색어를 입력해주세요"
+                                    value={searchInput}
+                                    onChange={(e) => setSearchInput(e.target.value)}
+                                    onKeyDown={handleKeyDown}
+                                />
+                                <FontAwesomeIcon icon={faMagnifyingGlass} color="gray" style={{ padding: '5px' }} />
+                            </SearchInputWrapper>
+
+                            <FilterGroup>
+                                <DropDawnFilter options={COMMUNITY_SORT_OPTION} value={sortOption} onChange={handleOptionChange} placeholder="정렬" />
+                            </FilterGroup>
+                        </HeaderLeftGroup>
+
+                        {/* 오른쪽 그룹: 글쓰기 버튼 */}
+                        {hasToken && (
+                            <HeaderRightGroup>
+                                <WriteButton onClick={() => router.push('/community/write')}>글쓰기</WriteButton>
+                            </HeaderRightGroup>
+                        )}
                     </SectionHeader>
 
                     <PostListWrapper>

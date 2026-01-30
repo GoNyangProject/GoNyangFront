@@ -37,16 +37,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         setIsClient(true); // 클라이언트 측에서 마운트되었음을 표시
     }, []);
 
-    // useEffect(() => {
-    //     if (!isClient) return; // 클라이언트 측에서만 동작
-    //     const isLocalAdmin = userData?.userType === 'ROLE_ADMIN';
-    //     const isServerAdmin = user_data?.role === 'ROLE_ADMIN';
-    //     if (!isLocalAdmin || !isServerAdmin || error) {
-    //         alert('관리자 권한이 필요합니다.');
-    //         reset();
-    //         router.push('/member/login');
-    //     }
-    // }, [userData, router, reset, isClient]);
+    useEffect(() => {
+        if (!isClient) return; // 클라이언트 측에서만 동작
+        const isLocalAdmin = userData?.userType === 'ROLE_ADMIN';
+        const isServerAdmin = user_data?.role === 'ROLE_ADMIN';
+        if (!isLocalAdmin || !isServerAdmin || error) {
+            alert('관리자 권한이 필요합니다.');
+            reset();
+            router.replace('/member/login');
+        }
+    }, [userData, router, reset, isClient]);
+
+    if (!isClient || (!user_data && token)) {
+        return <div style={{ backgroundColor: '#f4f4f4', height: '100vh' }}>권한 확인 중...</div>;
+    }
     return (
         <AdminLayoutWrapper>
             <Sidebar>

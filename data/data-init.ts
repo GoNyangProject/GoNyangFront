@@ -51,3 +51,8 @@ export const ADMIN_USERS_STATUS_OPTION = [
     { label: '정상', value: 'NORMAL' },
     { label: '이용정지', value: 'BANNED' },
 ];
+export const COMMUNITY_SORT_OPTION = [
+    { label: '최신순', value: 'latest' },
+    { label: '조회수순', value: 'views' },
+    { label: '좋아요순', value: 'likes' },
+];
