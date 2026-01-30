@@ -117,7 +117,7 @@ const Page = () => {
         console.log(parentId);
         if (!userData) {
             alert('로그인 후 이용해주세요');
-            router.push('/member/login');
+            // router.push('/member/login');
             return;
         }
         if (!replyComment.trim()) return alert('답글 내용을 입력해주세요.');
