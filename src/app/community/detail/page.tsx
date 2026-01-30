@@ -30,11 +30,10 @@ import {
     CommentContent,
     CommentHeader,
     CommentInfo,
-    CommentInputWrapper,
     CommentItemContainer,
     CommentListWrapper,
-    ReplyInputBox,
 } from '../../../../styles/pages/menu/Comment';
+import CommentInput from '../../../../components/molecules/CommentInput';
 
 const fetcher = (payload: any) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
 
@@ -42,56 +41,52 @@ const Page = () => {
     const router = useRouter();
     const params = useSearchParams();
     const boardId = params.get('community');
-
-    const [comment, setComment] = useState<string>(''); // 메인 댓글용
-    const [replyComment, setReplyComment] = useState<string>(''); // 대댓글용
-    const [currentReplyId, setCurrentReplyId] = useState<number>(0); // 대댓글 입력창 열기용 ID
-
     const { userData } = userStore();
 
-    // 1. 게시글 상세 정보 조회
-    const { data: community_detail_data, isLoading } = useSWR(
-        boardId
-            ? {
-                  url: `/board/detail?boardCode=${boardId}&userId=${userData?.userId}`,
-                  method: 'GET',
-              }
-            : null,
-        fetcher,
-        { revalidateOnFocus: false, revalidateOnReconnect: false },
-    );
+    const [currentReplyId, setCurrentReplyId] = useState<number>(0);
+    const detailKey = boardId
+        ? {
+              url: `/board/detail?boardCode=${boardId}&userId=${userData?.userId}`,
+              method: 'GET',
+          }
+        : null;
 
-    // 2. 댓글 목록 조회
-    const { data: comment_data } = useSWR(
-        boardId
-            ? {
-                  url: `/comment?boardId=${boardId}`,
-                  method: 'GET',
-              }
-            : null,
-        fetcher,
-        { revalidateOnFocus: false, revalidateOnReconnect: false, fallbackData: [] },
-    );
+    const { data: community_detail_data, isLoading } = useSWR(detailKey, fetcher, {
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+    });
+
+    // 3. 댓글 목록 조회
+    const commentKey = boardId
+        ? {
+              url: `/comment?boardId=${boardId}`,
+              method: 'GET',
+          }
+        : null;
+
+    const { data: comment_data } = useSWR(commentKey, fetcher, {
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+        fallbackData: [],
+    });
 
     const handleClickLike = () => {
-        const payload = { boardId: 11 };
         Post(
             '/board/like',
-            payload,
+            { boardId: boardId },
             () => {
-                mutate({ url: `/board/detail?boardCode=${11}`, method: 'GET' });
+                mutate(detailKey); // 저장해둔 키 변수 사용
             },
             false,
         );
     };
 
-    const handleCommentSubmit = () => {
+    const handleCommentSubmit = (content: string) => {
         if (!userData) {
             alert('로그인 후 이용해주세요');
             router.push('/member/login');
             return;
         }
-        if (!comment.trim()) return alert('댓글 내용을 입력해주세요.');
 
         const payload = {
             memberId: userData.memberId,
@@ -105,28 +100,25 @@ const Page = () => {
             payload,
             (response) => {
                 if (response.type === 'SUCCESS') {
-                    setComment(''); // 입력란 초기화
-                    mutate({ url: `/comment?boardId=${boardId}`, method: 'GET' });
+                    mutate(commentKey);
                 }
             },
             false,
         );
     };
 
-    const handleReplySubmit = (parentId: number) => {
-        console.log(parentId);
+    const handleReplySubmit = (content: string, parentId: number) => {
         if (!userData) {
             alert('로그인 후 이용해주세요');
             // router.push('/member/login');
             return;
         }
-        if (!replyComment.trim()) return alert('답글 내용을 입력해주세요.');
 
         const payload = {
             memberId: userData.memberId,
             boardCode: BoardType.FREE_COMMUNITY,
-            content: replyComment,
-            parentId: parentId, // 부모 댓글 ID 전달
+            content: content,
+            parentId: parentId,
         };
 
         Post(
@@ -134,43 +126,27 @@ const Page = () => {
             payload,
             (response) => {
                 if (response.type === 'SUCCESS') {
-                    setReplyComment(''); // 대댓글 입력란 초기화
-                    setCurrentReplyId(0); // 입력창 닫기
-                    mutate({ url: `/comment?boardId=${boardId}`, method: 'GET' });
+                    setCurrentReplyId(0);
+                    mutate(commentKey);
                 }
             },
             false,
         );
     };
 
-    const handleClickReply = (item: CommentList) => {
-        setReplyComment(''); // 기존에 쓰던 내용 지우기
-        setCurrentReplyId(item.id === currentReplyId ? 0 : item.id); // 토글 방식
-    };
-
     const handleClickDeleteReply = (item: CommentList) => {
         if (confirm('정말 삭제하시겠습니까?')) {
-            const payload = {
-                commentId: item.id,
-            };
             Post(
                 '/comment/delete',
-                payload,
+                { commentId: item.id },
                 (response) => {
                     if (response.type === 'SUCCESS') {
-                        mutate({
-                            url: `/comment?boardId=${boardId}`,
-                            method: 'GET',
-                        });
+                        mutate(commentKey);
                     }
                 },
                 false,
             );
         }
-    };
-
-    const handleClickEdit = () => {
-        router.push(`/community/write?boardId=${boardId}`);
     };
 
     if (isLoading) return <BoardCardWrapper>로딩 중...</BoardCardWrapper>;
@@ -182,28 +158,18 @@ const Page = () => {
                 <DetailContainer>
                     <DetailHeader>
                         <DetailTitleWrapper>
-                            <DetailTitle>{community_detail_data.title || '제목이 없습니다.'}</DetailTitle>
+                            <DetailTitle>{community_detail_data.title}</DetailTitle>
                             {userData?.memberId === community_detail_data.member.memberId && (
                                 <DetailUpdateWrapper>
-                                    <Button onClick={handleClickEdit} style={{ padding: '10px 24px', fontSize: '15px' }}>
-                                        수정
-                                    </Button>
-                                    <Button
-                                        style={{
-                                            padding: '10px 24px',
-                                            fontSize: '15px',
-                                            backgroundColor: '#a68967',
-                                        }}
-                                    >
-                                        삭제
-                                    </Button>
+                                    <Button onClick={() => router.push(`/community/write?boardId=${boardId}`)}>수정</Button>
+                                    <Button style={{ backgroundColor: '#a68967' }}>삭제</Button>
                                 </DetailUpdateWrapper>
                             )}
                         </DetailTitleWrapper>
                         <DetailMeta>
                             <span>작성일: {community_detail_data.createdAt?.split('T')[0]}</span>
                             <div className="divider" />
-                            <span>작성자: 관리자</span>
+                            <span>작성자: {community_detail_data.member.userId}</span>
                             <div className="divider" />
                             <span>조회수: {community_detail_data.viewCount || 0}</span>
                             <div className="divider" />
@@ -216,41 +182,13 @@ const Page = () => {
                     <DetailBody>
                         {community_detail_data.imgUrl && (
                             <DetailImageBox>
-                                <img src={`${community_detail_data.imgUrl}`} alt="board-img" />
+                                <img src={community_detail_data.imgUrl} alt="board-img" />
                             </DetailImageBox>
                         )}
-                        {/*<DetailContent>{community_detail_data.content || '내용이 없습니다.'}</DetailContent>*/}
-                        <DetailContent dangerouslySetInnerHTML={{ __html: community_detail_data.content }} />
+                        <DetailContent className="view-content" dangerouslySetInnerHTML={{ __html: community_detail_data.content }} />
                     </DetailBody>
 
-                    {/* 메인 댓글 입력창 */}
-                    <CommentInputWrapper>
-                        <textarea
-                            value={comment}
-                            onChange={(e) => setComment(e.target.value)}
-                            placeholder="댓글을 입력해주세요."
-                            style={{
-                                width: '100%',
-                                height: '80px',
-                                padding: '12px',
-                                borderRadius: '8px',
-                                border: '1px solid #ddd',
-                                resize: 'none',
-                            }}
-                        />
-                        <div
-                            style={{
-                                display: 'flex',
-                                justifyContent: 'flex-end',
-                                marginTop: '10px',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Button onClick={handleCommentSubmit} style={{ padding: '8px 20px', whiteSpace: 'nowrap' }}>
-                                등록
-                            </Button>
-                        </div>
-                    </CommentInputWrapper>
+                    <CommentInput onSubmit={handleCommentSubmit} />
 
                     <ButtonWrapper>
                         <CommentListWrapper>
@@ -265,39 +203,22 @@ const Page = () => {
                                                 </CommentInfo>
                                                 <ActionGroup>
                                                     <Button onClick={() => handleClickDeleteReply(item)}>삭제</Button>
-                                                    <Button onClick={() => handleClickReply(item)}>{currentReplyId === item.id ? '닫기' : '답글'}</Button>
+                                                    <Button onClick={() => setCurrentReplyId(currentReplyId === item.id ? 0 : item.id)}>
+                                                        {currentReplyId === item.id ? '닫기' : '답글'}
+                                                    </Button>
                                                 </ActionGroup>
                                             </CommentHeader>
-
                                             <CommentContent>{item.content}</CommentContent>
 
-                                            {/* 대댓글 입력창 */}
                                             {currentReplyId === item.id && (
-                                                <ReplyInputBox>
-                                                    <textarea
-                                                        value={replyComment}
-                                                        onChange={(e) => setReplyComment(e.target.value)}
+                                                <div style={{ marginTop: '10px' }}>
+                                                    <CommentInput
+                                                        onSubmit={(content) => handleReplySubmit(content, item.id)}
                                                         placeholder={`${item.writer}님께 답글 남기기...`}
                                                     />
-                                                    <div className="button-group">
-                                                        <Button
-                                                            onClick={() => setCurrentReplyId(0)}
-                                                            style={{
-                                                                backgroundColor: '#999',
-                                                                padding: '4px 12px',
-                                                                fontSize: '12px',
-                                                            }}
-                                                        >
-                                                            취소
-                                                        </Button>
-                                                        <Button onClick={() => handleReplySubmit(item.id)} style={{ padding: '4px 12px', fontSize: '12px' }}>
-                                                            답글 등록
-                                                        </Button>
-                                                    </div>
-                                                </ReplyInputBox>
+                                                </div>
                                             )}
 
-                                            {/* 대댓글 재귀 호출 */}
                                             {item.children && item.children.length > 0 && (
                                                 <ChildrenWrapper>{renderComments(item.children, depth + 1)}</ChildrenWrapper>
                                             )}

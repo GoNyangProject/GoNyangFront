@@ -108,6 +108,40 @@ export const DetailContent = styled.div`
     color: #5a4d41;
     white-space: pre-wrap;
     word-break: break-all;
+
+    &.view-content img {
+        max-width: 100%; /* 이미지가 화면 밖으로 나가는 것 방지 */
+        height: auto;
+    }
+
+    &.view-content b {
+        font-weight: bold;
+    }
+
+    &.view-content u {
+        text-decoration: underline;
+    }
+
+    &.view-content a {
+        color: #007bff; /* 링크 느낌이 나는 파란색 */
+        text-decoration: underline; /* 밑줄 추가 */
+        transition: color 0.2s;
+
+        &:hover {
+            color: #0056b3; /* 마우스 올렸을 때 더 진한 파란색 */
+            text-decoration: none; /* 마우스 올리면 밑줄 제거(취향껏 선택) */
+        }
+    }
+
+    &.view-content ul {
+        list-style: disc;
+        padding-left: 20px;
+    }
+
+    &.view-content ol {
+        list-style: decimal;
+        padding-left: 20px;
+    }
 `;
 
 export const ButtonWrapper = styled.div`
