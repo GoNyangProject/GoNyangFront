@@ -95,7 +95,7 @@ const Page = () => {
 
         const payload = {
             memberId: userData.memberId,
-            boardCode: BoardType.FREE_COMMUNITY,
+            boardId: boardId,
             content: comment,
             parentId: currentReplyId ? currentReplyId : null, // 루트 댓글
         };
