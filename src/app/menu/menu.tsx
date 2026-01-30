@@ -16,16 +16,16 @@ const Menu = ({ data, setCurrentTab, setSelectedMenu }: MenuProps) => {
     const router = useRouter();
     const { userData } = userStore();
     const handleClickBook = (id: number) => {
-        const isMemberIdValid = !!userData.memberId;
-        if (!isMemberIdValid) {
+        if (userData != null) {
+            const menu = data.find((menu) => menu.id === id);
+            if (menu) {
+                setSelectedMenu(menu);
+                setCurrentTab(MenuType.DATE);
+            }
+        } else {
             alert('로그인 후 예약가능합니다.');
             router.push('/member/login');
             return;
-        }
-        const menu = data.find((menu) => menu.id === id);
-        if (menu) {
-            setSelectedMenu(menu);
-            setCurrentTab(MenuType.DATE);
         }
     };
 

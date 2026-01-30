@@ -52,7 +52,7 @@ const Page = () => {
             payload,
             () => {
                 mutate(
-                    { url: `/board/detail?boardCode=${boardId}`, method: 'GET' },
+                    { url: `/board/detail?boardCode=${boardId}&userId=${userData?.userId}`, method: 'GET' },
                     {
                         ...notice_detail_data,
                         likeCount: (notice_detail_data.likeCount || 0) + 1,
