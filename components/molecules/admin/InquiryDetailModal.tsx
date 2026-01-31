@@ -44,13 +44,11 @@ const InquiryDetailModal = ({ inquiry, onAnswer, onClose }: InquiryDetailModalPr
                     </div>
                 </InfoGrid>
 
-                {/* 실무 포인트 2: 문의 내용 (Q) */}
                 <ContentBox>
                     <div className="title-area">Q. {inquiry.title}</div>
                     <div className="text-area">{inquiry.content}</div>
                 </ContentBox>
 
-                {/* 실무 포인트 3: 답변 영역 (A) */}
                 <div style={{ fontWeight: '700', marginBottom: '8px', fontSize: '14px', color: '#3E66FB' }}>
                     <span style={{ marginRight: '5px' }}>●</span> 관리자 답변
                 </div>

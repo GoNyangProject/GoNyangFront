@@ -35,6 +35,7 @@ const Page = () => {
             revalidateOnReconnect: false,
         },
     );
+    console.log(inquiryList);
     const row = inquiryList?.content || [];
     const totalPages = inquiryList?.totalPages || 0;
     const renderInquiryCell = (key: string, rowData: InquiryItem) => {

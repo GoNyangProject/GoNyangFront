@@ -42,6 +42,11 @@ const Page = () => {
     const handleClickJoin = () => {
         router.push('/member/join');
     };
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            handleClickLogin();
+        }
+    };
 
     return (
         <LoginLayoutWrapper>
@@ -77,6 +82,7 @@ const Page = () => {
                             height="38px"
                             style={{ borderRadius: '10px' }}
                             onChange={(event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value.trim())}
+                            onKeyDown={handleKeyDown}
                         />
                         <ButtonWrapper>
                             <Button

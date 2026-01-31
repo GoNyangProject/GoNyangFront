@@ -68,6 +68,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     <SidebarLink onClick={() => router.push('/admin/inquiry')}>
                         <Icon /> 문의 관리
                     </SidebarLink>
+                    <SidebarLink onClick={() => router.push('/admin/community')}>
+                        <Icon /> 커뮤니티 관리
+                    </SidebarLink>
                 </nav>
                 <ReturnToUserHome onClick={() => router.push('/')}>
                     <Icon /> 사용자 홈으로 돌아가기
