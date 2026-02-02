@@ -237,7 +237,14 @@ const Page = () => {
                                                 처리완료
                                             </span>
                                         ) : (
-                                            <CancelButton onClick={() => handleCancel(book.orderId)}>예약취소</CancelButton>
+                                            <CancelButton
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleCancel(book.orderId);
+                                                }}
+                                            >
+                                                예약취소
+                                            </CancelButton>
                                         )}
                                     </ReservationItem>
                                 );

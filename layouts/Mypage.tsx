@@ -77,24 +77,24 @@ const Mypage = ({ children }: MypageProps) => {
                     >
                         예약 정보
                     </Button>
-                    <Button
-                        backgroundColor={activeTab === MypageType.SHOPPING_CART ? '#a68967' : 'bisque'}
-                        border="none"
-                        color="black"
-                        fontSize="16px"
-                        onClick={() => handleTabClick(MypageType.SHOPPING_CART)}
-                    >
-                        장바구니
-                    </Button>
-                    <Button
-                        backgroundColor={activeTab === MypageType.PURCHASE_HISOTRY ? '#a68967' : 'bisque'}
-                        border="none"
-                        color="black"
-                        fontSize="16px"
-                        onClick={() => handleTabClick(MypageType.PURCHASE_HISOTRY)}
-                    >
-                        구매내역
-                    </Button>
+                    {/*<Button*/}
+                    {/*    backgroundColor={activeTab === MypageType.SHOPPING_CART ? '#a68967' : 'bisque'}*/}
+                    {/*    border="none"*/}
+                    {/*    color="black"*/}
+                    {/*    fontSize="16px"*/}
+                    {/*    onClick={() => handleTabClick(MypageType.SHOPPING_CART)}*/}
+                    {/*>*/}
+                    {/*    장바구니*/}
+                    {/*</Button>*/}
+                    {/*<Button*/}
+                    {/*    backgroundColor={activeTab === MypageType.PURCHASE_HISOTRY ? '#a68967' : 'bisque'}*/}
+                    {/*    border="none"*/}
+                    {/*    color="black"*/}
+                    {/*    fontSize="16px"*/}
+                    {/*    onClick={() => handleTabClick(MypageType.PURCHASE_HISOTRY)}*/}
+                    {/*>*/}
+                    {/*    구매내역*/}
+                    {/*</Button>*/}
                     <Button
                         backgroundColor={activeTab === MypageType.MY_INQUIRY ? '#a68967' : 'bisque'}
                         border="none"
