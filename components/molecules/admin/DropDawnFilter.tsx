@@ -7,7 +7,7 @@ type AdminFilterProps = {
     options: { label: string; value: string }[];
     value: string;
     onChange: (value: string) => void;
-    placeholder: string;
+    placeholder?: string;
 };
 const useOutsideClick = (callback: () => void) => {
     const ref = useRef<HTMLDivElement>(null);

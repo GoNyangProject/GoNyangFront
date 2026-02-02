@@ -44,7 +44,6 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use((config) => {
-    // 쿠키 기반이므로 별도 헤더 설정 불필요
     return config;
 });
 
@@ -55,7 +54,7 @@ axiosInstance.interceptors.response.use(
     async (error) => {
         const status = error.response?.status;
         if (status === 401) {
-            alert('로그인이 필요합니다.');
+            alert('정보가 일치하는 회원이 없습니다.');
             // window.location.href = '/member/login';
         } else if (status === 403) {
             alert('권한이 없습니다.');

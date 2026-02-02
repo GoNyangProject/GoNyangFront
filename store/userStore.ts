@@ -7,6 +7,7 @@ export type User = {
     username: string;
     role: string;
     userType: string;
+    petImagePath: string | null;
 };
 
 interface UserState {
