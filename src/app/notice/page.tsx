@@ -29,7 +29,7 @@ const Page = () => {
 
     const { data: notice_data } = useSWR(
         {
-            url: `/board?boardCode=${BoardType.NOTICE}&searchKeyword=${searchKeyword}&size=${SIZE}&page=${page}`,
+            url: `/board?boardCode=${BoardType.NOTICE}&searchKeyword=${searchKeyword}&size=${SIZE}&page=${page}&sort=${null}`,
             method: 'GET',
         },
         fetcher,
@@ -44,14 +44,15 @@ const Page = () => {
         if (!notice_data || !Array.isArray(notice_data.boards)) {
             return [];
         }
-        return notice_data.boards.map((notice: BoardInfo) => ({
-            id: notice.id,
+        return notice_data.boards.map((notice: BoardInfo, index: number) => ({
+            id: SIZE * (page - 1) + index + 1,
+            boardId: notice.id,
             title: notice.title,
             content: notice.content,
             createdAt: notice.createdAt,
             viewCount: notice.viewCount || '0',
         }));
-    }, [notice_data]);
+    }, [notice_data, page]);
 
     const totalPage = Math.ceil(notice_data.totalCount / SIZE);
 
