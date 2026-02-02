@@ -38,15 +38,28 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }, []);
 
     useEffect(() => {
+        console.log(userData);
+    }, [userData]);
+
+    useEffect(() => {
+        console.log(user_data);
+    }, [user_data]);
+
+    useEffect(() => {
         if (!isClient) return; // 클라이언트 측에서만 동작
+        if (!userData || !user_data) {
+            return;
+        }
         const isLocalAdmin = userData?.userType === 'ROLE_ADMIN';
         const isServerAdmin = user_data?.role === 'ROLE_ADMIN';
+        console.log(isLocalAdmin);
+
         if (!isLocalAdmin || !isServerAdmin || error) {
             alert('관리자 권한이 필요합니다.');
             reset();
             router.replace('/member/login');
         }
-    }, [userData, router, reset, isClient]);
+    }, [userData, router, reset, isClient, user_data, error]);
 
     if (!isClient || (!user_data && token)) {
         return <div style={{ backgroundColor: '#f4f4f4', height: '100vh' }}>권한 확인 중...</div>;
