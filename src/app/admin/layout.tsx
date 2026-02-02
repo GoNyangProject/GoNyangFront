@@ -52,7 +52,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         }
         const isLocalAdmin = userData?.userType === 'ROLE_ADMIN';
         const isServerAdmin = user_data?.role === 'ROLE_ADMIN';
-        console.log(isLocalAdmin);
 
         if (!isLocalAdmin || !isServerAdmin || error) {
             alert('관리자 권한이 필요합니다.');
