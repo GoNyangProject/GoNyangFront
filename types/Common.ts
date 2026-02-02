@@ -113,6 +113,7 @@ export type CommentList = {
     deletedAt: Date;
     id: number;
     writer: string;
+    petImagePath: string | null;
 };
 
 export type AdminMemberList = {

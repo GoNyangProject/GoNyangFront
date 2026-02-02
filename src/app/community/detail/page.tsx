@@ -17,7 +17,7 @@ import {
 } from '../../../../styles/pages/menu/Board';
 import axiosInstance from '../../../../libs/axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons';
 import { Post } from '../../../../service/crud';
 import Button from '../../../../components/atom/Button';
 import { MainWrapper } from '../../../../styles/pages/Main';
@@ -34,8 +34,10 @@ import {
     CommentListWrapper,
 } from '../../../../styles/pages/menu/Comment';
 import CommentInput from '../../../../components/molecules/CommentInput';
+import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
-const fetcher = (payload: any) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
+const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
 
 const Page = () => {
     const router = useRouter();
@@ -56,7 +58,6 @@ const Page = () => {
         revalidateOnReconnect: false,
     });
 
-    // 3. 댓글 목록 조회
     const commentKey = boardId
         ? {
               url: `/comment?boardId=${boardId}`,
@@ -72,15 +73,31 @@ const Page = () => {
 
     const handleClickLike = () => {
         Post(
-            '/board/like',
+            '/boardLike',
             { boardId: boardId },
             () => {
-                mutate(detailKey); // 저장해둔 키 변수 사용
+                mutate(detailKey);
             },
             false,
         );
     };
-
+    const handleDeleteBoard = () => {
+        if (confirm('정말 이 게시물을 삭제하시겠습니까?')) {
+            Post(
+                '/board/delete',
+                { boardId: boardId },
+                (response) => {
+                    if (response.message === '요청 성공') {
+                        alert('삭제되었습니다.');
+                        router.push('/community');
+                    } else {
+                        alert('삭제에 실패했습니다.');
+                    }
+                },
+                false,
+            );
+        }
+    };
     const handleCommentSubmit = (content: string) => {
         if (!userData) {
             alert('로그인 후 이용해주세요');
@@ -159,22 +176,35 @@ const Page = () => {
                     <DetailHeader>
                         <DetailTitleWrapper>
                             <DetailTitle>{community_detail_data.title}</DetailTitle>
-                            {userData?.memberId === community_detail_data.member.memberId && (
+                            {community_detail_data.canDelete && (
                                 <DetailUpdateWrapper>
                                     <Button onClick={() => router.push(`/community/write?boardId=${boardId}`)}>수정</Button>
-                                    <Button style={{ backgroundColor: '#a68967' }}>삭제</Button>
+                                    <Button style={{ backgroundColor: '#a68967' }} onClick={handleDeleteBoard}>
+                                        삭제
+                                    </Button>
                                 </DetailUpdateWrapper>
                             )}
                         </DetailTitleWrapper>
                         <DetailMeta>
                             <span>작성일: {community_detail_data.createdAt?.split('T')[0]}</span>
                             <div className="divider" />
-                            <span>작성자: {community_detail_data.member.userId}</span>
+                            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                                <img
+                                    src={community_detail_data.member.petImagePath || '/images/account_placeholer_image.png'}
+                                    style={{ width: '24px', height: '24px', borderRadius: '50%' }}
+                                    alt="writer-pet"
+                                />
+                                <span>작성자: {community_detail_data.member.userId}</span>
+                            </div>
                             <div className="divider" />
                             <span>조회수: {community_detail_data.viewCount || 0}</span>
                             <div className="divider" />
                             <span onClick={handleClickLike} style={{ cursor: 'pointer' }}>
-                                <FontAwesomeIcon style={{ color: 'red' }} icon={faHeart} /> 좋아요: {community_detail_data.likeCount || 0}
+                                <FontAwesomeIcon
+                                    style={{ color: 'red', marginRight: '5px' }}
+                                    icon={(community_detail_data.liked ? fasHeart : farHeart) as IconProp}
+                                />
+                                <span>좋아요 {community_detail_data.likeCount || 0}</span>
                             </span>
                         </DetailMeta>
                     </DetailHeader>
@@ -196,6 +226,16 @@ const Page = () => {
                                         <CommentItemContainer key={item.id} $depth={depth}>
                                             <CommentHeader>
                                                 <CommentInfo>
+                                                    <img
+                                                        src={item.petImagePath || '/images/account_placeholer_image.png'}
+                                                        style={{
+                                                            width: '28px',
+                                                            height: '28px',
+                                                            borderRadius: '50%',
+                                                            objectFit: 'cover',
+                                                        }}
+                                                        alt="commenter-pet"
+                                                    />
                                                     <span className="writer">{item.writer || '익명'}</span>
                                                     <span className="date">{item.createdAt.toString().split('T')[0]}</span>
                                                 </CommentInfo>

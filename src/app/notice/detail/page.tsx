@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import axiosInstance from '../../../../libs/axios';
 import { useRouter, useSearchParams } from 'next/navigation';
 import useSWR, { mutate } from 'swr';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import {
     BoardCardWrapper,
     ButtonWrapper,
@@ -17,7 +18,8 @@ import {
 import { MainWrapper } from '../../../../styles/pages/Main';
 import Button from '../../../../components/atom/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons';
+import { faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons';
 import { Post } from '../../../../service/crud';
 import { userStore } from '../../../../store/userStore'; // 스타일 경로 확인 필요
 
@@ -42,20 +44,22 @@ const Page = () => {
             fallbackData: [],
         },
     );
-
     const handleClickLike = () => {
+        if (!userData) return alert('로그인이 필요합니다.');
+        const isCurrentlyLiked = notice_detail_data.liked;
         const payload = {
             boardId: boardId,
         };
         Post(
-            '/board/like',
+            '/boardLike',
             payload,
             () => {
                 mutate(
                     { url: `/board/detail?boardCode=${boardId}&userId=${userData?.userId}`, method: 'GET' },
                     {
                         ...notice_detail_data,
-                        likeCount: (notice_detail_data.likeCount || 0) + 1,
+                        liked: !isCurrentlyLiked,
+                        likeCount: isCurrentlyLiked ? (notice_detail_data.likeCount || 1) - 1 : (notice_detail_data.likeCount || 0) + 1,
                     },
                     false,
                 );
@@ -84,8 +88,9 @@ const Page = () => {
                             <div className="divider" />
                             <span>조회수: {notice_detail_data.viewCount || 0}</span>
                             <div className="divider" />
-                            <span onClick={handleClickLike} style={{ cursor: 'pointer' }}>
-                                <FontAwesomeIcon style={{ color: 'red' }} icon={faHeart} /> 좋아요: {notice_detail_data.likeCount || 0}
+                            <span onClick={handleClickLike} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                <FontAwesomeIcon style={{ color: 'red' }} icon={(notice_detail_data.liked ? fasHeart : farHeart) as IconProp} />
+                                <span>좋아요 {notice_detail_data.likeCount || 0}</span>
                             </span>
                         </DetailMeta>
                     </DetailHeader>

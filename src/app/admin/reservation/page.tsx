@@ -23,13 +23,27 @@ import axiosInstance from '../../../../libs/axios';
 import useSWR, { mutate } from 'swr';
 import { formatDate } from '@/utils/validations/formValidators';
 import { AdminBlockResponse, AdminBookResponse } from '../../../../types/Common';
-import { Delete, Patch, Post } from '../../../../service/crud';
+import { Delete, Get, Patch, Post } from '../../../../service/crud';
 import { ResponseType } from '../../../../enum/Common';
+import PetInfoModal from '../../../../components/molecules/admin/PetInfoModal';
 
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
+export interface PetInfo {
+    id: number;
+    petName: string;
+    catBreed: string;
+    petAge: number;
+    petGender: string;
+    catNotes: string;
+    petImagePath: string | null;
+    createdAt: string;
+}
 
 const Page = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedUserPets, setSelectedUserPets] = useState<PetInfo[]>([]);
+    const [currentUserName, setCurrentUserName] = useState('');
 
     const { data: book_data } = useSWR<AdminBookResponse[]>(
         {
@@ -134,6 +148,22 @@ const Page = () => {
             false,
         );
     };
+    const handleUserClick = async (memberId: string, username: string) => {
+        Get(`/admin/pet/list/${memberId}`, (response) => {
+            console.log(response);
+            if (response && Array.isArray(response.result)) {
+                setSelectedUserPets(response.result || []);
+                setCurrentUserName(username);
+                setIsModalOpen(true);
+
+                if (response.result.length === 0) {
+                    console.log(`${username}님은 등록된 펫이 없습니다.`);
+                }
+            } else {
+                alert(response.message || '정보를 불러올 수 없습니다.');
+            }
+        });
+    };
 
     return (
         <Container>
@@ -164,7 +194,9 @@ const Page = () => {
                                         style={{
                                             opacity: isCancelled ? 0.5 : 1,
                                             backgroundColor: isCancelled ? '#f9f9f9' : 'white',
+                                            cursor: isCancelled ? 'default' : 'pointer',
                                         }}
+                                        onClick={() => handleUserClick(book.memberId, book.username)}
                                     >
                                         <div style={{ display: 'flex', alignItems: 'center' }}>
                                             <TimeText>
@@ -227,6 +259,7 @@ const Page = () => {
                     </BlockButton>
                 </DetailSection>
             </ContentWrapper>
+            {isModalOpen && <PetInfoModal petList={selectedUserPets} userName={currentUserName} onClose={() => setIsModalOpen(false)} />}
         </Container>
     );
 };

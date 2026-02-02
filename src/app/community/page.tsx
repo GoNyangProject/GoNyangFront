@@ -69,6 +69,7 @@ const Page = () => {
     const handleClickInfo = () => {
         setCategory('정보공유');
         setSearch('');
+        setSearchInput('');
         setSortOption('');
         setBoardType(BoardType.INFO);
         setPage(1);
@@ -76,6 +77,7 @@ const Page = () => {
     const handleClickFree = () => {
         setCategory('자유게시판');
         setSearch('');
+        setSearchInput('');
         setSortOption('');
         setBoardType(BoardType.FREE_COMMUNITY);
         setPage(1);
@@ -83,6 +85,7 @@ const Page = () => {
     const handleClickFleaMarket = () => {
         setCategory('나눔장터');
         setSearch('');
+        setSearchInput('');
         setSortOption('');
         setBoardType(BoardType.FLEA_MARKET);
         setPage(1);

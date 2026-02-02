@@ -35,7 +35,6 @@ const Page = () => {
             revalidateOnReconnect: false,
         },
     );
-    console.log(inquiryList);
     const row = inquiryList?.content || [];
     const totalPages = inquiryList?.totalPages || 0;
     const renderInquiryCell = (key: string, rowData: InquiryItem) => {
@@ -77,6 +76,10 @@ const Page = () => {
         setIsModalOpen(true);
     };
     const handleAnswerSubmit = (id: number, answer: string) => {
+        if (!answer || answer.trim() === '') {
+            alert('답변 내용을 입력해주세요.');
+            return;
+        }
         const confirm = window.confirm('답변을 등록하시겠습니까?');
         if (confirm) {
             const payload = { id: id, answer: answer };
