@@ -45,7 +45,7 @@ const Page = () => {
     const { userData } = userStore();
 
     useEffect(() => {
-        if (userData.memberId) {
+        if (userData?.memberId) {
             const orderId = searchParams.get('orderId');
             const paymentKey = searchParams.get('paymentKey');
             const amount = searchParams.get('amount');
