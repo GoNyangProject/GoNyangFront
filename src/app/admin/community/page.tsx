@@ -12,19 +12,8 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { CommunityAdminColumns } from '../../../../constants/table-init';
 import { AdminHeaderArea, FilterWrapper, SearchInputWrapper, SelectWrapper } from '../../../../styles/pages/admin/community';
 import Input from '../../../../components/atom/Input';
-
-const BOARD_STATUS_OPTIONS = [
-    { label: '전체 상태', value: '' },
-    { label: '게시 중', value: 'NORMAL' },
-    { label: '삭제됨', value: 'DELETED' },
-];
-const BOARD_CATEGORY_MAP: { [key: string]: string } = {
-    NOTICE: '공지사항',
-    INQUIRY: '1:1문의',
-    FREE_COMMUNITY: '자유게시판',
-    FLEA_MARKET: '나눔장터',
-    INFO: '정보공유',
-};
+import { ADMIN_CATEGORY_OPTIONS, BOARD_CATEGORY_MAP, BOARD_STATUS_OPTIONS, SORT_OPTIONS } from '../../../../data/data-init';
+import {AdminCommunityInfo, CommunityInfo} from '../../../../types/Common';
 
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
 
@@ -33,9 +22,11 @@ const CommunityAdminPage = () => {
     const [search, setSearch] = useState('');
     const [inputValue, setInputValue] = useState('');
     const [status, setStatus] = useState('');
+    const [sort, setSort] = useState('createdAt,desc');
+    const [category, setCategory] = useState('');
 
     const listKey = {
-        url: `/admin/community/list?search=${search}&status=${status}&page=${page - 1}&size=10`,
+        url: `/admin/community/list?search=${search}&status=${status}&category=${category}&sort=${sort}&page=${page - 1}&size=10`,
         method: 'GET',
     };
 
@@ -43,7 +34,7 @@ const CommunityAdminPage = () => {
     console.log(adminBoardData);
     const rows = adminBoardData?.content || [];
     const totalPages = adminBoardData?.totalPages || 0;
-    const renderCustomCell = (key: string, row: any, rowIndex: number) => {
+    const renderCustomCell = (key: string, row: AdminCommunityInfo, rowIndex: number) => {
         switch (key) {
             case 'displayId':
                 return <span>{(page - 1) * 10 + rowIndex + 1}</span>;
@@ -53,9 +44,27 @@ const CommunityAdminPage = () => {
                 return <span>{koreanName}</span>;
             case 'stats':
                 return (
-                    <span style={{ fontSize: '13px', color: '#666' }}>
-                        👀 {row.viewCount} / ❤️ {row.likeCount}
-                    </span>
+                    <div
+                        style={{
+                            display: 'flex',
+                            alignItems: 'start',
+                            justifyContent: 'flex-start',
+                            paddingLeft: '5px',
+                            fontSize: '13px',
+                            color: '#666',
+                            gap: '12px',
+                        }}
+                    >
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <span style={{ fontSize: '11px' }}>👀</span> {row.viewCount?.toLocaleString()}
+                        </span>
+
+                        <span style={{ color: '#EEE' }}>|</span>
+
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <span style={{ fontSize: '11px' }}>❤️</span> {row.likeCount?.toLocaleString()}
+                        </span>
+                    </div>
                 );
 
             case 'status':
@@ -143,8 +152,28 @@ const CommunityAdminPage = () => {
                         <FontAwesomeIcon icon={faMagnifyingGlass} color="gray" onClick={handleSearch} style={{ cursor: 'pointer', padding: '5px' }} />
                     </SearchInputWrapper>
 
-                    <SelectWrapper>
+                    <SelectWrapper style={{ display: 'flex', gap: '10px' }}>
+                        <DropDawnFilter
+                            options={ADMIN_CATEGORY_OPTIONS}
+                            value={category}
+                            onChange={(val) => {
+                                setCategory(val);
+                                setPage(1);
+                            }}
+                            placeholder="전체 카테고리"
+                        />
+
                         <DropDawnFilter options={BOARD_STATUS_OPTIONS} value={status} onChange={handleStatusChange} placeholder="전체 상태" />
+
+                        <DropDawnFilter
+                            options={SORT_OPTIONS}
+                            value={sort}
+                            onChange={(val) => {
+                                setSort(val);
+                                setPage(1);
+                            }}
+                            placeholder="정렬 기준"
+                        />
                     </SelectWrapper>
                 </FilterWrapper>
             </AdminHeaderArea>

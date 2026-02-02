@@ -83,6 +83,7 @@ export const CommunityAdminColumns: Array<{ key: string; value: string }> = [
     { key: 'userId', value: '작성자' },
     { key: 'createdAt', value: '작성일' },
     { key: 'boardName', value: '카테고리' },
+    { key: 'stats', value: '조회/좋아요' },
     { key: 'status', value: '상태' },
     { key: 'deletedAt', value: '관리' },
 ];

@@ -196,3 +196,14 @@ export type AdminBlockResponse = {
     blockDate: string;
     reason: string;
 };
+export type AdminCommunityInfo = {
+    id: number;
+    displayId: number;
+    boardName: string;
+    title: string;
+    userId: string;
+    viewCount: number;
+    likeCount: number;
+    createdAt: string;
+    deletedAt: string | null;
+};
