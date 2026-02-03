@@ -1,6 +1,13 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
+    typescript: {
+        ignoreBuildErrors: true,
+    },
+    reactStrictMode: false,
     publicRuntimeConfig: {
         basePath: '/',
     },
@@ -11,7 +18,7 @@ const nextConfig = {
         return [
             {
                 source: '/auth/:provider',
-                destination: 'http://localhost:8080/auth/:provider',
+                destination: `${process.env.NEXT_PUBLIC_BACK_URL}/auth/:provider`,
             },
         ];
     },

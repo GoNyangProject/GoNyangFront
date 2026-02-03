@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  app:
+    env_file:
+      - .env
+    image: ${IMAGE}:${TAG}
+    container_name: ${IMAGE}
+    ports:
+      - ${PORT}:3000
+    restart: always
+    networks:
+      - ${NETWORKS}
+    environment:
+      NEXT_PUBLIC_BACK_URL: ${NEXT_PUBLIC_BACK_URL}
+      NEXT_PUBLIC_TOSS_CLIENT_KEY: ${NEXT_PUBLIC_TOSS_CLIENT_KEY}
+      NEXT_PUBLIC_MENU_URL: ${NEXT_PUBLIC_MENU_URL}
+
+networks:
+  gonyang-network:
+    external: true
