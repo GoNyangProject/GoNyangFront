@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import {createJSONStorage, persist} from 'zustand/middleware';
 
 export type User = {
     memberId: string;
@@ -20,11 +20,14 @@ export const userStore = create(
     persist<UserState>(
         (set) => ({
             userData: null,
-            setUserData: (userData) => set({ userData }),
+            setUserData: (newUser) => {
+                set({ userData: newUser });
+            },
             reset: () => set({ userData: null }),
         }),
         {
             name: 'user-storage',
+            storage: createJSONStorage(() => localStorage),
         },
     ),
 );

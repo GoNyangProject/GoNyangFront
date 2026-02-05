@@ -9,9 +9,8 @@ import { Post } from '../../../../service/crud';
 import axiosInstance from '../../../../libs/axios';
 import { userStore } from '../../../../store/userStore';
 import useSWR, { mutate } from 'swr';
-import { PetApiResponse } from '../../../../types/Common';
+import {CommonResponse, PetApiResponse} from '../../../../types/Common';
 
-//기존 팻 등록 폼
 type PetForm = {
     petId?: number;
     [PetInfoType.NAME]: string;
@@ -20,7 +19,6 @@ type PetForm = {
     [PetInfoType.GENDER]: string;
     [PetInfoType.NOTE]: string;
 };
-//새팻등록시 얘가나옴
 const emptyPetForm = (): PetForm => ({
     petId: undefined,
     [PetInfoType.NAME]: '',
@@ -30,10 +28,15 @@ const emptyPetForm = (): PetForm => ({
     [PetInfoType.NOTE]: '',
 });
 
+interface MyPetProfileModifyResponse {
+    status: string;
+    petImagePath: string | null;
+}
+
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
 
 const Page = () => {
-    const { userData } = userStore();
+    const { userData, setUserData } = userStore();
 
     const { data: user_account } = useSWR(
         {
@@ -47,18 +50,15 @@ const Page = () => {
             fallbackData: [],
         },
     );
-    // 프로필 상태
     const [profile, setProfile] = useState({
         [AccountFieldsType.NAME]: '',
         [AccountFieldsType.EMAIL]: '',
         [AccountFieldsType.PHONE]: '',
     });
 
-    // 프로필 인라인 편집 상태
     const [editingField, setEditingField] = useState<string | null>(null);
     const [validationErrors, setValidationErrors] = useState<{ [key: string]: string }>({});
 
-    // 펫 내용/임시 내용/이미지/이미지 경로/보여줄 펫 인덱스/검증/편집모드 on/off 유무
     const [pets, setPets] = useState<PetForm[]>([]);
     const [tempPets, setTempPets] = useState<PetForm[]>([]);
     const [petImages, setPetImages] = useState<(string | null)[]>([]);
@@ -106,7 +106,6 @@ const Page = () => {
         setIsPetEditMode(false);
     }, [user_account]);
 
-    // 프로필 핸들러들
     const handleSettingClick = (field: string) => setEditingField(field);
 
     const handleCancel = () => {
@@ -146,7 +145,6 @@ const Page = () => {
         setEditingField(null);
     };
 
-    // 펫 등록(새 항목 추가) 버튼
     const handleAddPet = () => {
         const newIdx = pets.length;
         const empty = emptyPetForm();
@@ -159,7 +157,6 @@ const Page = () => {
         setIsPetEditMode(true);
     };
 
-    // 펫 삭제 (프론트 상태만 제거; 백엔드 API 연결 필요)
     const handleDeletePet = () => {
         if (pets.length === 0) return;
         const confirmDelete = window.confirm('정말 삭제하시겠습니까?');
@@ -216,13 +213,11 @@ const Page = () => {
         setIsPetEditMode(false);
     };
 
-    // 펫 저장 (현재 인덱스만)
     const handlePetInfoSave = () => {
         if (pets.length === 0) return;
 
         const targetPet = tempPets[currentPetIndex];
 
-        // 검증
         const errors: { [key: string]: string } = {};
         (Object.entries(targetPet) as [keyof PetForm, string][]).forEach(([k, v]) => {
             const errorMsg = validatePetField(k as unknown as PetInfoType, String(v));
@@ -244,12 +239,24 @@ const Page = () => {
             note: targetPet[PetInfoType.NOTE],
             imageBase64: petImages[currentPetIndex],
         };
-
         Post(
             '/mypage/useraccount/profile/pet',
             payload,
-            () => {
+            (response) => {
+                const fullResponse = response as CommonResponse<MyPetProfileModifyResponse>;
+                const res = fullResponse.result;
+                console.log('변환된 petImagePath:', res?.petImagePath);
                 mutate({ url: `/mypage/useraccount?userId=${userData?.userId}`, method: 'GET' });
+                if (res && res.petImagePath && userData) {
+                    console.log('✅ 조건문 통과! 스토어 업데이트 시작');
+                    setUserData({
+                        ...userData,
+                        petImagePath: res.petImagePath,
+                    });
+                } else {
+                    console.log('❌ 조건문 통과 실패!', { res, userData });
+                }
+
                 setIsPetEditMode(false);
                 setPetValidationErrors({});
             },

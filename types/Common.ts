@@ -207,3 +207,9 @@ export type AdminCommunityInfo = {
     createdAt: string;
     deletedAt: string | null;
 };
+export type CommonResponse<T> = {
+    type: string;
+    errorCode?: string;
+    message: string;
+    result: T;
+};

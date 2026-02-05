@@ -27,8 +27,8 @@ const Page = () => {
             payload,
             (response) => {
                 if (response.type == 'SUCCESS') {
-                    const userData: User = response.result as User;
-                    setUserData(userData);
+                    const loginUser = response.result as User;
+                    setUserData(loginUser);
                     router.push('/');
                 } else {
                     alert('아이디 또는 비밀번호가 일치하지 않습니다.');
@@ -117,5 +117,4 @@ const Page = () => {
         </LoginLayoutWrapper>
     );
 };
-
 export default Page;
