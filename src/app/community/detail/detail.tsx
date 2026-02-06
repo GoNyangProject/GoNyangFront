@@ -109,7 +109,7 @@ const CommunityDetail = () => {
             memberId: userData.memberId,
             boardId: boardId,
             content: content,
-            parentId: null, // 루트 댓글
+            parentId: null,
         };
 
         Post(

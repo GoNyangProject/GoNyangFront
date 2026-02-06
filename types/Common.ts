@@ -91,6 +91,7 @@ export type BookInfo = {
 
 export type BoardInfo = {
     id: number;
+    boardId: number;
     userId: string;
     title: string;
     content: string;

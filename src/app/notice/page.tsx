@@ -24,7 +24,7 @@ const Page = () => {
     const [page, setPage] = useState<number>(1);
 
     const handleClickNotice = (key: string, noticeData: BoardInfo, event: React.MouseEvent) => {
-        router.push(`/notice/detail?notice=${noticeData.id}`);
+        router.push(`/notice/detail?notice=${noticeData.boardId}`);
     };
 
     const { data: notice_data } = useSWR(
@@ -45,7 +45,7 @@ const Page = () => {
             return [];
         }
         return notice_data.boards.map((notice: BoardInfo, index: number) => ({
-            id: SIZE * (page - 1) + index + 1,
+            displayId: SIZE * (page - 1) + index + 1,
             boardId: notice.id,
             title: notice.title,
             content: notice.content,

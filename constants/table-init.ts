@@ -53,7 +53,7 @@ export const INQUIRY_COLUMNS: Array<{ key: string; value: string }> = [
 
 export const NOTICE_COLUMNS: Array<{ key: string; value: string }> = [
     {
-        key: 'id',
+        key: 'displayId',
         value: '작성번호',
     },
     {
