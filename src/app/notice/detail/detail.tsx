@@ -67,11 +67,6 @@ const NoticeDetail = () => {
             false,
         );
     };
-
-    useEffect(() => {
-        console.log(notice_detail_data);
-    }, [notice_detail_data]);
-
     if (isLoading) return <BoardCardWrapper>로딩 중...</BoardCardWrapper>;
     if (!notice_detail_data) return <BoardCardWrapper>데이터를 찾을 수 없습니다.</BoardCardWrapper>;
 

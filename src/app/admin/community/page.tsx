@@ -31,7 +31,6 @@ const CommunityAdminPage = () => {
     };
 
     const { data: adminBoardData } = useSWR(listKey, fetcher);
-    console.log(adminBoardData);
     const rows = adminBoardData?.content || [];
     const totalPages = adminBoardData?.totalPages || 0;
     const renderCustomCell = (key: string, row: AdminCommunityInfo, rowIndex: number) => {

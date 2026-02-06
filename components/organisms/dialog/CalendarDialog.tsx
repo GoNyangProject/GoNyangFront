@@ -34,9 +34,7 @@ const CalendarDialog = ({ bookData, setCurrentTab, selectedMenu, setBookInfo }: 
         return bookData.filter((book: Book) => formatDate(new Date(book.bookDate)) === formatDate(selectedDate));
     }, [bookData, selectedDate]);
 
-    useEffect(() => {
-        console.log(currentBookData);
-    }, [currentBookData]);
+
 
     const handlePayBook = () => {
         if (!selectedTime) {

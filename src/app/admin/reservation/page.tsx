@@ -67,7 +67,6 @@ const Page = () => {
             revalidateOnReconnect: false,
         },
     );
-    console.log(block_data);
     const handleCancel = (orderId: string) => {
         if (!confirm('정말 취소하시겠습니까?')) return;
 
@@ -150,7 +149,6 @@ const Page = () => {
     };
     const handleUserClick = async (memberId: string, username: string) => {
         Get(`/admin/pet/list/${memberId}`, (response) => {
-            console.log(response);
             if (response && Array.isArray(response.result)) {
                 setSelectedUserPets(response.result || []);
                 setCurrentUserName(username);

@@ -2,14 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Request, Response } from '../../../../types/Common';
 import { ResponseType } from '../../../../enum/Common';
 
-const DOMAIN = process.env.NEXT_PUBLIC_BACK_URL;
+const DOMAIN = process.env.BACK_URL || process.env.NEXT_PUBLIC_BACK_URL;
 
 const _fetch = async (param: Request, cookieString: string) => {
     const result: Response = {
         type: ResponseType.SUCCESS,
         errorCode: '0000',
     };
-
     const response = await fetch(`${DOMAIN}${param.url}`, {
         method: param.method,
         headers: {

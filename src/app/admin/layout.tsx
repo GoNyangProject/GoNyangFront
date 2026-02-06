@@ -36,15 +36,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     useEffect(() => {
         setIsClient(true); // 클라이언트 측에서 마운트되었음을 표시
     }, []);
-
-    useEffect(() => {
-        console.log(userData);
-    }, [userData]);
-
-    useEffect(() => {
-        console.log(user_data);
-    }, [user_data]);
-
     useEffect(() => {
         if (!isClient) return; // 클라이언트 측에서만 동작
         if (!userData || !user_data) {

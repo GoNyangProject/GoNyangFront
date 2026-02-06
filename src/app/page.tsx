@@ -62,10 +62,6 @@ const Page = () => {
     const [startX, setStartX] = useState(0);
     const [scrollPos, setScrollPos] = useState('left'); // 'left', 'middle', 'right', 'none'
 
-    useEffect(() => {
-        console.log(userData);
-    }, [userData]);
-
     const handleScroll = (e) => {
         const { scrollLeft, scrollWidth, clientWidth } = e.currentTarget;
 
@@ -129,7 +125,6 @@ const Page = () => {
             fallbackData: [],
         },
     );
-    console.log(menu_data);
 
     return (
         <MainWrapper>

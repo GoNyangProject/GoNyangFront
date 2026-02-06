@@ -167,8 +167,7 @@ const Page = () => {
         Post(
             '/mypage/useraccount/profile/pet/delete',
             payload,
-            (response) => {
-                console.log(response);
+            () => {
             },
             false,
         );
@@ -245,18 +244,13 @@ const Page = () => {
             (response) => {
                 const fullResponse = response as CommonResponse<MyPetProfileModifyResponse>;
                 const res = fullResponse.result;
-                console.log('변환된 petImagePath:', res?.petImagePath);
                 mutate({ url: `/mypage/useraccount?userId=${userData?.userId}`, method: 'GET' });
                 if (res && res.petImagePath && userData) {
-                    console.log('✅ 조건문 통과! 스토어 업데이트 시작');
                     setUserData({
                         ...userData,
                         petImagePath: res.petImagePath,
                     });
-                } else {
-                    console.log('❌ 조건문 통과 실패!', { res, userData });
                 }
-
                 setIsPetEditMode(false);
                 setPetValidationErrors({});
             },

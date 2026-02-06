@@ -39,7 +39,6 @@ const Page = () => {
             revalidateOnReconnect: false,
         },
     );
-    console.log(memberList);
     const row = memberList?.content || [];
     const totalPages = memberList?.totalPages || 0;
     const handleSearch = () => {
