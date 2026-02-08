@@ -1,4 +1,6 @@
 import { AccountFieldsType, FormFieldsType, PetInfoType } from '../../../enum/FormFields';
+import {Get} from "../../../service/crud";
+import {CommonResponse} from "../../../types/Common";
 
 const regex = {
     PASSWORD: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/,
@@ -10,6 +12,9 @@ const regex = {
     NOTE_REGEX: /^[가-힣a-zA-Z0-9 .,!?()'"-]{0,30}$/,
     AGE: /^(?:[0-9]|1[0-9])$/,
 };
+interface CheckIdResponse {
+    available: boolean;
+}
 
 export const validateField = (key: FormFieldsType, value: string): string => {
     const cleanValue = value.replace(/-/g, '');
@@ -62,14 +67,17 @@ export const validatePetField = (key: PetInfoType, value: string): string => {
 
 export const checkIdDuplicate = async (id: string): Promise<string> => {
     if (id.length < 5) return '아이디는 최소 5자 이상이어야 합니다.';
-    try {
-        const response = await fetch(`http://localhost:8080/member/checkid?id=${id}`, { method: 'GET' });
-        const data = await response.json();
-        if (!data.result.available) return '이미 사용중인 아이디입니다.';
-    } catch {
-        return '아이디 중복 확인에 실패했습니다.';
-    }
-    return '';
+
+    return new Promise((resolve) => {
+        Get(`/member/checkid?id=${id}`, (response) => {
+            const res = response as CommonResponse<CheckIdResponse>;
+            if (res.result && res.result.available) {
+                resolve('');
+            } else {
+                resolve('이미 사용중인 아이디입니다.');
+            }
+        });
+    });
 };
 
 export const modifyValidateField = (key: AccountFieldsType | PetInfoType, value: string): string => {

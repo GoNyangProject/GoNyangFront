@@ -7,19 +7,19 @@ const providers = [
         name: 'google',
         bgColor: '#ffffff',
         icon: '/icons/google.svg',
-        url: '/auth/google',
+        url: '/api/auth/google',
     },
     {
         name: 'naver',
         bgColor: '#03C75A',
         icon: '/icons/NAVER_login_Dark_KR_green_icon_H48.png',
-        url: '/auth/naver',
+        url: '/api/auth/naver',
     },
     {
         name: 'kakao',
         bgColor: '#FEE500',
         icon: '/icons/kakaotalk_sharing_btn_small_ov.png',
-        url: '/auth/kakao',
+        url: '/api/auth/kakao',
     },
 ];
 

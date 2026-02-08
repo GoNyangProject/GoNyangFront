@@ -17,8 +17,8 @@ const nextConfig = {
     async rewrites() {
         return [
             {
-                source: '/auth/:provider',
-                destination: `${process.env.NEXT_PUBLIC_BACK_URL}/auth/:provider`,
+                source: '/api/auth/:provider',
+                destination: `${process.env.NEXT_PUBLIC_BACK_URL}/api/auth/:provider`,
             },
         ];
     },

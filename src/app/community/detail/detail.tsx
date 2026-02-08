@@ -240,7 +240,10 @@ const CommunityDetail = () => {
                                                     <span className="date">{item.createdAt.toString().split('T')[0]}</span>
                                                 </CommentInfo>
                                                 <ActionGroup>
-                                                    <Button onClick={() => handleClickDeleteReply(item)}>삭제</Button>
+                                                    {userData && (userData.username === item.writer || userData.userType === 'ROLE_ADMIN') && (
+                                                        <Button onClick={() => handleClickDeleteReply(item)}>삭제</Button>
+                                                    )}
+
                                                     <Button onClick={() => setCurrentReplyId(currentReplyId === item.id ? 0 : item.id)}>
                                                         {currentReplyId === item.id ? '닫기' : '답글'}
                                                     </Button>
