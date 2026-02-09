@@ -5,13 +5,7 @@
 > [고냥 서비스](http://gonyang.shop)
 
 # 📅 개발시간
-
-# ⚙️ 개발환경
-
-* IDE : IntelliJ
-* FrameWork : Spring boot 3.x
-* ORM: Spring Data JPA
-
+* 25.11.01 ~ 진행중
 # 🛠️ 기술스택
 
 | 컴포넌트      | 플랫폼                         | 참고사항                                    |
