@@ -1,4 +1,4 @@
-name: Deploy Front (Next.js) to AWS
+name: Deploy Front
 
 on:
   push:
