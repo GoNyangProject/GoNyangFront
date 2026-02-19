@@ -51,7 +51,7 @@ const Page = () => {
         if (error) console.error('SWR 에러 발생:', error);
         if (user_data) {
             console.log('유저 데이터 로드 성공:', user_data);
-            console.log('cicd 적용 성공!');
+            console.log('cicd 적용 성공!!');
             setUserData(user_data);
         }
     }, [user_data, error]);
