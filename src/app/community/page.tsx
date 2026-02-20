@@ -11,6 +11,7 @@ import {
     HeaderRightGroup,
     MainSection,
     PostListWrapper,
+    SearchAndFilterRow,
     SearchInputWrapper,
     SectionHeader,
     SideBar,
@@ -31,6 +32,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import DropDawnFilter from '../../../components/molecules/admin/DropDawnFilter';
 import { COMMUNITY_SORT_OPTION } from '../../../data/data-init';
+import { timeAgo } from '@/utils/timeCell';
 
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
 
@@ -62,7 +64,29 @@ const Page = () => {
             return <span>{(page - 1) * size + rowIndex + 1}</span>;
         }
         if (key === 'createdAt') {
-            return <span>{row.createdAt?.split('T')[0]}</span>;
+            return <span style={{ fontSize: '12px', color: '#888' }}>{timeAgo(row.createdAt)}</span>;
+        }
+        if (key === 'userId') {
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                    <div
+                        style={{
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                        }}
+                    >
+                        {row.userId}
+                    </div>
+                    <span className="mobile-only-time" style={{ fontSize: '10px', color: '#999', marginTop: '2px' }}>
+                        {timeAgo(row.createdAt)}
+                    </span>
+                </div>
+            );
+        }
+        if (key === 'viewCount') {
+            return <span style={{ display: 'block', width: '100%', textAlign: 'center' }}>{row.viewCount}</span>;
         }
         return undefined;
     };
@@ -104,7 +128,7 @@ const Page = () => {
         }
     };
 
-    const handleClickCommunity = (key: string, communityData: BoardInfo, event: React.MouseEvent) => {
+    const handleClickCommunity = (key: string, communityData: BoardInfo) => {
         router.push(`/community/detail?community=${communityData.id}`);
     };
 
@@ -113,9 +137,15 @@ const Page = () => {
     return (
         <CommunityWrapper>
             <CommunityContainer>
-                {/* 좌측 메뉴 */}
                 <SideBar>
-                    <SideTitle>커뮤니티</SideTitle>
+                    <div className="sidebar-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <SideTitle>커뮤니티</SideTitle>
+                        {hasToken && (
+                            <div className="mobile-write-btn">
+                                <WriteButton onClick={() => router.push('/community/write')}>글쓰기</WriteButton>
+                            </div>
+                        )}
+                    </div>
                     <CategoryList>
                         <CategoryItem $active={category === '자유게시판'} onClick={handleClickFree}>
                             자유게시판
@@ -129,45 +159,42 @@ const Page = () => {
                     </CategoryList>
                 </SideBar>
 
-                {/* 우측 게시판 */}
                 <MainSection>
                     <SectionHeader>
-                        {/* 왼쪽 그룹: 제목 + 검색창 + 필터 */}
+                        <BoardTitle>{category}</BoardTitle>
                         <HeaderLeftGroup>
-                            <BoardTitle>{category}</BoardTitle>
+                            <SearchAndFilterRow>
+                                <SearchInputWrapper>
+                                    <Input
+                                        style={{
+                                            backgroundColor: 'white',
+                                            padding: '5px 10px',
+                                            border: 'none',
+                                            fontSize: '16px',
+                                            boxShadow: 'none',
+                                        }}
+                                        width="100%"
+                                        placeholder="검색어를 입력해주세요"
+                                        value={searchInput}
+                                        onChange={(e) => setSearchInput(e.target.value)}
+                                        onKeyDown={handleKeyDown}
+                                    />
+                                    <FontAwesomeIcon icon={faMagnifyingGlass} color="gray" style={{ padding: '5px' }} />
+                                </SearchInputWrapper>
 
-                            <SearchInputWrapper style={{ marginBottom: 0 }}>
-                                <Input
-                                    style={{
-                                        backgroundColor: 'white',
-                                        padding: '5px 10px',
-                                        border: 'none',
-                                        fontSize: '16px',
-                                        boxShadow: 'none',
-                                    }}
-                                    width="250px"
-                                    placeholder="검색어를 입력해주세요"
-                                    value={searchInput}
-                                    onChange={(e) => setSearchInput(e.target.value)}
-                                    onKeyDown={handleKeyDown}
-                                />
-                                <FontAwesomeIcon icon={faMagnifyingGlass} color="gray" style={{ padding: '5px' }} />
-                            </SearchInputWrapper>
-
-                            <FilterGroup>
-                                <DropDawnFilter options={COMMUNITY_SORT_OPTION} value={sortOption} onChange={handleOptionChange} placeholder="정렬" />
-                            </FilterGroup>
+                                <FilterGroup>
+                                    <DropDawnFilter options={COMMUNITY_SORT_OPTION} value={sortOption} onChange={handleOptionChange} placeholder="정렬" />
+                                </FilterGroup>
+                            </SearchAndFilterRow>
                         </HeaderLeftGroup>
-
-                        {/* 오른쪽 그룹: 글쓰기 버튼 */}
                         {hasToken && (
-                            <HeaderRightGroup>
+                            <HeaderRightGroup className="web-write-btn">
                                 <WriteButton onClick={() => router.push('/community/write')}>글쓰기</WriteButton>
                             </HeaderRightGroup>
                         )}
                     </SectionHeader>
 
-                    <PostListWrapper>
+                    <PostListWrapper className="community-table">
                         {row.length > 0 ? (
                             <InquiryTable
                                 columns={communityColumns}

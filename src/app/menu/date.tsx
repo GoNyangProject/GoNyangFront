@@ -79,8 +79,8 @@ const BookMenu = ({ selectedMenu, setCurrentTab, setBookInfo }: MenuProps) => {
         if (!score) {
             return;
         }
-        const fullStars = Math.floor(score); // 정수 부분 (예: 4.2 -> 4)
-        const remainingStars = 5 - fullStars; // 빈 별의 개수 (예: 5 - 4 = 1)
+        const fullStars = Math.floor(score);
+        const remainingStars = 5 - fullStars;
 
         const stars = [];
         for (let i = 0; i < fullStars; i++) {
@@ -113,7 +113,14 @@ const BookMenu = ({ selectedMenu, setCurrentTab, setBookInfo }: MenuProps) => {
                     <Price>{selectedMenu?.price.toLocaleString()} 원</Price>
                 </DetailsRow>
             </ServiceCard>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    width: '100%',
+                    marginTop: '10px',
+                }}
+            >
                 <DatePicker bookData={book_data} blockData={block_data || []} isAdmin={false} />
             </div>
             <ButtonContainer>

@@ -34,8 +34,8 @@ const Dialog = ({
     const isOpenDialog = selectedDialogs.some((dialog) => dialog.dialogType === type && dialog.isOpen);
 
     return (
-        <DialogWrapper $isOpen={isOpenDialog} style={style}>
-            <DialogInner $width={width} $height={height}>
+        <DialogWrapper $isOpen={isOpenDialog}>
+            <DialogInner $width={width} $height={height} style={style}>
                 <DialogHeader>{title}</DialogHeader>
                 <DialogBody>{children}</DialogBody>
                 <DialogFooter>
@@ -52,7 +52,6 @@ const Dialog = ({
                             padding="0"
                             border="1px solid bisque"
                             color="black"
-                            borderRadius="0"
                             fontSize="20px"
                             onClick={onClickConfirm}
                         >
@@ -69,7 +68,6 @@ const Dialog = ({
                         width="80px"
                         height="26px"
                         color="black"
-                        borderRadius="0"
                         border="1px solid bisque"
                         fontSize="20px"
                         onClick={onClickCancel}

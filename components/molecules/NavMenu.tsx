@@ -6,10 +6,18 @@ const NavMenu = () => {
     const router = useRouter();
     return (
         <HeaderNavWrapper>
-            <HeaderButton>About</HeaderButton>
-            <HeaderButton onClick={() => router.push('/menu')}>예약</HeaderButton>
-            <HeaderButton onClick={() => router.push('/notice')}>공지사항</HeaderButton>
-            <HeaderButton onClick={() => router.push('/community')}>커뮤니티</HeaderButton>
+            <HeaderButton>
+                <span className="emoji">🏠</span> About
+            </HeaderButton>
+            <HeaderButton onClick={() => router.push('/menu')}>
+                <span className="emoji">📅</span> 예약
+            </HeaderButton>
+            <HeaderButton onClick={() => router.push('/notice')}>
+                <span className="emoji">📢</span> 공지사항
+            </HeaderButton>
+            <HeaderButton onClick={() => router.push('/community')}>
+                <span className="emoji">🐾</span> 커뮤니티
+            </HeaderButton>
         </HeaderNavWrapper>
     );
 };

@@ -190,9 +190,15 @@ export const MenuScrollContainer = styled.div`
     cursor: grab;
     -ms-overflow-style: none;
     scrollbar-width: none;
+    scroll-behavior: smooth;
 
     &::-webkit-scrollbar {
         display: none;
+    }
+
+    @media (max-width: 768px) {
+        scroll-snap-type: x mandatory;
+        padding: 10px 20px;
     }
 
     &:active {
@@ -207,6 +213,11 @@ export const MenuCard = styled.div`
     flex: 0 0 auto;
     width: 300px;
     user-select: none;
+
+    @media (max-width: 768px) {
+        width: 220px;
+        scroll-snap-align: center;
+    }
 `;
 
 export const MenuImageBox = styled.div`
@@ -217,6 +228,12 @@ export const MenuImageBox = styled.div`
     overflow: hidden;
     margin-bottom: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+    @media (max-width: 768px) {
+        width: 180px;
+        height: 180px;
+        border-radius: 15px;
+    }
 
     img {
         width: 100%;
@@ -247,7 +264,7 @@ export const scrollRight = keyframes`
 
 export const MarqueeContainer = styled.div`
     width: 100%;
-    overflow: hidden; // 스크롤바 방지 핵심
+    overflow: hidden;
     background-color: #fff;
     padding: 20px 0;
     position: relative;

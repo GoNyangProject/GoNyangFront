@@ -1,5 +1,5 @@
 import React from 'react';
-import { ButtonWrapper, MenuContent, MenuImg, MenuMainWrapper, MenuName, MenuTitle, MenuWrapper } from '../../../styles/pages/menu/Menu';
+import { ButtonWrapper, MenuContent, MenuImg, MenuInfoBox, MenuMainWrapper, MenuName, MenuTitle, MenuWrapper } from '../../../styles/pages/menu/Menu';
 import Button from '../../../components/atom/Button';
 import { Menu as MenuComponent } from '../../../types/Common';
 import { MenuType } from '../../../enum/Menu';
@@ -35,14 +35,12 @@ const Menu = ({ data, setCurrentTab, setSelectedMenu }: MenuProps) => {
             {data?.map((menu: MenuComponent, index: number) => (
                 <MenuMainWrapper key={index}>
                     <MenuImg image={menu.id} />
-                    <div style={{ width: '80%' }}>
+                    <MenuInfoBox>
                         <MenuName>{menu.menuName}</MenuName>
                         <MenuContent>{menu.content}</MenuContent>
-                    </div>
+                    </MenuInfoBox>
                     <ButtonWrapper>
-                        <Button style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }} onClick={() => handleClickBook(menu.id)}>
-                            예약하기
-                        </Button>
+                        <Button onClick={() => handleClickBook(menu.id)}>예약하기</Button>
                     </ButtonWrapper>
                 </MenuMainWrapper>
             ))}

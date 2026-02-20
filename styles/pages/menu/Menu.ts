@@ -13,14 +13,23 @@ export const MenuWrapper = styled.div`
 export const MenuMainWrapper = styled.div`
     display: flex;
     width: 100%;
-    height: 100px;
-    min-height: 100px;
+    height: 120px;
     flex-direction: row;
     border: 1px solid bisque;
-    padding: 10px;
-    border-radius: 5px;
-    gap: 30px;
+    padding: 15px;
+    border-radius: 12px;
+    gap: 20px;
     align-items: center;
+    background-color: white;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        height: auto;
+        align-items: center;
+        text-align: center;
+        gap: 15px;
+        padding: 20px;
+    }
 `;
 
 export const MenuTitle = styled.div`
@@ -32,10 +41,16 @@ export const MenuTitle = styled.div`
 
 export const MenuImg = styled.div<{ image: number }>`
     background: url(${(props) => `/images/menu/${props.image}.png`}) no-repeat center center;
-    background-size: contain;
-    width: 80px;
-    min-width: 50px;
-    height: 100%;
+    background-size: cover;
+    width: 90px;
+    height: 90px;
+    border-radius: 10px;
+    flex-shrink: 0;
+
+    @media (max-width: 768px) {
+        width: 120px;
+        height: 120px;
+    }
 `;
 
 export const MenuName = styled.div`
@@ -47,18 +62,29 @@ export const MenuContent = styled.div`
     display: flex;
     flex: 1;
     align-items: center;
-    white-space: pre;
-    text-overflow: ellipsis;
-    overflow: hidden;
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.4;
+
+    @media (max-width: 768px) {
+        white-space: normal;
+        text-overflow: clip;
+        overflow: visible;
+        margin-top: 5px;
+    }
 `;
 
 export const ButtonWrapper = styled.div`
-    flex-shrink: 0; /* 버튼 크기 고정 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
+    flex-shrink: 0;
 
+    @media (max-width: 768px) {
+        width: 100%;
+        button {
+            width: 100%;
+            height: 45px;
+        }
+    }
+`;
 export const DateWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -68,34 +94,45 @@ export const DateWrapper = styled.div`
 
 export const ServiceCard = styled.div`
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     background-color: #ffffff;
     border-radius: 16px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     padding: 24px;
     border: 1px solid bisque;
     width: 100%;
-    height: 100%;
-    gap: 15px;
+
+    @media (max-width: 768px) {
+        padding: 15px;
+        border-radius: 12px;
+    }
 `;
 
 export const ServiceName = styled.h2`
     font-size: 28px;
     font-weight: 700;
-    color: #333333;
-    margin: 0 0 8px; /* 아래쪽 여백 설정 */
+    color: #333;
+    margin-bottom: 8px;
+
+    @media (max-width: 768px) {
+        font-size: 20px;
+    }
 `;
 
 export const ServiceDescription = styled.p`
     font-size: 16px;
-    font-weight: 400;
-    color: #666666;
-    margin: 0 0 24px;
+    color: #666;
+    margin-bottom: 20px;
+
+    @media (max-width: 768px) {
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
 `;
 
 export const DetailsRow = styled.div`
     display: flex;
-    justify-content: space-between; /* 양 끝에 배치 */
+    justify-content: space-between;
     align-items: center;
 `;
 
@@ -103,7 +140,7 @@ export const Rating = styled.div`
     display: flex;
     align-items: center;
     font-size: 16px;
-    color: #f7b731; /* 별 색상 */
+    color: #f7b731;
 `;
 
 export const Price = styled.div`
@@ -115,8 +152,15 @@ export const Price = styled.div`
 export const ButtonContainer = styled.div`
     display: flex;
     justify-content: space-between;
-    gap: 15px;
+    gap: 12px;
     margin-top: 20px;
+
+    @media (max-width: 768px) {
+        position: sticky;
+        bottom: 20px;
+        background: white;
+        padding-top: 10px;
+    }
 `;
 
 export const PreviousButton = styled.button`
@@ -149,5 +193,68 @@ export const NextButton = styled.button`
 
     &:hover {
         background-color: bisque;
+    }
+`;
+
+export const MenuInfoBox = styled.div`
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+
+    @media (max-width: 768px) {
+        width: 100%;
+    }
+`;
+export const DialogContentWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    gap: 20px;
+`;
+
+export const TimeSection = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+`;
+
+export const TimeTitle = styled.div`
+    font-size: 18px;
+    font-weight: 600;
+    color: #504538;
+`;
+
+export const TimeGrid = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+`;
+
+export const TimeButton = styled.button<{ $isSelected: boolean; $isBooked?: any }>`
+    padding: 12px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.2s;
+
+    background-color: ${(props) => (props.$isSelected ? '#D2B48C' : props.$isBooked ? '#eee' : 'bisque')};
+    color: ${(props) => (props.$isBooked ? '#aaa' : '#333')};
+    pointer-events: ${(props) => (props.$isBooked ? 'none' : 'auto')};
+
+    &:hover {
+        background-color: ${(props) => !props.$isBooked && '#f5d6b5'};
+    }
+
+    @media (max-width: 768px) {
+        flex: 1 1 calc(45% - 10px);
+        height: 50px;
     }
 `;

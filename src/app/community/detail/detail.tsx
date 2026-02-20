@@ -36,6 +36,7 @@ import {
 import CommentInput from '../../../../components/molecules/CommentInput';
 import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { timeAgo } from '@/utils/timeCell';
 
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
 
@@ -237,7 +238,7 @@ const CommunityDetail = () => {
                                                         alt="commenter-pet"
                                                     />
                                                     <span className="writer">{item.writer || '익명'}</span>
-                                                    <span className="date">{item.createdAt.toString().split('T')[0]}</span>
+                                                    <span className="date">{timeAgo(item.createdAt.toString())}</span>
                                                 </CommentInfo>
                                                 <ActionGroup>
                                                     {userData && (userData.username === item.writer || userData.userType === 'ROLE_ADMIN') && (
@@ -270,11 +271,11 @@ const CommunityDetail = () => {
                                 <div style={{ textAlign: 'center', color: '#bbb', padding: '50px 0' }}>등록된 댓글이 없습니다.</div>
                             )}
                         </CommentListWrapper>
-                        <Button style={{ padding: '10px 24px', fontSize: '15px' }} onClick={() => router.push('/community')}>
-                            목록으로
-                        </Button>
                     </ButtonWrapper>
                 </DetailContainer>
+                <Button style={{ padding: '10px 24px', fontSize: '15px' }} onClick={() => router.push('/community')}>
+                    목록으로
+                </Button>
             </BoardCardWrapper>
         </MainWrapper>
     );

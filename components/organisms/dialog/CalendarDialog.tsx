@@ -6,9 +6,20 @@ import axiosInstance from '../../../libs/axios';
 import { formatDate } from '@/utils/validations/formValidators';
 import { Book, BookInfo, Menu } from '../../../types/Common';
 import { BookingTimes, MenuType } from '../../../enum/Menu';
-import Button from '../../atom/Button';
 import { userStore } from '../../../store/userStore';
-import { DetailsRow, Price, Rating, ServiceCard, ServiceDescription, ServiceName } from '../../../styles/pages/menu/Menu';
+import {
+    DetailsRow,
+    DialogContentWrapper,
+    Price,
+    Rating,
+    ServiceCard,
+    ServiceDescription,
+    ServiceName,
+    TimeButton,
+    TimeGrid,
+    TimeSection,
+    TimeTitle,
+} from '../../../styles/pages/menu/Menu';
 
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data);
 
@@ -34,8 +45,6 @@ const CalendarDialog = ({ bookData, setCurrentTab, selectedMenu, setBookInfo }: 
         return bookData.filter((book: Book) => formatDate(new Date(book.bookDate)) === formatDate(selectedDate));
     }, [bookData, selectedDate]);
 
-
-
     const handlePayBook = () => {
         if (!selectedTime) {
             alert('예약하실 시간을 선택해 주세요');
@@ -58,26 +67,14 @@ const CalendarDialog = ({ bookData, setCurrentTab, selectedMenu, setBookInfo }: 
         <Dialog
             type={DialogType.CALENDAR}
             title={`${formatDate(selectedDate)} 예약`}
-            width="50vw"
-            height="60vh"
             style={{ backgroundColor: 'white' }}
             onClickConfirm={handlePayBook}
             onClickCancel={handleClickCancel}
             confirmText={'결제하기'}
             showBtn={true}
         >
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    width: '100%',
-                    height: '100%',
-                    padding: '10px',
-                    alignItems: 'center',
-                }}
-            >
-                <ServiceCard style={{ flexDirection: 'column', border: 'none' }}>
+            <DialogContentWrapper>
+                <ServiceCard style={{ flexDirection: 'column', border: 'none', boxShadow: 'none' }}>
                     <ServiceName>{selectedMenu?.menuName}</ServiceName>
                     <ServiceDescription>{selectedMenu?.content}</ServiceDescription>
                     <DetailsRow>
@@ -85,56 +82,29 @@ const CalendarDialog = ({ bookData, setCurrentTab, selectedMenu, setBookInfo }: 
                         <Price>{selectedMenu?.price.toLocaleString()} 원</Price>
                     </DetailsRow>
                 </ServiceCard>
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        width: '100%',
-                        height: '100%',
-                        padding: '0 10px',
-                        alignItems: 'center',
-                    }}
-                >
-                    <div
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            gap: '10px',
-                        }}
-                    >
-                        <div>예약시간</div>
+
+                <TimeSection>
+                    <TimeTitle>예약시간</TimeTitle>
+                    <TimeGrid>
                         {Object.values(BookingTimes).map((time) => {
                             const timeHour = parseInt(time.split(':')[0]);
-
                             const isBooked = currentBookData.find((book: Book) => new Date(book.bookDate).getHours() === timeHour && book.deletedAt == null);
 
                             return (
-                                <Button
+                                <TimeButton
                                     key={time}
+                                    $isSelected={selectedTime === time}
+                                    $isBooked={isBooked}
+                                    disabled={!!isBooked}
                                     onClick={() => setSelectedTime(time)}
-                                    style={{
-                                        padding: '10px 20px',
-                                        border: 'none',
-                                        borderRadius: '5px',
-                                        cursor: 'pointer',
-                                        fontSize: '16px',
-                                        backgroundColor: selectedTime === time ? '#D2B48C' : isBooked ? '#CCCCCC' : 'bisque',
-                                        color: isBooked ? '#666666' : 'black',
-                                        pointerEvents: isBooked ? 'none' : 'auto',
-                                    }}
                                 >
                                     {time}
-                                </Button>
+                                </TimeButton>
                             );
                         })}
-                    </div>
-                </div>
-            </div>
+                    </TimeGrid>
+                </TimeSection>
+            </DialogContentWrapper>
         </Dialog>
     );
 };

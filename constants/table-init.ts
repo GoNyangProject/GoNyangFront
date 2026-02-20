@@ -54,7 +54,7 @@ export const INQUIRY_COLUMNS: Array<{ key: string; value: string }> = [
 export const NOTICE_COLUMNS: Array<{ key: string; value: string }> = [
     {
         key: 'displayId',
-        value: '작성번호',
+        value: '#',
     },
     {
         key: 'title',
@@ -66,11 +66,11 @@ export const NOTICE_COLUMNS: Array<{ key: string; value: string }> = [
     },
     {
         key: 'viewCount',
-        value: '조회수',
+        value: '조회',
     },
 ];
 export const communityColumns: Array<{ key: string; value: string }> = [
-    { key: 'displayId', value: '번호' },
+    { key: 'displayId', value: '#' },
     { key: 'title', value: '제목' },
     { key: 'userId', value: '작성자' },
     { key: 'createdAt', value: '작성일' },

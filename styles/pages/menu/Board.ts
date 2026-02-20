@@ -10,12 +10,64 @@ export const BoardCardWrapper = styled.div`
     border-radius: 12px;
     padding: 25px;
     gap: 15px;
+
+    h1 {
+        margin-bottom: 20px;
+    }
+
+    @media (max-width: 1024px) {
+        width: 90%;
+    }
+
+    @media (max-width: 768px) {
+        width: 100%;
+        padding: 15px 5px;
+    }
 `;
 
 export const SearchWrapper = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
+
+    &.notice-table {
+        @media (max-width: 768px) {
+            th:nth-child(1),
+            td:nth-child(1) {
+                width: 35px;
+                text-align: left;
+                padding-left: 5px;
+            }
+
+            th:nth-child(2),
+            td:nth-child(2) {
+                width: auto;
+                text-align: left;
+                padding-left: 10px;
+                max-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            th:nth-child(3),
+            td:nth-child(3) {
+                display: none;
+            }
+
+            th:nth-child(4),
+            td:nth-child(4) {
+                width: 45px;
+                text-align: left !important;
+                padding-left: 5px;
+                font-size: 11px;
+            }
+
+            td textarea {
+                text-align: left !important;
+            }
+        }
+    }
 `;
 
 export const DetailContainer = styled.div`
@@ -35,6 +87,10 @@ export const DetailHeader = styled(SearchWrapper)`
     padding: 30px 40px;
     border-bottom: 1px solid #f5ebd7;
     background-color: #fffaf0;
+
+    @media (max-width: 768px) {
+        padding: 20px 15px;
+    }
 `;
 
 export const DetailTitleWrapper = styled.div`
@@ -57,6 +113,11 @@ export const DetailTitle = styled.h2`
     font-weight: 700;
     color: #4a3f35;
     margin-bottom: 12px;
+
+    @media (max-width: 768px) {
+        font-size: 20px;
+        line-height: 1.4;
+    }
 `;
 
 export const DetailMeta = styled.div`
@@ -65,6 +126,7 @@ export const DetailMeta = styled.div`
     gap: 15px;
     font-size: 14px;
     color: #8b7d6b;
+    flex-wrap: wrap;
 
     span::after {
         content: '|';
@@ -75,6 +137,16 @@ export const DetailMeta = styled.div`
     span:last-child::after {
         content: '';
     }
+
+    @media (max-width: 768px) {
+        gap: 8px 12px;
+        font-size: 12px;
+
+        span::after {
+            content: '';
+            margin-left: 0;
+        }
+    }
 `;
 
 export const DetailBody = styled.div`
@@ -83,6 +155,10 @@ export const DetailBody = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    @media (max-width: 768px) {
+        padding: 15px 10px;
+    }
 `;
 
 export const DetailImageBox = styled.div`
@@ -110,7 +186,7 @@ export const DetailContent = styled.div`
     word-break: break-all;
 
     &.view-content img {
-        max-width: 100%; /* 이미지가 화면 밖으로 나가는 것 방지 */
+        max-width: 100%;
         height: auto;
     }
 
@@ -123,13 +199,13 @@ export const DetailContent = styled.div`
     }
 
     &.view-content a {
-        color: #007bff; /* 링크 느낌이 나는 파란색 */
-        text-decoration: underline; /* 밑줄 추가 */
+        color: #007bff;
+        text-decoration: underline;
         transition: color 0.2s;
 
         &:hover {
-            color: #0056b3; /* 마우스 올렸을 때 더 진한 파란색 */
-            text-decoration: none; /* 마우스 올리면 밑줄 제거(취향껏 선택) */
+            color: #0056b3;
+            text-decoration: none;
         }
     }
 
@@ -154,4 +230,9 @@ export const ButtonWrapper = styled.div`
     align-items: center;
     white-space: nowrap;
     gap: 15px;
+
+    @media (max-width: 768px) {
+        padding: 15px;
+        justify-content: center;
+    }
 `;

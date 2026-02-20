@@ -60,7 +60,7 @@ const Page = () => {
         <MainWrapper style={{ padding: '25px' }}>
             <BoardCardWrapper>
                 <h1>공지사항</h1>
-                <SearchWrapper>
+                <SearchWrapper className="notice-table">
                     <SearchInputWrapper>
                         <Input
                             style={{

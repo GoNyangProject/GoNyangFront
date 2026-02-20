@@ -8,9 +8,13 @@ export const DropdownWrapper = styled.div`
     display: flex;
     align-items: center;
     position: relative;
-    min-width: 120px;
+    min-width: 70px;
     justify-content: space-between;
     width: 100%;
+
+    @media (max-width: 768px) {
+        height: 32.33px;
+    }
 `;
 
 export const DropdownOptions = styled.div`
