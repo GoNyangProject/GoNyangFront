@@ -25,7 +25,7 @@ const providers = [
 
 const SocialLoginButtons = () => {
     return (
-        <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
+        <div style={{ display: 'flex', gap: '12px', marginTop: '16px', justifyContent: 'center', alignItems: 'center' }}>
             {providers.map((p) => (
                 <div
                     key={p.name}

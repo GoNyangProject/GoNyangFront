@@ -23,6 +23,7 @@ const Page = () => {
         setForm((prev) => ({ ...prev, [key]: e.target.value }));
         setErrors((prev) => ({ ...prev, [key]: '' }));
     };
+
     const onBlur = (key: FormFieldsType) => async (e: React.FocusEvent<HTMLInputElement>) => {
         const FormFieldTypeValue = e.target.value;
         if (key === FormFieldsType.ID) {
@@ -34,6 +35,7 @@ const Page = () => {
             setErrors((prev) => ({ ...prev, [key]: errorMsg }));
         }
     };
+
     const onSubmit = async () => {
         const hasError: FormErrors = {};
         let isError = false;
@@ -45,6 +47,7 @@ const Page = () => {
                 hasError[key] = errorMessage;
             }
         });
+
         if (!hasError[FormFieldsType.ID]) {
             const idErrorMsg = await checkIdDuplicate(form[FormFieldsType.ID]);
             if (idErrorMsg) {
@@ -70,10 +73,6 @@ const Page = () => {
             (response) => {
                 if (!response) return;
                 alert('회원가입이 완료 되었습니다.');
-                setForm(initialFormState);
-                setErrors({});
-                setIsIdAvailable(null);
-                setGender(Gender.MALE);
                 router.push('/member/login');
             },
             false,
@@ -81,8 +80,19 @@ const Page = () => {
     };
 
     return (
-        <>
-            <h1 style={{ color: 'black', paddingTop: '40px', textAlign: 'center' }}>로고부분</h1>
+        <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh', paddingBottom: '60px' }}>
+            <h1
+                style={{
+                    color: '#333',
+                    paddingTop: '40px',
+                    textAlign: 'center',
+                    fontSize: '24px',
+                    fontWeight: 'bold',
+                }}
+            >
+                회원 가입
+            </h1>
+
             <MemberJoinBox>
                 <JoinInput
                     placeholder="아이디"
@@ -126,6 +136,7 @@ const Page = () => {
                     isError={!!errors[FormFieldsType.NAME]}
                 />
                 {errors[FormFieldsType.NAME] && <JoinValidErrorMessage>{errors[FormFieldsType.NAME]}</JoinValidErrorMessage>}
+
                 <JoinInput
                     placeholder="생년월일(8자)"
                     value={form[FormFieldsType.BIRTH]}
@@ -134,6 +145,7 @@ const Page = () => {
                     isError={!!errors[FormFieldsType.BIRTH]}
                 />
                 {errors[FormFieldsType.BIRTH] && <JoinValidErrorMessage>{errors[FormFieldsType.BIRTH]}</JoinValidErrorMessage>}
+
                 <GenderButtonWrapper>
                     <GenderButton selected={gender === Gender.MALE} onClick={() => setGender(Gender.MALE)}>
                         남자
@@ -142,6 +154,7 @@ const Page = () => {
                         여자
                     </GenderButton>
                 </GenderButtonWrapper>
+
                 <JoinInput
                     placeholder="전화번호"
                     value={form[FormFieldsType.PHONE]}
@@ -152,26 +165,29 @@ const Page = () => {
                 {errors[FormFieldsType.PHONE] && <JoinValidErrorMessage>{errors[FormFieldsType.PHONE]}</JoinValidErrorMessage>}
             </MemberJoinBox>
 
-            <Button
-                onClick={onSubmit}
-                border="none"
-                borderRadius="8px"
-                display="block"
-                width="100%"
-                margin="0 auto"
-                padding="20px"
-                fontSize="18px"
-                style={{
-                    maxWidth: '400px',
-                    boxShadow: '0 0 10px rgba(0,0,0,0.1)',
-                    textAlign: 'center',
-                    fontWeight: 'bold',
-                    cursor: 'pointer',
-                }}
-            >
-                동의하고 시작하기
-            </Button>
-        </>
+            <div style={{ padding: '0 20px', marginTop: '30px' }}>
+                <Button
+                    onClick={onSubmit}
+                    border="none"
+                    borderRadius="10px"
+                    display="block"
+                    width="100%"
+                    margin="0 auto"
+                    padding="18px"
+                    fontSize="18px"
+                    backgroundColor="bisque"
+                    color="black"
+                    style={{
+                        maxWidth: '400px',
+                        fontWeight: 'bold',
+                        cursor: 'pointer',
+                        boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+                    }}
+                >
+                    동의하고 시작하기
+                </Button>
+            </div>
+        </div>
     );
 };
 

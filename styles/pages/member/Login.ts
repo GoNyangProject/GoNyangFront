@@ -4,18 +4,27 @@ export const LoginLayoutWrapper = styled.div`
     width: 100vw;
     height: 100vh;
     display: flex;
-    //background-color: bisque;
     background: url('/images/login_background.png') no-repeat center center;
     background-size: cover;
     justify-content: center;
     align-items: center;
     overflow: hidden;
     flex-direction: row;
+
+    @media (max-width: 768px) {
+        background-position: 94% 100%;
+        background-size: 400%;
+    }
 `;
 
 export const LoginLayoutMain = styled.div`
-    width: 20vw;
-    height: 50%;
+    width: 400px;
+    height: auto;
+    max-width: 90vw;
+
+    @media (max-width: 768px) {
+        width: 90%;
+    }
 `;
 
 export const LoginTitle = styled.div`
@@ -31,12 +40,13 @@ export const LoginTitle = styled.div`
 
 export const LoginFormWrapper = styled.div`
     display: flex;
+    width: 100%;
     border: 3px solid bisque;
     border-radius: 15px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 20px;
-    padding: 10px;
-    margin-bottom: 20px;
+    gap: 15px;
+    padding: 20px 10px;
+    margin-bottom: 10px;
 `;

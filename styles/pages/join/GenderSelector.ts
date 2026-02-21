@@ -1,28 +1,35 @@
 import styled, { css } from 'styled-components';
 
+export const GenderButtonWrapper = styled.div`
+    display: flex;
+    width: 100%;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+`;
+
 export const GenderButton = styled.div<{ selected: boolean }>`
     flex: 1;
-    padding: 10px 0;
-    border-width: 1px;
-    border-style: solid;
-    border-color: #ccc;
+    padding: 12px 0;
     cursor: pointer;
     text-align: center;
     user-select: none;
-    color: black;
+    color: #666;
+    background-color: white;
+    font-size: 15px;
+    transition: all 0.2s;
+
+    &:not(:last-child) {
+        border-right: 1px solid #ccc;
+    }
 
     ${({ selected }) =>
         selected &&
         css`
-            border-color: green;
+            background-color: #f0fff4;
             color: green;
+            font-weight: bold;
         `}
-`;
-
-export const GenderButtonWrapper = styled.div`
-    display: flex;
-    margin-bottom: 16px;
-    border-radius: 4px;
-    overflow: hidden;
-    border: 1px solid #ccc;
 `;

@@ -5,23 +5,18 @@ import { LoginFormWrapper, LoginLayoutMain, LoginLayoutWrapper, LoginTitle } fro
 import Input from '../../../../components/atom/Input';
 import Button from '../../../../components/atom/Button';
 import { useRouter } from 'next/navigation';
-import { ButtonWrapper } from '../../../../styles/components/molecules/Header/Header';
 import { User, userStore } from '../../../../store/userStore';
 import SocialLoginButtons from '../../../../components/molecules/SocialLoginButtons';
 import { Post } from '../../../../service/crud';
 
 const Page = () => {
     const router = useRouter();
-
     const [id, setId] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const { setUserData } = userStore();
 
     const handleClickLogin = () => {
-        const payload = {
-            userId: id,
-            password: password,
-        };
+        const payload = { userId: id, password: password };
         Post(
             '/member/login',
             payload,
@@ -32,20 +27,15 @@ const Page = () => {
                     router.push('/');
                 } else {
                     alert('아이디 또는 비밀번호가 일치하지 않습니다.');
-                    router.push('/member/login');
                 }
             },
             false,
         );
     };
 
-    const handleClickJoin = () => {
-        router.push('/member/join');
-    };
+    const handleClickJoin = () => router.push('/member/join');
     const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === 'Enter') {
-            handleClickLogin();
-        }
+        if (e.key === 'Enter') handleClickLogin();
     };
 
     return (
@@ -54,15 +44,17 @@ const Page = () => {
                 <Card
                     isOpen={true}
                     style={{
-                        padding: '20px 30px',
+                        padding: '30px 20px',
                         display: 'flex',
                         flexDirection: 'column',
-                        overflowY: 'hidden',
                         alignItems: 'center',
                         justifyContent: 'center',
                         backgroundColor: 'white',
                         borderRadius: '20px',
                         gap: '20px',
+                        width: '100%',
+                        height: 'auto',
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
                     }}
                 >
                     <LoginTitle>Login</LoginTitle>
@@ -70,25 +62,33 @@ const Page = () => {
                         <Input
                             type="text"
                             placeholder="아이디"
-                            width="260px"
-                            height="38px"
+                            width="90%"
+                            height="45px"
                             style={{ borderRadius: '10px' }}
                             onChange={(event: ChangeEvent<HTMLInputElement>) => setId(event.target.value.trim())}
                         />
                         <Input
                             type="password"
                             placeholder="비밀번호"
-                            width="260px"
-                            height="38px"
+                            width="90%"
+                            height="45px"
                             style={{ borderRadius: '10px' }}
                             onChange={(event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value.trim())}
                             onKeyDown={handleKeyDown}
                         />
-                        <ButtonWrapper>
+                        <div
+                            style={{
+                                width: '90%',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '10px',
+                                marginTop: '10px',
+                            }}
+                        >
                             <Button
                                 width="100%"
-                                height="52px"
-                                fontSize="18px"
+                                height="50px"
+                                fontSize="16px"
                                 backgroundColor="bisque"
                                 border="none"
                                 borderRadius="10px"
@@ -99,8 +99,8 @@ const Page = () => {
                             </Button>
                             <Button
                                 width="100%"
-                                height="52px"
-                                fontSize="18px"
+                                height="50px"
+                                fontSize="16px"
                                 backgroundColor="bisque"
                                 border="none"
                                 borderRadius="10px"
@@ -109,8 +109,10 @@ const Page = () => {
                             >
                                 회원가입
                             </Button>
-                        </ButtonWrapper>
-                        <SocialLoginButtons></SocialLoginButtons>
+                        </div>
+                        <div style={{ width: '90%' }}>
+                            <SocialLoginButtons />
+                        </div>
                     </LoginFormWrapper>
                 </Card>
             </LoginLayoutMain>
