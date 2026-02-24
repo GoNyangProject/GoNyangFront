@@ -8,9 +8,10 @@ export const DropdownWrapper = styled.div`
     display: flex;
     align-items: center;
     position: relative;
-    min-width: 70px;
+    min-width: 100px;
     justify-content: space-between;
-    width: 100%;
+    width: fit-content;
+    white-space: nowrap;
 
     @media (max-width: 768px) {
         height: 32.33px;

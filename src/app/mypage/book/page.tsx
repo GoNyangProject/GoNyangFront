@@ -95,7 +95,7 @@ const Page = () => {
     return (
         <div
             style={{
-                width: '40%',
+                width: '100%',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',

@@ -106,7 +106,7 @@ const Mypage = ({ children }: MypageProps) => {
                     </Button>
                 </MenuBarBody>
             </MenuBarWrapper>
-            {children}
+            <div style={{ flex: 1, minWidth: 0 }}>{children}</div>
         </MypageWrapper>
     );
 };

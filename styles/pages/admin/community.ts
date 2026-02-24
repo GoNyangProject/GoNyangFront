@@ -27,5 +27,8 @@ export const SearchInputWrapper = styled.div`
 `;
 
 export const SelectWrapper = styled.div`
-    width: 150px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    width: auto;
 `;

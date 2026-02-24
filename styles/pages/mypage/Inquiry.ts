@@ -8,7 +8,7 @@ export const InquiryHeader = styled.div`
 `;
 
 export const InquiryWrapper = styled.div`
-    width: 40%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;

@@ -32,8 +32,6 @@ const Header = () => {
     const pathname = usePathname();
     const router = useRouter();
 
-    if (pathname.startsWith('/admin')) return null;
-
     const userData = userStore((state) => state.userData);
     const isLoggedIn = Boolean(userData?.memberId);
     const isAdmin = userData?.userType === 'ROLE_ADMIN';
@@ -54,7 +52,7 @@ const Header = () => {
     );
 
     return (
-        <HeaderWrapper>
+        <HeaderWrapper style={{ display: pathname.startsWith('/admin') ? 'none' : 'flex' }}>
             <HeaderMainWrapper>
                 <HeaderLogo onClick={() => router.push('/')} />
 

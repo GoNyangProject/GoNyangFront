@@ -3,24 +3,40 @@ import styled from 'styled-components';
 export const MenuWrapper = styled.div`
     display: flex;
     width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+
     border-radius: 5px;
     flex-direction: column;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 15px;
+    padding: 30px;
     gap: 15px;
+    background-color: #fff;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        max-width: none;
+        padding: 15px;
+    }
 `;
 
 export const MenuMainWrapper = styled.div`
     display: flex;
     width: 100%;
-    height: 120px;
+    height: 140px;
     flex-direction: row;
     border: 1px solid bisque;
-    padding: 15px;
+    padding: 20px;
     border-radius: 12px;
-    gap: 20px;
+    gap: 30px;
     align-items: center;
     background-color: white;
+    transition: transform 0.2s;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
 
     @media (max-width: 768px) {
         flex-direction: column;
@@ -57,6 +73,9 @@ export const MenuName = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333;
 `;
 export const MenuContent = styled.div`
     display: flex;
@@ -197,9 +216,10 @@ export const NextButton = styled.button`
 `;
 
 export const MenuInfoBox = styled.div`
-    width: 60%;
+    flex: 1;
     display: flex;
     flex-direction: column;
+    gap: 8px;
 
     @media (max-width: 768px) {
         width: 100%;

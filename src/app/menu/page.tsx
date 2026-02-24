@@ -29,14 +29,28 @@ const Page = () => {
     );
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                width: '100%',
+                minHeight: '100vh',
+                padding: '20px 0', // 위아래 여백
+            }}
+        >
             <Card
                 style={{
                     margin: '10px',
-                    width: 'inherit',
+                    width: '95%',
+                    maxWidth: '1200px',
                     display: 'flex',
+                    flexDirection: 'column',
                     justifyContent: 'center',
                     alignItems: 'center',
+                    border: 'none',
+                    boxShadow: 'none',
+                    backgroundColor: 'transparent',
                 }}
             >
                 {(() => {

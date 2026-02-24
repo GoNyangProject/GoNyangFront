@@ -1,14 +1,18 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import { AccountBox, AccountHeader, AccountTitle } from '../../../../styles/pages/mypage/Account';
+import React, {useEffect, useState} from 'react';
+import {AccountBox, AccountHeader, AccountTitle} from '../../../../styles/pages/mypage/Account';
 import InfoItem from '../../../../components/molecules/InfoItem';
-import { ActionButton, ActionButtonWrapper, PetPaginationWrapper } from '../../../../styles/components/molecules/InfoItem';
-import { AccountFieldsType, PetInfoType } from '../../../../enum/FormFields';
-import { modifyValidateField, validatePetField } from '@/utils/validations/formValidators';
-import { Post } from '../../../../service/crud';
+import {
+    ActionButton,
+    ActionButtonWrapper,
+    PetPaginationWrapper
+} from '../../../../styles/components/molecules/InfoItem';
+import {AccountFieldsType, PetInfoType} from '../../../../enum/FormFields';
+import {modifyValidateField, validatePetField} from '@/utils/validations/formValidators';
+import {Post} from '../../../../service/crud';
 import axiosInstance from '../../../../libs/axios';
-import { userStore } from '../../../../store/userStore';
-import useSWR, { mutate } from 'swr';
+import {userStore} from '../../../../store/userStore';
+import useSWR, {mutate} from 'swr';
 import {CommonResponse, PetApiResponse} from '../../../../types/Common';
 
 type PetForm = {
@@ -36,9 +40,9 @@ interface MyPetProfileModifyResponse {
 const fetcher = (payload: Request) => axiosInstance.post('/api/backend', payload).then((res) => res.data.result);
 
 const Page = () => {
-    const { userData, setUserData } = userStore();
+    const {userData, setUserData} = userStore();
 
-    const { data: user_account } = useSWR(
+    const {data: user_account} = useSWR(
         {
             url: `/mypage/useraccount?userId=${userData?.userId}`,
             method: 'GET',
@@ -110,7 +114,7 @@ const Page = () => {
 
     const handleCancel = () => {
         setValidationErrors((prev) => {
-            const next = { ...prev };
+            const next = {...prev};
             if (editingField) delete next[editingField];
             return next;
         });
@@ -119,17 +123,17 @@ const Page = () => {
 
     const handleSave = async (field: AccountFieldsType | PetInfoType, newValue: string) => {
         const fieldType = Object.keys(AccountFieldsType).find((key) => AccountFieldsType[key as keyof typeof AccountFieldsType] === field);
-        const payload = { userId: userData?.userId, fieldType, value: newValue };
+        const payload = {userId: userData?.userId, fieldType, value: newValue};
 
         const errorMsg = modifyValidateField(field, newValue);
         if (errorMsg) {
-            setValidationErrors((prev) => ({ ...prev, [field]: errorMsg }));
+            setValidationErrors((prev) => ({...prev, [field]: errorMsg}));
             setEditingField(field);
             return;
         }
 
         setValidationErrors((prev) => {
-            const newErrors = { ...prev };
+            const newErrors = {...prev};
             delete newErrors[field];
             return newErrors;
         });
@@ -138,7 +142,7 @@ const Page = () => {
             '/mypage/useraccount/profile',
             payload,
             () => {
-                mutate({ url: `/mypage/useraccount?userId=${userData?.userId}`, method: 'GET' });
+                mutate({url: `/mypage/useraccount?userId=${userData?.userId}`, method: 'GET'});
             },
             false,
         );
@@ -163,14 +167,9 @@ const Page = () => {
         if (!confirmDelete) return;
         const targetPet = pets[currentPetIndex];
         if (!targetPet.petId) return;
-        const payload = { userId: userData?.userId, petId: targetPet.petId };
-        Post(
-            '/mypage/useraccount/profile/pet/delete',
-            payload,
-            () => {
-            },
-            false,
-        );
+        const payload = {userId: userData?.userId, petId: targetPet.petId};
+        Post('/mypage/useraccount/profile/pet/delete', payload, () => {
+        }, false);
         const nextIndex = Math.max(0, currentPetIndex - 1);
         setPets((prev) => prev.filter((_, i) => i !== currentPetIndex));
         setTempPets((prev) => prev.filter((_, i) => i !== currentPetIndex));
@@ -244,7 +243,7 @@ const Page = () => {
             (response) => {
                 const fullResponse = response as CommonResponse<MyPetProfileModifyResponse>;
                 const res = fullResponse.result;
-                mutate({ url: `/mypage/useraccount?userId=${userData?.userId}`, method: 'GET' });
+                mutate({url: `/mypage/useraccount?userId=${userData?.userId}`, method: 'GET'});
                 if (res && res.petImagePath && userData) {
                     setUserData({
                         ...userData,
@@ -305,10 +304,10 @@ const Page = () => {
             style={{
                 display: 'flex',
                 flexDirection: 'column',
-                padding: '15px',
-                gap: '20px',
-                width: '40%',
-                alignItems: 'center',
+                padding: '0',
+                gap: '25px',
+                width: '100%',
+                alignItems: 'flex-start',
             }}
         >
             <AccountBox>
@@ -354,7 +353,8 @@ const Page = () => {
                 </AccountHeader>
                 {pets.length > 0 && (
                     <PetPaginationWrapper>
-                        <ActionButton onClick={() => setCurrentPetIndex((i) => Math.max(0, i - 1))} disabled={currentPetIndex === 0}>
+                        <ActionButton onClick={() => setCurrentPetIndex((i) => Math.max(0, i - 1))}
+                                      disabled={currentPetIndex === 0}>
                             {'<'}
                         </ActionButton>
                         <span>
@@ -400,7 +400,7 @@ const Page = () => {
                                     onChange={(newValue) => {
                                         setTempPets((prev) => {
                                             const next = [...prev];
-                                            next[currentPetIndex] = { ...next[currentPetIndex], [key]: newValue };
+                                            next[currentPetIndex] = {...next[currentPetIndex], [key]: newValue};
                                             return next;
                                         });
                                     }}
