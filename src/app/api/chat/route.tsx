@@ -3,7 +3,6 @@ import OpenAI from 'openai';
 import { SYSTEM_PROMPT } from '../../../../constants/prompt';
 import { CHAT_TOOLS, TOOL_CONFIG } from '@/app/api/chat/tool';
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const DOMAIN = process.env.BACK_URL || process.env.NEXT_PUBLIC_BACK_URL;
 
 async function fetchToSpring(url: string, cookie: string) {
@@ -15,6 +14,10 @@ async function fetchToSpring(url: string, cookie: string) {
 }
 
 export async function POST(req: NextRequest) {
+    const openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY || 'build_time_placeholder'
+    });
+
     try {
         const { messages } = await req.json();
         const cookieHeader = req.headers.get('cookie') ?? '';
@@ -54,6 +57,7 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({ result: resMsg.content });
     } catch (error: any) {
+        console.error('챗봇 에러 상세냥:', error); // 에러 로그를 찍어두면 나중에 찾기 편해요!
         return NextResponse.json({ result: '고냥이가 꾹꾹이 중이라 잠시 후 다시 불러달라냥!' });
     }
 }
