@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import '../../styles/globals.css';
 import Header from '../../layouts/Header';
 import React from 'react';
+import ChatBot from '../../components/organisms/ChatBot';
 
 export const metadata: Metadata = {
     title: '고냥서비스',
@@ -18,6 +19,7 @@ export default function RootLayout({
             <body>
                 <Header />
                 {children}
+                <ChatBot></ChatBot>
             </body>
         </html>
     );
